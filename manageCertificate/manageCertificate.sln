@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "manageCertificate", "manageCertificate\manageCertificate.csproj", "{3B5951E2-158A-444B-9FDD-D47B9219F61F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{3AADE57E-629A-4FFE-A40F-EF2FDA94B502}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B5951E2-158A-444B-9FDD-D47B9219F61F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B5951E2-158A-444B-9FDD-D47B9219F61F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B5951E2-158A-444B-9FDD-D47B9219F61F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B5951E2-158A-444B-9FDD-D47B9219F61F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AADE57E-629A-4FFE-A40F-EF2FDA94B502}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AADE57E-629A-4FFE-A40F-EF2FDA94B502}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AADE57E-629A-4FFE-A40F-EF2FDA94B502}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AADE57E-629A-4FFE-A40F-EF2FDA94B502}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D35A400D-8185-4E52-BF5A-5A978FF4DA0D}
+	EndGlobalSection
+EndGlobal
