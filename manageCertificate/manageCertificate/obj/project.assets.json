@@ -5374,23 +5374,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\215557299\\.nuget\\packages\\": {},
+    "C:\\Users\\215890310\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "M:\\פרקטיקום\\project\\ManageCertificate\\ManageCertificate\\ManageCertificate.csproj",
+      "projectUniqueName": "M:\\פרקטיקום\\Project\\ManageCertificate\\ManageCertificate\\ManageCertificate.csproj",
       "projectName": "ManageCertificate",
-      "projectPath": "M:\\פרקטיקום\\project\\ManageCertificate\\ManageCertificate\\ManageCertificate.csproj",
-      "packagesPath": "C:\\Users\\215557299\\.nuget\\packages\\",
-      "outputPath": "M:\\פרקטיקום\\project\\ManageCertificate\\ManageCertificate\\obj\\",
+      "projectPath": "M:\\פרקטיקום\\Project\\ManageCertificate\\ManageCertificate\\ManageCertificate.csproj",
+      "packagesPath": "C:\\Users\\215890310\\.nuget\\packages\\",
+      "outputPath": "M:\\פרקטיקום\\Project\\ManageCertificate\\ManageCertificate\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\215557299\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\215890310\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -5405,8 +5405,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "M:\\פרקטיקום\\project\\ManageCertificate\\bl\\BL.csproj": {
-              "projectPath": "M:\\פרקטיקום\\project\\ManageCertificate\\bl\\BL.csproj"
+            "M:\\פרקטיקום\\Project\\ManageCertificate\\bl\\BL.csproj": {
+              "projectPath": "M:\\פרקטיקום\\Project\\ManageCertificate\\bl\\BL.csproj"
             }
           }
         }
