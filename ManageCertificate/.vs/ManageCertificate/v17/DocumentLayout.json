@@ -114,8 +114,7 @@
               "RelativeToolTip": "ManageCertificate\\nlog.config",
               "ViewState": "AQIAAAYAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2025-03-24T08:19:44.267Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-24T08:19:44.267Z"
             },
             {
               "$type": "Document",
@@ -127,8 +126,7 @@
               "RelativeToolTip": "ManageCertificate\\wwwroot\\client\\src\\Services\\test.service.spec.ts",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-03-23T12:59:28.839Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T12:59:28.839Z"
             },
             {
               "$type": "Document",
@@ -140,8 +138,7 @@
               "RelativeToolTip": "ManageCertificate\\wwwroot\\client\\src\\app\\app.component.html",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-03-23T12:37:43.658Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T12:37:43.658Z"
             },
             {
               "$type": "Document",
@@ -153,8 +150,7 @@
               "RelativeToolTip": "ManageCertificate\\wwwroot\\client\\src\\app\\app.component.ts",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-03-23T12:36:14.758Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T12:36:14.758Z"
             },
             {
               "$type": "Document",
@@ -166,8 +162,7 @@
               "RelativeToolTip": "ManageCertificate\\wwwroot\\client\\src\\index.html",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-03-23T12:41:59.681Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T12:41:59.681Z"
             },
             {
               "$type": "Document",
@@ -179,8 +174,7 @@
               "RelativeToolTip": "ManageCertificate\\Program.cs",
               "ViewState": "AQIAAAkAAAAAAAAAAAAAAC4AAAADAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T11:14:07.666Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T11:14:07.666Z"
             },
             {
               "$type": "Document",
@@ -192,8 +186,7 @@
               "RelativeToolTip": "ManageCertificate\\wwwroot\\client\\src\\Components\\test\\test.component.ts",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-03-23T12:34:58.665Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T12:34:58.665Z"
             },
             {
               "$type": "Document",
@@ -205,8 +198,7 @@
               "RelativeToolTip": "ManageCertificate\\wwwroot\\client\\src\\Components\\test\\test.component.css",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-03-23T13:23:12.786Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T13:23:12.786Z"
             },
             {
               "$type": "Document",
@@ -214,12 +206,16 @@
               "Title": "TestController.cs",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\Controllers\\TestController.cs",
               "RelativeDocumentMoniker": "ManageCertificate\\Controllers\\TestController.cs",
-              "ToolTip": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\Controllers\\TestController.cs*",
-              "RelativeToolTip": "ManageCertificate\\Controllers\\TestController.cs*",
+              "ToolTip": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\Controllers\\TestController.cs",
+              "RelativeToolTip": "ManageCertificate\\Controllers\\TestController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-23T11:31:13.428Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             },
             {
               "$type": "Document",
@@ -231,12 +227,7 @@
               "RelativeToolTip": "ManageCertificate\\Properties\\launchSettings.json",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAACAAAAAHAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-03-24T08:24:38.093Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+              "WhenOpened": "2025-03-24T08:24:38.093Z"
             },
             {
               "$type": "Document",
@@ -248,8 +239,7 @@
               "RelativeToolTip": "ManageCertificate\\ManageCertificate.csproj",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-03-23T11:26:57.778Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T11:26:57.778Z"
             },
             {
               "$type": "Document",
@@ -261,8 +251,7 @@
               "RelativeToolTip": "ManageCertificate\\wwwroot\\client\\src\\Services\\test.service.ts",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-03-23T12:51:39.847Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T12:51:39.847Z"
             },
             {
               "$type": "Document",
@@ -274,8 +263,7 @@
               "RelativeToolTip": "ManageCertificate\\wwwroot\\client\\src\\Components\\test\\test.component.html",
               "ViewState": "AQIAAAEAAAAAAAAAAAAxwAIAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-03-23T12:35:09.37Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T12:35:09.37Z"
             },
             {
               "$type": "Document",
@@ -287,8 +275,7 @@
               "RelativeToolTip": "ManageCertificate\\wwwroot\\client\\src\\Components\\test\\test.component.spec.ts",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-03-23T12:35:05.768Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T12:35:05.768Z"
             },
             {
               "$type": "Document",
@@ -300,8 +287,7 @@
               "RelativeToolTip": "DAL\\DAL.csproj",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-03-23T11:25:07.428Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T11:25:07.428Z"
             },
             {
               "$type": "Document",
@@ -313,8 +299,7 @@
               "RelativeToolTip": "DAL\\DatotDbContext.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T11:23:33.613Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T11:23:33.613Z"
             },
             {
               "$type": "Document",
@@ -326,8 +311,7 @@
               "RelativeToolTip": "Entites\\Models\\Request.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T11:23:13.589Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T11:23:13.589Z"
             },
             {
               "$type": "Document",
@@ -339,8 +323,7 @@
               "RelativeToolTip": "Entites\\Models\\RefStatus.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAASAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T11:23:09.616Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T11:23:09.616Z"
             },
             {
               "$type": "Document",
@@ -352,8 +335,7 @@
               "RelativeToolTip": "Entites\\Models\\RefInventory.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAASAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T11:23:05.296Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T11:23:05.296Z"
             },
             {
               "$type": "Document",
@@ -365,8 +347,7 @@
               "RelativeToolTip": "Entites\\Models\\RefCouncil.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAASAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T11:23:01.206Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T11:23:01.206Z"
             },
             {
               "$type": "Document",
@@ -378,8 +359,7 @@
               "RelativeToolTip": "Entites\\Models\\RefCertificateType.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAASAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T11:22:56.79Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T11:22:56.79Z"
             },
             {
               "$type": "Document",
@@ -391,8 +371,7 @@
               "RelativeToolTip": "Entites\\Models\\Certificate.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T11:22:38.456Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-23T11:22:38.456Z"
             },
             {
               "$type": "Document",
