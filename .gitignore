@@ -2,4 +2,15 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs
+/.vs/
+# Visual Studio specific
+.vs/
+*.suo 
+*.user 
+*.sln.docstates 
+# Build output 
+bin/ 
+obj/ 
+# NuGet packages 
+*.nupkg packages/
+
