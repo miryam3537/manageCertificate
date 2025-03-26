@@ -9,8 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DatotDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SchooleConnection")));
 
-builder.Services.AddScoped<ITestDAl, TestDAl>();
-builder.Services.AddScoped<ITestBL, TestBL>();
+builder.Services.AddScoped<IRequestDAl, RequestDAl>();
+builder.Services.AddScoped<IRequestBL, RequestBL>();
 
 // Add services to the container.
 builder.Host.UseNLog();

@@ -1,8 +1,8 @@
 ﻿using Entites;
 
-namespace DAL
+namespace BL
 {
-    public interface ITestDAl
+    public interface IRequestBL
     {
         Task<IEnumerable<Request>> Exmple();
     }
