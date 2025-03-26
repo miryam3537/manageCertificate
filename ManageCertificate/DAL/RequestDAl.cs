@@ -29,6 +29,7 @@ namespace DAL
                                  .Include(r => r.Council)
                                  .Include(r => r.RequestStatusNavigation)
                                  .Include(r => r.Certificates)
+                                 .ThenInclude(c => c.CertificateTypeNavigation)
                                  .FirstOrDefaultAsync(r => r.RequestId == id);
         }
     }

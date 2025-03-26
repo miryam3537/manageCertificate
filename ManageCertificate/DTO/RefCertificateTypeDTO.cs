@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 
 namespace DTO
 {
-    public record RefCertificateTypeDTO();
+    public record RefCertificateTypeDTO(int Id,string Name );
 }
+

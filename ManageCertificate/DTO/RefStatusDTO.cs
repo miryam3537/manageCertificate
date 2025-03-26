@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace DTO
 {
-  public  record  RefStatusDTO();
+  public  record  RefStatusDTO(int Id,  string Name);
     
 }

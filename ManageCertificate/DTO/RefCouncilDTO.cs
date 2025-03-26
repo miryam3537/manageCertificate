@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace DTO
 {
-    public record RefCouncilDTO();
+    public record RefCouncilDTO(int Id,string? Name);
    
 }
