@@ -1,2 +1,28 @@
-<p>test works!</p>
-<div>{{List}}</div>
+<p>TEH REQUEST:</p>
+<div>
+  <select (change)="onSelectChange($event)">
+    <option value="">סינון לפי סטטוס בקשה</option>
+    <option value="1">חדש</option>
+    <option value="2">טופל</option>
+    <option value="3">מוכן למסירה</option>
+    <option value="4">בוטל</option>
+  </select>
+</div>
+<div>
+  <input type="number" placeholder="סינון לפי לשכת נישואין" (input)="onInputChange($event)">
+</div>
+<div *ngFor="let item of List">
+  <p>Orderer Name: {{item.ordererName}}</p>
+  <p>Orderer Role: {{item.ordererRole}}</p>
+  <p>Orderer Phone: {{item.ordererPhone}}</p>
+  <p>Orderer Email: {{item.ordererEmail}}</p>
+  <p>Order Date: {{item.orderDate | date}}</p>
+  <p>Orderer Comment: {{item.ordererComment}}</p>
+  <p>Delivery Method: {{item.deliveryMethod}}</p>
+  <p>Address: {{item.address}}</p>
+  <p>Delivered To: {{item.deliveredTo}}</p>
+  <p>Handling Date: {{item.handlingDate | date}}</p>
+  <p>Office Comment: {{item.officeComment}}</p>
+  <p>Request Status: {{item.requestStatus}}</p>
+  <p>councilId: {{item.councilId}}</p>
+</div>
