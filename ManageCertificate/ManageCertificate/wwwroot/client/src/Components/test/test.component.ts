@@ -6,12 +6,11 @@ import { Requestes } from '../../Models/Requestes';
 
 
 @Component({
-  selector: 'app-test',
-  standalone: true,
-  imports: [HttpClientModule, CommonModule],
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.css'],
-  providers: [TestService]
+    selector: 'app-test',
+    imports: [HttpClientModule, CommonModule],
+    templateUrl: './test.component.html',
+    styleUrls: ['./test.component.css'],
+    providers: [TestService]
 })
 export class TestComponent  {
   TestService: TestService = inject(TestService);

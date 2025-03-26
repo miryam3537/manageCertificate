@@ -30,4 +30,10 @@ public class RequestsController : Controller
         IEnumerable<Request> requests = await RequestBL.Exmple();
         return Ok(requests);
     }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Request>> Get(int id)
+    {
+        Request request = await RequestBL.Get(id);
+        return Ok(request);
+    }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using Entites;
 
+
 namespace DAL
 {
     public class RequestDAl : IRequestDAl
@@ -21,6 +22,10 @@ namespace DAL
         {
 
             return await _context.Requests.ToListAsync();
+        }
+        public async Task<Request> Get(int id)
+        {
+            return await _context.Requests.FirstOrDefaultAsync(r=>r.RequestId == id);
         }
     }
 

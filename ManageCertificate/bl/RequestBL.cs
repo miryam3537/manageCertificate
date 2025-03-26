@@ -10,14 +10,19 @@ namespace BL
 {
     public class RequestBL : IRequestBL
     {
-        IRequestDAl testDAl;
-        public RequestBL(IRequestDAl testDAl)
+        IRequestDAl RequestDAl;
+        public RequestBL(IRequestDAl RequestDAl)
         {
-            this.testDAl = testDAl;
+            this.RequestDAl = RequestDAl;
         }
         public Task<IEnumerable<Request>> Exmple()
         {
-            return testDAl.Exmple();
+            return RequestDAl.Exmple();
+        }
+        public async Task<Request> Get(int id)
+        {
+            Request request = await RequestDAl.Get( id);
+            return request;
         }
     }
 }
