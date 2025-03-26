@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    public class TestBL : ITestBL
+    public class RequestBL : IRequestBL
     {
-        ITestDAl testDAl;
-        public TestBL(ITestDAl testDAl)
+        IRequestDAl testDAl;
+        public RequestBL(IRequestDAl testDAl)
         {
             this.testDAl = testDAl;
         }

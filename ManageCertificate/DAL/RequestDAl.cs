@@ -10,10 +10,10 @@ using Entites;
 
 namespace DAL
 {
-    public class TestDAl : ITestDAl
+    public class RequestDAl : IRequestDAl
     {
         DatotDbContext _context;
-        public TestDAl(DatotDbContext contex)
+        public RequestDAl(DatotDbContext contex)
         {
             _context = contex;
         }
