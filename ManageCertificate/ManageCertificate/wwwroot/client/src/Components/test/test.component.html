@@ -1,27 +1,33 @@
 <p>TEH REQUEST:</p>
 <div>
+  <h1>סינונים</h1>
   <select (change)="onSelectChange($event)">
     <option value="">סינון לפי סטטוס בקשה</option>
-    <option value="1">חדש</option>
-    <option value="2">טופל</option>
-    <option value="3">מוכן למסירה</option>
-    <option value="4">בוטל</option>
+    <option *ngFor="let status of ListRefStatus" [value]="status.id">{{ status.name }}</option>
   </select>
 </div>
 <div>
-  <input type="number" placeholder="סינון לפי לשכת נישואין" (input)="onInputChange($event)">
+  <input type="number" placeholder="סינון לפי לשכת נישואין" (input)="onInputChangeCouncil($event)">
 </div>
+<div>
+  <input type="number" placeholder="סינון לפי מספר בקשה " (input)="onInputChangeNumReq($event)">
+</div>
+<div>
+  <input type="number" placeholder="סינון לפי תאריך הזמנה  " (input)="onInputChangeNumReq($event)">
+</div>
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>סינון לפי תאריך הזמנה</mat-label>
+    <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>
+<div>
 <div *ngFor="let item of List">
-  <p>Orderer Name: {{item.ordererName}}</p>
-  <p>Orderer Role: {{item.ordererRole}}</p>
-  <p>Orderer Phone: {{item.ordererPhone}}</p>
-  <p>Orderer Email: {{item.ordererEmail}}</p>
+  <p>Orderer num: {{item.requestId}}</p>
   <p>Order Date: {{item.orderDate | date}}</p>
-  <p>Orderer Comment: {{item.ordererComment}}</p>
   <p>Delivery Method: {{item.deliveryMethod}}</p>
-  <p>Address: {{item.address}}</p>
-  <p>Delivered To: {{item.deliveredTo}}</p>
-  <p>Handling Date: {{item.handlingDate | date}}</p>
   <p>Office Comment: {{item.officeComment}}</p>
   <p>Request Status: {{item.requestStatus}}</p>
   <p>councilId: {{item.councilId}}</p>
