@@ -1,0 +1,17 @@
+M:\פרקטיקום\project\ManageCertificate\DAL\bin\Debug\net8.0\DAL.deps.json
+M:\פרקטיקום\project\ManageCertificate\DAL\bin\Debug\net8.0\DAL.runtimeconfig.json
+M:\פרקטיקום\project\ManageCertificate\DAL\bin\Debug\net8.0\DAL.dll
+M:\פרקטיקום\project\ManageCertificate\DAL\bin\Debug\net8.0\DAL.pdb
+M:\פרקטיקום\project\ManageCertificate\DAL\bin\Debug\net8.0\Entites.dll
+M:\פרקטיקום\project\ManageCertificate\DAL\bin\Debug\net8.0\Entites.pdb
+M:\פרקטיקום\project\ManageCertificate\DAL\obj\Debug\net8.0\DAL.csproj.AssemblyReference.cache
+M:\פרקטיקום\project\ManageCertificate\DAL\obj\Debug\net8.0\DAL.GeneratedMSBuildEditorConfig.editorconfig
+M:\פרקטיקום\project\ManageCertificate\DAL\obj\Debug\net8.0\DAL.AssemblyInfoInputs.cache
+M:\פרקטיקום\project\ManageCertificate\DAL\obj\Debug\net8.0\DAL.AssemblyInfo.cs
+M:\פרקטיקום\project\ManageCertificate\DAL\obj\Debug\net8.0\DAL.csproj.CoreCompileInputs.cache
+M:\פרקטיקום\project\ManageCertificate\DAL\obj\Debug\net8.0\DAL.dll
+M:\פרקטיקום\project\ManageCertificate\DAL\obj\Debug\net8.0\refint\DAL.dll
+M:\פרקטיקום\project\ManageCertificate\DAL\obj\Debug\net8.0\DAL.pdb
+M:\פרקטיקום\project\ManageCertificate\DAL\obj\Debug\net8.0\DAL.genruntimeconfig.cache
+M:\פרקטיקום\project\ManageCertificate\DAL\obj\Debug\net8.0\ref\DAL.dll
+M:\פרקטיקום\project\ManageCertificate\DAL\obj\Debug\net8.0\DAL.csproj.Up2Date
