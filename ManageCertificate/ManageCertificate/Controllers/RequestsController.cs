@@ -1,8 +1,9 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-
+using DTO;
 using Entites;
 using BL;
+using AutoMapper;
 namespace manageCertificate;
 
 
@@ -13,10 +14,12 @@ namespace manageCertificate;
 
 public class RequestsController : Controller
 {
+    IMapper mapper;
     ILogger<RequestsController> logger;
     IRequestBL RequestBL;
-    public RequestsController(IRequestBL RequestBL, ILogger<RequestsController> logger)
+    public RequestsController(IRequestBL RequestBL, ILogger<RequestsController> logger,IMapper mapper)
     {
+        this.mapper = mapper;
         this.RequestBL = RequestBL;
         this.logger = logger;
     }
@@ -34,6 +37,7 @@ public class RequestsController : Controller
     public async Task<ActionResult<Request>> Get(int id)
     {
         Request request = await RequestBL.Get(id);
-        return Ok(request);
+        RequestDTO requestDto = mapper.Map<RequestDTO>(request);
+        return Ok(requestDto);
     }
 }
