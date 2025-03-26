@@ -3,6 +3,34 @@
   "WorkspaceRootPath": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\215557299\\AppData\\Local\\Temp\\TFSTemp\\vctmp6464_242742.8ace3e64.suo||{25834150-CD7E-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\215557299\\AppData\\Local\\Temp\\TFSTemp\\vctmp6464_495794.8ace3e64.suo||{25834150-CD7E-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\215557299\\AppData\\Local\\Temp\\TFSTemp\\vctmp6464_228257.b446ca80.suo||{25834150-CD7E-11D0-92DF-00A0C9138C45}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\.gitignore.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BC824363-24F1-4BE2-95C6-31CAAB6F6C21}|DAL\\DAL.csproj|m:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\managecertificate\\dal\\testdal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BC824363-24F1-4BE2-95C6-31CAAB6F6C21}|DAL\\DAL.csproj|solutionrelative:dal\\testdal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{821C6E94-AF9D-4738-861A-FDDA48B13252}|Entites\\Entites.csproj|m:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\managecertificate\\entites\\entites.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{821C6E94-AF9D-4738-861A-FDDA48B13252}|Entites\\Entites.csproj|solutionrelative:entites\\entites.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{37188D7A-4756-425D-A84B-26CCCA33C455}|ManageCertificate\\ManageCertificate.csproj|m:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\managecertificate\\managecertificate\\errorhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{37188D7A-4756-425D-A84B-26CCCA33C455}|ManageCertificate\\ManageCertificate.csproj|solutionrelative:managecertificate\\errorhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{37188D7A-4756-425D-A84B-26CCCA33C455}|ManageCertificate\\ManageCertificate.csproj|m:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\managecertificate\\managecertificate\\nlog.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{37188D7A-4756-425D-A84B-26CCCA33C455}|ManageCertificate\\ManageCertificate.csproj|solutionrelative:managecertificate\\nlog.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{37188D7A-4756-425D-A84B-26CCCA33C455}|ManageCertificate\\ManageCertificate.csproj|m:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\managecertificate\\managecertificate\\controllers\\testcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{37188D7A-4756-425D-A84B-26CCCA33C455}|ManageCertificate\\ManageCertificate.csproj|solutionrelative:managecertificate\\controllers\\testcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,10 +41,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{37188D7A-4756-425D-A84B-26CCCA33C455}|ManageCertificate\\ManageCertificate.csproj|m:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\managecertificate\\managecertificate\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{37188D7A-4756-425D-A84B-26CCCA33C455}|ManageCertificate\\ManageCertificate.csproj|solutionrelative:managecertificate\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{37188D7A-4756-425D-A84B-26CCCA33C455}|ManageCertificate\\ManageCertificate.csproj|m:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\managecertificate\\managecertificate\\nlog.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{37188D7A-4756-425D-A84B-26CCCA33C455}|ManageCertificate\\ManageCertificate.csproj|solutionrelative:managecertificate\\nlog.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{37188D7A-4756-425D-A84B-26CCCA33C455}|ManageCertificate\\ManageCertificate.csproj|m:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\managecertificate\\managecertificate\\managecertificate.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -102,23 +126,105 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "vctmp6464_242742.8ace3e64.suo",
+              "DocumentMoniker": "C:\\Users\\215557299\\AppData\\Local\\Temp\\TFSTemp\\vctmp6464_242742.8ace3e64.suo",
+              "ToolTip": "C:\\Users\\215557299\\AppData\\Local\\Temp\\TFSTemp\\vctmp6464_242742.8ace3e64.suo",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE0SURBVDhPY2RAAt\u002B\u002BffsPZRICC7i4uBIZ/v//j2GAj48PlIcduLi4MBQUFICYYEOwGrBu7XqoCCoICg4E08iGMIFFSAR79uxhmDBhAoiZgNcAkI0wjA5AhmAAkBecnJz\u002Bf3j/kSAGqQOph7sAyDGAMjEAzAXYXAI2AKp5P4gNAywszAxrm3YwdPnOZKhPaQPzsQUuzAX7l1dvFgBihi1btoAVr6zbynB6w0WGd08/MCyv3sTAxMyE1QUsUFoApBgZgPihjV4Mq\u002Bu3QUUY8LoADDrOlYM1wjQb\u002B\u002BpCZSAAZxgQC7C5AOYFMKgw6mQwDdAHs5Gdjg/ADPgA1CgAYkS2\u002BoIFQADdEGxeAOcFpGgEGwIDoFi5e/ohg3uWHdBlelBRHABkCHJigvLfQ3EDEKMYDgEMDADAsbEC\u002B6Vc4wAAAABJRU5ErkJggg==",
+              "WhenOpened": "2025-03-26T10:46:20.023Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "vctmp6464_495794.8ace3e64.suo",
+              "DocumentMoniker": "C:\\Users\\215557299\\AppData\\Local\\Temp\\TFSTemp\\vctmp6464_495794.8ace3e64.suo",
+              "ToolTip": "C:\\Users\\215557299\\AppData\\Local\\Temp\\TFSTemp\\vctmp6464_495794.8ace3e64.suo",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE0SURBVDhPY2RAAt\u002B\u002BffsPZRICC7i4uBIZ/v//j2GAj48PlIcduLi4MBQUFICYYEOwGrBu7XqoCCoICg4E08iGMIFFSAR79uxhmDBhAoiZgNcAkI0wjA5AhmAAkBecnJz\u002Bf3j/kSAGqQOph7sAyDGAMjEAzAXYXAI2AKp5P4gNAywszAxrm3YwdPnOZKhPaQPzsQUuzAX7l1dvFgBihi1btoAVr6zbynB6w0WGd08/MCyv3sTAxMyE1QUsUFoApBgZgPihjV4Mq\u002Bu3QUUY8LoADDrOlYM1wjQb\u002B\u002BpCZSAAZxgQC7C5AOYFMKgw6mQwDdAHs5Gdjg/ADPgA1CgAYkS2\u002BoIFQADdEGxeAOcFpGgEGwIDoFi5e/ohg3uWHdBlelBRHABkCHJigvLfQ3EDEKMYDgEMDADAsbEC\u002B6Vc4wAAAABJRU5ErkJggg==",
+              "WhenOpened": "2025-03-26T10:44:21.314Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "vctmp6464_228257.b446ca80.suo",
+              "DocumentMoniker": "C:\\Users\\215557299\\AppData\\Local\\Temp\\TFSTemp\\vctmp6464_228257.b446ca80.suo",
+              "ToolTip": "C:\\Users\\215557299\\AppData\\Local\\Temp\\TFSTemp\\vctmp6464_228257.b446ca80.suo",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE0SURBVDhPY2RAAt\u002B\u002BffsPZRICC7i4uBIZ/v//j2GAj48PlIcduLi4MBQUFICYYEOwGrBu7XqoCCoICg4E08iGMIFFSAR79uxhmDBhAoiZgNcAkI0wjA5AhmAAkBecnJz\u002Bf3j/kSAGqQOph7sAyDGAMjEAzAXYXAI2AKp5P4gNAywszAxrm3YwdPnOZKhPaQPzsQUuzAX7l1dvFgBihi1btoAVr6zbynB6w0WGd08/MCyv3sTAxMyE1QUsUFoApBgZgPihjV4Mq\u002Bu3QUUY8LoADDrOlYM1wjQb\u002B\u002BpCZSAAZxgQC7C5AOYFMKgw6mQwDdAHs5Gdjg/ADPgA1CgAYkS2\u002BoIFQADdEGxeAOcFpGgEGwIDoFi5e/ohg3uWHdBlelBRHABkCHJigvLfQ3EDEKMYDgEMDADAsbEC\u002B6Vc4wAAAABJRU5ErkJggg==",
+              "WhenOpened": "2025-03-26T10:44:15.524Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 3,
+              "Title": ".gitignore.txt",
+              "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\.gitignore.txt",
+              "RelativeDocumentMoniker": "..\\.gitignore.txt",
+              "ToolTip": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\.gitignore.txt",
+              "RelativeToolTip": "..\\.gitignore.txt",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-03-26T10:39:25.849Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TestDAl.cs",
+              "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\DAL\\TestDAl.cs",
+              "RelativeDocumentMoniker": "DAL\\TestDAl.cs",
+              "ToolTip": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\DAL\\TestDAl.cs",
+              "RelativeToolTip": "DAL\\TestDAl.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-25T12:28:37.768Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Entites.csproj",
+              "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\Entites\\Entites.csproj",
+              "RelativeDocumentMoniker": "Entites\\Entites.csproj",
+              "ToolTip": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\Entites\\Entites.csproj",
+              "RelativeToolTip": "Entites\\Entites.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-03-25T12:28:24.148Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ErrorHandlingMiddleware.cs",
+              "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\ErrorHandlingMiddleware.cs",
+              "RelativeDocumentMoniker": "ManageCertificate\\ErrorHandlingMiddleware.cs",
+              "ToolTip": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\ErrorHandlingMiddleware.cs",
+              "RelativeToolTip": "ManageCertificate\\ErrorHandlingMiddleware.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-25T12:27:39.747Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "nlog.config",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\nlog.config",
               "RelativeDocumentMoniker": "ManageCertificate\\nlog.config",
               "ToolTip": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\nlog.config",
               "RelativeToolTip": "ManageCertificate\\nlog.config",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAC0AAAAAAAAAAAAAAAwAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
               "WhenOpened": "2025-03-24T08:19:44.267Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 14,
               "Title": "test.service.spec.ts",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\wwwroot\\client\\src\\Services\\test.service.spec.ts",
               "RelativeDocumentMoniker": "ManageCertificate\\wwwroot\\client\\src\\Services\\test.service.spec.ts",
@@ -130,7 +236,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 20,
               "Title": "app.component.html",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\wwwroot\\client\\src\\app\\app.component.html",
               "RelativeDocumentMoniker": "ManageCertificate\\wwwroot\\client\\src\\app\\app.component.html",
@@ -142,7 +248,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 19,
               "Title": "app.component.ts",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\wwwroot\\client\\src\\app\\app.component.ts",
               "RelativeDocumentMoniker": "ManageCertificate\\wwwroot\\client\\src\\app\\app.component.ts",
@@ -154,7 +260,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 17,
               "Title": "index.html",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\wwwroot\\client\\src\\index.html",
               "RelativeDocumentMoniker": "ManageCertificate\\wwwroot\\client\\src\\index.html",
@@ -166,7 +272,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 9,
               "Title": "Program.cs",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\Program.cs",
               "RelativeDocumentMoniker": "ManageCertificate\\Program.cs",
@@ -178,7 +284,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 12,
               "Title": "test.component.ts",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\wwwroot\\client\\src\\Components\\test\\test.component.ts",
               "RelativeDocumentMoniker": "ManageCertificate\\wwwroot\\client\\src\\Components\\test\\test.component.ts",
@@ -190,7 +296,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 16,
               "Title": "test.component.css",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\wwwroot\\client\\src\\Components\\test\\test.component.css",
               "RelativeDocumentMoniker": "ManageCertificate\\wwwroot\\client\\src\\Components\\test\\test.component.css",
@@ -202,7 +308,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 8,
               "Title": "TestController.cs",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\Controllers\\TestController.cs",
               "RelativeDocumentMoniker": "ManageCertificate\\Controllers\\TestController.cs",
@@ -210,16 +316,11 @@
               "RelativeToolTip": "ManageCertificate\\Controllers\\TestController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAAgAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T11:31:13.428Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+              "WhenOpened": "2025-03-23T11:31:13.428Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 10,
               "Title": "launchSettings.json",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "ManageCertificate\\Properties\\launchSettings.json",
@@ -231,7 +332,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 11,
               "Title": "ManageCertificate.csproj",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\ManageCertificate.csproj",
               "RelativeDocumentMoniker": "ManageCertificate\\ManageCertificate.csproj",
@@ -239,11 +340,12 @@
               "RelativeToolTip": "ManageCertificate\\ManageCertificate.csproj",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-03-23T11:26:57.778Z"
+              "WhenOpened": "2025-03-23T11:26:57.778Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 13,
               "Title": "test.service.ts",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\wwwroot\\client\\src\\Services\\test.service.ts",
               "RelativeDocumentMoniker": "ManageCertificate\\wwwroot\\client\\src\\Services\\test.service.ts",
@@ -255,7 +357,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 15,
               "Title": "test.component.html",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\wwwroot\\client\\src\\Components\\test\\test.component.html",
               "RelativeDocumentMoniker": "ManageCertificate\\wwwroot\\client\\src\\Components\\test\\test.component.html",
@@ -267,7 +369,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 18,
               "Title": "test.component.spec.ts",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\wwwroot\\client\\src\\Components\\test\\test.component.spec.ts",
               "RelativeDocumentMoniker": "ManageCertificate\\wwwroot\\client\\src\\Components\\test\\test.component.spec.ts",
@@ -279,7 +381,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 24,
               "Title": "DAL.csproj",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\DAL\\DAL.csproj",
               "RelativeDocumentMoniker": "DAL\\DAL.csproj",
@@ -287,11 +389,12 @@
               "RelativeToolTip": "DAL\\DAL.csproj",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-03-23T11:25:07.428Z"
+              "WhenOpened": "2025-03-23T11:25:07.428Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 23,
               "Title": "DatotDbContext.cs",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\DAL\\DatotDbContext.cs",
               "RelativeDocumentMoniker": "DAL\\DatotDbContext.cs",
@@ -303,7 +406,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 21,
               "Title": "Request.cs",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\Entites\\Models\\Request.cs",
               "RelativeDocumentMoniker": "Entites\\Models\\Request.cs",
@@ -315,7 +418,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 22,
               "Title": "RefStatus.cs",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\Entites\\Models\\RefStatus.cs",
               "RelativeDocumentMoniker": "Entites\\Models\\RefStatus.cs",
@@ -327,7 +430,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 25,
               "Title": "RefInventory.cs",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\Entites\\Models\\RefInventory.cs",
               "RelativeDocumentMoniker": "Entites\\Models\\RefInventory.cs",
@@ -339,7 +442,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 26,
               "Title": "RefCouncil.cs",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\Entites\\Models\\RefCouncil.cs",
               "RelativeDocumentMoniker": "Entites\\Models\\RefCouncil.cs",
@@ -351,7 +454,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 27,
               "Title": "RefCertificateType.cs",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\Entites\\Models\\RefCertificateType.cs",
               "RelativeDocumentMoniker": "Entites\\Models\\RefCertificateType.cs",
@@ -363,7 +466,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 28,
               "Title": "Certificate.cs",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\Entites\\Models\\Certificate.cs",
               "RelativeDocumentMoniker": "Entites\\Models\\Certificate.cs",
@@ -375,7 +478,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 29,
               "Title": "DatotDbContext.cs",
               "DocumentMoniker": "M:\\\u05E4\u05E8\u05E7\u05D8\u05D9\u05E7\u05D5\u05DD\\project\\ManageCertificate\\ManageCertificate\\Models\\DatotDbContext.cs",
               "RelativeDocumentMoniker": "ManageCertificate\\Models\\DatotDbContext.cs",
