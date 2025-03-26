@@ -1,17 +1,18 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Requestes } from '../Models/Requestes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TestService {
-  BASE_URL = "api/Test"
+  BASE_URL = "api/Test";
 
   private http = inject(HttpClient);
 
-    getAll(): Observable <Request[]> {
-      return this.http.get<Request[]>(this.BASE_URL);
-    }
+  getAll(): Observable<Requestes[]> {
+    return this.http.get<Requestes[]>(this.BASE_URL);
   }
 
+}
