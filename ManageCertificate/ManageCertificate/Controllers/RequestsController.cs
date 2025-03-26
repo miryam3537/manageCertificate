@@ -11,11 +11,11 @@ namespace manageCertificate;
 
 
 
-public class RequestController : Controller
+public class RequestsController : Controller
 {
-    ILogger<RequestController> logger;
+    ILogger<RequestsController> logger;
     IRequestBL RequestBL;
-    public RequestController(IRequestBL RequestBL, ILogger<RequestController> logger)
+    public RequestsController(IRequestBL RequestBL, ILogger<RequestsController> logger)
     {
         this.RequestBL = RequestBL;
         this.logger = logger;

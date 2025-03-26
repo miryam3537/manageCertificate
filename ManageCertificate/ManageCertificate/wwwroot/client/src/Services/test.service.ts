@@ -7,7 +7,7 @@ import { Requestes } from '../Models/Requestes';
   providedIn: 'root'
 })
 export class TestService {
-  BASE_URL = "api/Test";
+  BASE_URL = "api/Requests";
 
   private http = inject(HttpClient);
 
