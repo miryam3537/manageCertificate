@@ -11,7 +11,8 @@ builder.Services.AddDbContext<DatotDbContext>(options => options.UseSqlServer(bu
 
 builder.Services.AddScoped<IRequestDAl, RequestDAl>();
 builder.Services.AddScoped<IRequestBL, RequestBL>();
-
+builder.Services.AddScoped<IRefStatusDAL, RefStatusDAL>();
+builder.Services.AddScoped<IRefStatusBL, RefStatusBl>();
 // Add services to the container.
 builder.Host.UseNLog();
 builder.Services.AddControllers();

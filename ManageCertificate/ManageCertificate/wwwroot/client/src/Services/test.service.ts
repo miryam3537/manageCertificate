@@ -9,14 +9,14 @@ import { RefStatus } from '../Models/RefStatus';
 })
 export class TestService {
   BASE_URL = "api/Requests";
-
+  BASE_URL_REFSTATUS = "api/RefStatus";
   private http = inject(HttpClient);
 
   getAll(): Observable<Requestes[]> {
     return this.http.get<Requestes[]>(this.BASE_URL);
   }
   getAllRefStatus(): Observable<RefStatus[]> {
-    return this.http.get<RefStatus[]>(this.BASE_URL);
+    return this.http.get<RefStatus[]>(this.BASE_URL_REFSTATUS);
   }
 
 }

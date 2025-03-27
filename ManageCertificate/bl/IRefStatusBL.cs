@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    internal interface IRefStatusBL
+    public interface IRefStatusBL
     {
         Task<IEnumerable<RefStatus>> Get();
     }

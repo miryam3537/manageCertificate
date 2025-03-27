@@ -1,0 +1,104 @@
+/* טבלה עם רקע אחיד */
+table.mat-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* עיצוב כותרת */
+  .mat-header-cell {
+    font-weight: bold;
+    text-align: center;
+    background-color: #f4f4f9;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    font-size: 16px;
+    padding: 12px 0;
+  }
+  
+  .mat-cell {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+    background-color: #ffffff;
+  }
+  
+  /* הוספת רקע אפור לשורות הזוגיות */
+  .mat-row:nth-child(even) {
+    background-color: #f4f4f4;
+  }
+  
+  .mat-row:hover {
+    background-color: #e8e8e8;
+  }
+  
+  /* עיצוב עבור כפתורים בעמודת הפעולות */
+  .actions {
+    display: flex;
+    justify-content: center;  /* מרכז את הכפתור */
+    align-items: center;      /* ממקם אותו אנכית */
+    margin-top: 10px;         /* רווח קטן בין הכפתור לתא */
+    margin-bottom: 10px;      /* רווח קטן מתחת לכפתור */
+  }
+  
+  button[mat-icon-button] {
+    margin: 0 5px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+  
+  /* אפקט של hover על הכפתור */
+  button[mat-icon-button]:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.2);
+  }
+  
+  /* עיצוב לאייקון בתוך הכפתור */
+  .mat-icon {
+    font-size: 22px;
+    color: #007bff;
+  }
+  
+  /* שינוי צבע האייקון בעת ריחוף על הכפתור */
+  button[mat-icon-button]:hover .mat-icon {
+    color: #0056b3;
+  }
+  
+  /* כפתור הוספה */
+  button[mat-fab] {
+    background-color: #007bff;
+    color: white;
+    margin-bottom: 20px;
+  }
+  
+  button[mat-fab]:hover {
+    background-color: #0056b3;
+  }
+  
+  /* כותרת */
+  .title {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    font-size: xx-large;
+    margin-bottom: 20px;
+  }
+  
+  /* כפתור הוספה יהיה ממש מתחת לכותרת */
+  button[mat-fab] {
+    margin-top: 20px;  /* מרווח בין הכפתור לכותרת */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  

@@ -20,7 +20,7 @@ namespace BL
 
         public Task<IEnumerable<RefStatus>> Get()
         {
-            throw new NotImplementedException();
+            return refStatusDAL.Get();
         }
     }
 }
