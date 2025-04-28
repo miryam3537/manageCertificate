@@ -4,6 +4,8 @@ import{RequestDetailsService} from '../../Services/request-details.service';
 import { Requestes } from '../../Models/Requestes';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
+import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -13,7 +15,7 @@ export interface PeriodicElement {
 
 @Component({
   selector: 'app-request-details',
-  imports: [MatTableModule,HttpClientModule ],
+  imports: [MatTableModule,HttpClientModule ,CommonModule],
   templateUrl: './request-details.component.html',
   styleUrls:['./request-details.component.css'] ,
  providers: [RequestDetailsService]
@@ -23,9 +25,10 @@ export class RequestDetailsComponent {
   requestDetails!: Requestes;
   displayedColumns: string[] = ['certificateTypeNavigation', 'requestAmaunt','Unused balance','supplyAmaunt','comment'];
   dataSource = new MatTableDataSource<any>([]); // אתחול למערך ריק
+  const requestId = 93;
   ngOnInit() {
-    const requestId = 93;
-    this.requestDetailsService.get(requestId).subscribe(
+   
+    this.requestDetailsService.get(this.requestId).subscribe(
      (data: Requestes) => {
         this.requestDetails = data;
         this.dataSource.data = this.requestDetails.certificates || []; // עדכון ה-dataSource עם הנתונים שהתקבלו
@@ -36,6 +39,14 @@ export class RequestDetailsComponent {
       }
     );
 }
+
+
+const RequestApproval=()=> {
+ 
+    (error) => {
+      console.error('Error approving request:', error);
+    }
+  );
 }
 
 

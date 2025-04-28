@@ -10,6 +10,16 @@
   8.	הערות המזמין:{{requestDetails?.ordererComment}}<br/>
  9.	אופן המסירה:{{requestDetails?.deliveryMethod}}<br/>
 </p>
+<div *ngIf="requestDetails?.address">
+  10. כתובת למשלוח: {{requestDetails?.address}}<br/>
+</div>
+<div *ngIf="!requestDetails?.address">
+  11. לידי מי נמסר: {{requestDetails?.deliveredTo}}<br/>
+</div>
+<p>
+12.תאריך טיפול:{{requestDetails?.handlingDate}}<br/>
+13.הערות המשרד להזמנה:{{requestDetails?.officeComment}}<br/>
+</p>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!--- Note that these columns can be defined in any order.
@@ -46,14 +56,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-
-  <div *ngIf="requestDetails?.address; else deliveredToBlock">
-    10. כתובת למשלוח: {{requestDetails?.address}}<br/>
-  </div>
-  <ng-template #deliveredToBlock>
-    11. לידי מי נמסר: {{requestDetails?.deliveredTo}}<br/>
-  </ng-template>
-<p>
-12.תאריך טיפול:{{requestDetails?.handlingDate}}<br/>
-13.הערות המשרד להזמנה:{{requestDetails?.officeComment}}<br/>
-</p>
+<button onclick="RequestApproval">אישור בקשה</button>
+ 
