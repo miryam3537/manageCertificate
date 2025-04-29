@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Entites;
+using DAL.Interfaces;
 
 
 namespace DAL
@@ -18,12 +19,12 @@ namespace DAL
         {
             _context = contex;
         }
-        public async Task<IEnumerable<Request>> Exmple()
+        public async Task<IEnumerable<Request>> GetAllRequest()
         {
 
             return await _context.Requests.ToListAsync();
         }
-        public async Task<Request> Get(int id)
+        public async Task<Request> GetById(int id)
         {
             return await _context.Requests
                                  .Include(r => r.Council)

@@ -4,15 +4,24 @@ using BL;
 using NLog.Web;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using ManageCertificate;
+using DAL.Interfaces;
+using BL.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
+//builder.Services.AddControllers()
+//    .AddJsonOptions(options =>
+//    {
+//        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+//    });
 
 builder.Services.AddDbContext<DatotDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SchooleConnection")));
-
+builder.Services.AddScoped<IRefDAL, RefDAL>();
+builder.Services.AddScoped<IRefBL, RefBL>();
 builder.Services.AddScoped<IRequestDAl, RequestDAl>();
 builder.Services.AddScoped<IRequestBL, RequestBL>();
-builder.Services.AddScoped<IRefStatusDAL, RefStatusDAL>();
-builder.Services.AddScoped<IRefStatusBL, RefStatusBl>();
+
+
+
 // Add services to the container.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Host.UseNLog();
