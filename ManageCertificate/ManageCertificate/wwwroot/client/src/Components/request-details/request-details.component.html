@@ -1,35 +1,60 @@
 <p>request-details works!</p>
+<p>
+  1.מספר בקשה	:	{{requestDetails?.requestId}}	<br/>		
+  2.לשכת נישואין	:{{requestDetails?.council?.name}}<br/>
+  3.	שם המזמין:{{requestDetails?.ordererName}}<br/>
+  4.	תפקיד המזמין:{{requestDetails?.ordererRole}}<br/>
+  5.	טלפון מזמין:{{requestDetails?.ordererPhone}}<br/>
+  6.	אימייל מזמין:{{requestDetails?. ordererEmail}}<br/>
+  7.	תאריך הזמנה:{{requestDetails?. orderDate}}<br/>
+  8.	הערות המזמין:{{requestDetails?.ordererComment}}<br/>
+ 9.	אופן המסירה:{{requestDetails?.deliveryMethod}}<br/>
+</p>
+<div *ngIf="requestDetails?.address">
+  10. כתובת למשלוח: {{requestDetails?.address}}<br/>
+</div>
+<div *ngIf="!requestDetails?.address">
+  11. לידי מי נמסר: {{requestDetails?.deliveredTo}}<br/>
+</div>
+<p>
+12.תאריך טיפול:{{requestDetails?.handlingDate}}<br/>
+13.הערות המשרד להזמנה:{{requestDetails?.officeComment}}<br/>
+</p>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
   
     <!-- Position Column -->
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+    <ng-container matColumnDef="certificateTypeNavigation">
+      <th mat-header-cell *matHeaderCellDef> certificateTypeNavigation </th>
+      <td mat-cell *matCellDef="let element"> {{element.certificateTypeNavigation?.name}} </td>
     </ng-container>
   
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    <!-- requestAmaunt Column -->
+    <ng-container matColumnDef="requestAmaunt">
+      <th mat-header-cell *matHeaderCellDef> requestAmaunt </th>
+      <td mat-cell *matCellDef="let element"> {{element.requestAmaunt}} </td>
     </ng-container>
   
     <!-- Weight Column -->
-    <ng-container matColumnDef="weight">
-      <th mat-header-cell *matHeaderCellDef> Weight </th>
-      <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+    <ng-container matColumnDef="Unused balance">
+      <th mat-header-cell *matHeaderCellDef> Unused balance// </th>
+      <td mat-cell *matCellDef="let element"> {{element.requestAmaunt}} </td>
     </ng-container>
   
     <!-- Symbol Column -->
-    <ng-container matColumnDef="symbol">
-      <th mat-header-cell *matHeaderCellDef> Symbol </th>
-      <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+    <ng-container matColumnDef="supplyAmaunt">
+      <th mat-header-cell *matHeaderCellDef> supplyAmaunt </th>
+      <td mat-cell *matCellDef="let element"> {{element.supplyAmaunt}} </td>
     </ng-container>
-  
+   <!-- comment Column -->
+   <ng-container matColumnDef="comment">
+    <th mat-header-cell *matHeaderCellDef> comment </th>
+    <td mat-cell *matCellDef="let element"> {{element.comment}} </td>
+  </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  
-  
+<button onclick="RequestApproval">אישור בקשה</button>
+ 

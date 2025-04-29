@@ -4,7 +4,7 @@ import { RefStatus } from "./RefStatus";
 
 export interface Requestes {
     requestId: number;
-    councilId?: number;
+    councilId: number;
     ordererName?: string;
     ordererRole?: string;
     ordererPhone?: string;
