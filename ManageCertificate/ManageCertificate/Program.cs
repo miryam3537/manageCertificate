@@ -14,9 +14,9 @@ builder.Services.AddScoped<IRequestBL, RequestBL>();
 builder.Services.AddScoped<IRefStatusDAL, RefStatusDAL>();
 builder.Services.AddScoped<IRefStatusBL, RefStatusBl>();
 // Add services to the container.
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Host.UseNLog();
 builder.Services.AddControllers();
-
 builder.Services.AddSwaggerGen();
   
 

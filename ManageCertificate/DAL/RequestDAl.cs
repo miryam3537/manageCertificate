@@ -25,7 +25,12 @@ namespace DAL
         }
         public async Task<Request> Get(int id)
         {
-            return await _context.Requests.FirstOrDefaultAsync(r=>r.RequestId == id);
+            return await _context.Requests
+                                 .Include(r => r.Council)
+                                 .Include(r => r.RequestStatusNavigation)
+                                 .Include(r => r.Certificates)
+                                 .ThenInclude(c => c.CertificateTypeNavigation)
+                                 .FirstOrDefaultAsync(r => r.RequestId == id);
         }
     }
 
