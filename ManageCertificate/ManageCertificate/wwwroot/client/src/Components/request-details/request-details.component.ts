@@ -41,14 +41,13 @@ export class RequestDetailsComponent {
 }
 
 
-const RequestApproval=()=> {
+// const RequestApproval=()=> {
  
-    (error) => {
-      console.error('Error approving request:', error);
-    }
-  );
-}
-
+//     (error) => {
+//       console.error('Error approving request:', error);
+//     }
+ 
+// }
 
 
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DTO;
 
 namespace BL
 {
@@ -21,8 +22,14 @@ namespace BL
         }
         public async Task<Request> Get(int id)
         {
-            Request request = await RequestDAl.Get( id);
+            Request request = await RequestDAl.Get(id);
+            Certificate[] certificate = await
             return request;
+        }
+        public async Task Put(int id, RequestDTO requestDTO)
+        {
+
+
         }
     }
 }

@@ -11,7 +11,7 @@ builder.Services.AddDbContext<DatotDbContext>(options => options.UseSqlServer(bu
 
 builder.Services.AddScoped<IRequestDAl, RequestDAl>();
 builder.Services.AddScoped<IRequestBL, RequestBL>();
-
+builder.Services.AddScoped<IRequestBL, RequestBL>();
 // Add services to the container.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Host.UseNLog();
