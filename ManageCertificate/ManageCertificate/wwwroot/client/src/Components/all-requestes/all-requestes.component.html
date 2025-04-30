@@ -8,11 +8,14 @@
   </select>
 </div>
 <div>
-  <input type="number" placeholder="סינון לפי לשכת נישואין" (input)="onInputChangeCouncil($event)">
+  <input type="text" placeholder="סינון לפי לשכת נישואין" (input)="onInputChangeCouncil($event)">
 </div>
+
 <div>
-  <input type="number" placeholder="סינון לפי מספר בקשה " (input)="onInputChangeNumReq($event)">
+  <input 
+    type="text" placeholder="Filter by Request ID" (input)="onInputChangeNumReq($event)">
 </div>
+
 <div>
   <mat-form-field appearance="fill">
     <mat-label>סינון לפי תאריך הזמנה</mat-label>
@@ -29,7 +32,11 @@
     <th mat-header-cell *matHeaderCellDef> מספר בקשה </th>
     <td mat-cell *matCellDef="let element">{{ element.requestId }}</td>
   </ng-container>
-
+<!-- 
+  <ng-container matColumnDef="requestStatus">
+    <th mat-header-cell *matHeaderCellDef> סטטוס בקשה </th>
+    <td mat-cell *matCellDef="let element">{{ element.r }}</td>
+  </ng-container>  -->
 
   <ng-container matColumnDef="orderDate">
     <th mat-header-cell *matHeaderCellDef> תאריך בקשה </th>
@@ -43,16 +50,15 @@
 
   <ng-container matColumnDef="officeComment">
     <th mat-header-cell *matHeaderCellDef> הערת משרד </th>
-    <td mat-cell *matCellDef="let element">{{ element.officeComment }}</td>
+    <td mat-cell *matCellDef="let element">{{ element?.officeComment || 'אין הערות' }}</td>
   </ng-container>
 
 
   <ng-container matColumnDef="councilId">
     <th mat-header-cell *matHeaderCellDef> מספר לשכה</th>
     <td mat-cell *matCellDef="let element">
-      {{ element.councilId }}
-      <!-- {{ element.councilIdNavigation.name }} -->
-        <!-- צריך להציג את השם של הלשכה -->
+      {{ element?.council?.name }}
+  
     </td>
   </ng-container>
 
@@ -60,10 +66,10 @@
  
   <ng-container matColumnDef="requestStatus">
     <th mat-header-cell *matHeaderCellDef> סטטוס בקשה </th>
+
     <td mat-cell *matCellDef="let element">
-      {{ element.requestStatus }}
-      <!-- {{ element.requestStatusNavigation.name }} -->
-        <!-- צריך להציג את השם של הסטטוס -->
+      {{ element?.requestStatusNavigation?.name || 'סטטוס לא זמין' }}
+    
     </td>
   </ng-container>
 

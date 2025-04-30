@@ -13,7 +13,11 @@ export class RefServService {
    constructor(private http: HttpClient) { }
  
    getAllRefStatus(): Observable<RefStatus[]> {
-    if (this.ListRefStatus.length === 0) {
+    //סתם בדיקה
+    //לא מבינה למה צריך אובייקט שיקלוט את הסטטוסים מתי בדיוק עוד הם נשלפים?
+    if (this.ListRefStatus.length > 0) console.log("!!!!!האובייקט כבר מלא בסטטוסים");
+    
+    if (this.ListRefStatus.length == 0) {
       return this.http.get<RefStatus[]>(this.BASE_URL_REFSTATUS).pipe(
         tap(data => console.log('סטטוסים :', data)),
         tap(data => {
@@ -21,6 +25,6 @@ export class RefServService {
         })
       );
     }
-    return of(this.ListRefStatus); // עטיפת המערך ב-Observable
+    return of(this.ListRefStatus); 
   }
 }

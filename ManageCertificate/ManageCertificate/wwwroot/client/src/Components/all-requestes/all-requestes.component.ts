@@ -35,43 +35,59 @@ constructor(
   ListRequestes: Requestes[] = [];
   ListRefStatus: RefStatus[] = [];
   selectedStatus: number | null = null;
-  selectedCouncilId: number | null = null;
+  selectedCouncilId: string | null = null;
   selectedRequestId: number | null = null;
   selectedDate: Date | null = null;
 
+  allRequests: Requestes[] = []; // משתנה לשמירת כל הרשומות המקוריות
+  
   ngOnInit() {
     this.initialData();
   }
   initialData() {
-    // this.RequestServiceService.getAll().subscribe((res: Requestes[]) => {
-    //   this.ListRequestes = res;
-    //   this.applyFilters();
-    // });
-    // this.RefServService.getAllRefStatus().subscribe((res: RefStatus[]) => {   
-    //   this.ListRefStatus = res;
-    // } );
     combineLatest([
       this.RequestServiceService.getAll(),
-      this.RefServService.getAllRefStatus()]).subscribe(([req, res]) => {
+      this.RefServService.getAllRefStatus()
+    ]).subscribe(([req, res]) => {
       this.ListRefStatus = res;
       this.ListRequestes = req;
-      this.applyFilters();
-
+      console.log("ListRequestes after loading:", this.ListRequestes);
+      console.log("ListRefStatus after loading:", this.ListRefStatus);
+      // this.applyFilters();
     });
   }
  
 
-  applyFilters() {
+ 
+
+applyFilters() {
+  if (this.allRequests.length > 0) {
+    // Filter the existing list
+    this.ListRequestes = this.allRequests.filter(x => {
+      const statusMatch = this.selectedStatus === null || x.requestStatusNavigation?.id === this.selectedStatus;
+      const councilMatch = this.selectedCouncilId === null || 
+        x.council?.name?.toLowerCase().includes(this.selectedCouncilId.toString().toLowerCase());
+      const requestMatch = this.selectedRequestId === null || x.requestId === this.selectedRequestId;
+      const dateMatch = !this.selectedDate || 
+        (x.orderDate && new Date(x.orderDate).toDateString() === this.selectedDate.toDateString());
+      return statusMatch && councilMatch && requestMatch && dateMatch;
+    });
+  } else {
+    // Fetch data from the server and store it in allRequests
     this.RequestServiceService.getAll().subscribe((res: Requestes[]) => {
-      this.ListRequestes = res.filter(x => {
-        const statusMatch = this.selectedStatus === null || x.requestStatus === this.selectedStatus;
-        const councilMatch = this.selectedCouncilId === null || x.councilId === this.selectedCouncilId;
+      this.allRequests = res; // שמירת הרשימה המקורית
+      this.ListRequestes = this.allRequests.filter(x => {
+        const statusMatch = this.selectedStatus === null || x.requestStatusNavigation?.id === this.selectedStatus;
+        const councilMatch = this.selectedCouncilId === null || 
+          x.council?.name?.toLowerCase().includes(this.selectedCouncilId.toString().toLowerCase());
         const requestMatch = this.selectedRequestId === null || x.requestId === this.selectedRequestId;
-        const dateMatch = !this.selectedDate || (x.orderDate && new Date(x.orderDate).toDateString() === this.selectedDate.toDateString());
+        const dateMatch = !this.selectedDate || 
+          (x.orderDate && new Date(x.orderDate).toDateString() === this.selectedDate.toDateString());
         return statusMatch && councilMatch && requestMatch && dateMatch;
       });
     });
   }
+}
 // לחצן חיפוש שיחסוך..
   onSelectChange(event: Event) {
     this.selectedStatus = parseInt((event.target as HTMLSelectElement).value);
@@ -79,15 +95,20 @@ constructor(
   }
 
   onInputChangeCouncil(event: Event) {
-    this.selectedCouncilId = parseInt((event.target as HTMLInputElement).value);
+    this.selectedCouncilId = (event.target as HTMLInputElement).value;
     this.applyFilters();
   }
+
+  // onInputChangeNumReq(event: Event) {
+  //   this.selectedRequestId = parseInt((event.target as HTMLInputElement).value);
+  //   this.applyFilters();
+  // }
 
   onInputChangeNumReq(event: Event) {
-    this.selectedRequestId = parseInt((event.target as HTMLInputElement).value);
+    const input = (event.target as HTMLInputElement).value;
+    this.selectedRequestId = input ? parseInt(input, 10) : null; // Parse as number if input is not empty
     this.applyFilters();
   }
-
   onDateChange(event: MatDatepickerInputEvent<Date>) {
     this.selectedDate = event.value;
     this.applyFilters();

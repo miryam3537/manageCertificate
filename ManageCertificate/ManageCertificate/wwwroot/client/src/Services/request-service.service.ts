@@ -17,7 +17,10 @@ export class RequestServiceService {
    constructor(private http: HttpClient) { }
 
    getAll(): Observable<Requestes[]> {
+    console.log("getAllrequestes!");
     return this.http.get<Requestes[]>(this.BASE_URL+'/GetAllRequest');
+  
+    
   }
 
   
