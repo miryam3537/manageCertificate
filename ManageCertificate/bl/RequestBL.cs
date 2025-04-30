@@ -1,11 +1,12 @@
 ﻿using Entites;
-using DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DTO;
+using DAL.Interfaces;
+using BL.Interfaces;
 
 namespace BL
 {
@@ -16,11 +17,11 @@ namespace BL
         {
             this.RequestDAl = RequestDAl;
         }
-        public Task<IEnumerable<Request>> Exmple()
+        public Task<IEnumerable<Request>> GetAllRequest()
         {
-            return RequestDAl.Exmple();
+            return RequestDAl.GetAllRequest();
         }
-        public async Task<Request> Get(int id)
+        public async Task<Request> GetById(int id)
         {
             Request request = await RequestDAl.Get(id);
             Certificate[] certificate = await

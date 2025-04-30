@@ -1,0 +1,85 @@
+<p>TEH REQUEST:</p>
+<div>
+  <h1>סינונים</h1>
+  <select (change)="onSelectChange($event)">
+    <option value="">סינון לפי סטטוס בקשה</option>
+
+    <option *ngFor="let status of ListRefStatus" [value]="status.id">{{ status.name }}👍</option>
+  </select>
+</div>
+<div>
+  <input type="number" placeholder="סינון לפי לשכת נישואין" (input)="onInputChangeCouncil($event)">
+</div>
+<div>
+  <input type="number" placeholder="סינון לפי מספר בקשה " (input)="onInputChangeNumReq($event)">
+</div>
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>סינון לפי תאריך הזמנה</mat-label>
+    <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>
+<div>
+<!-- טבלת הבקשות -->
+<table mat-table [dataSource]="ListRequestes" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="requestId">
+    <th mat-header-cell *matHeaderCellDef> מספר בקשה </th>
+    <td mat-cell *matCellDef="let element">{{ element.requestId }}</td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="orderDate">
+    <th mat-header-cell *matHeaderCellDef> תאריך בקשה </th>
+    <td mat-cell *matCellDef="let element">{{ element.orderDate }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="deliveryMethod">
+    <th mat-header-cell *matHeaderCellDef> שיטת איסוף</th>
+    <td mat-cell *matCellDef="let element">{{ element.deliveryMethod }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="officeComment">
+    <th mat-header-cell *matHeaderCellDef> הערת משרד </th>
+    <td mat-cell *matCellDef="let element">{{ element.officeComment }}</td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="councilId">
+    <th mat-header-cell *matHeaderCellDef> מספר לשכה</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.councilId }}
+      <!-- {{ element.councilIdNavigation.name }} -->
+        <!-- צריך להציג את השם של הלשכה -->
+    </td>
+  </ng-container>
+
+  
+ 
+  <ng-container matColumnDef="requestStatus">
+    <th mat-header-cell *matHeaderCellDef> סטטוס בקשה </th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.requestStatus }}
+      <!-- {{ element.requestStatusNavigation.name }} -->
+        <!-- צריך להציג את השם של הסטטוס -->
+    </td>
+  </ng-container>
+
+  
+  <!-- Actions Column -->
+  <ng-container matColumnDef="Actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let element">
+      <div class="actions">
+        <!-- <button mat-icon-button (click)="openDialogEdit(element)">
+          <mat-icon>edit</mat-icon>
+        </button> -->
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

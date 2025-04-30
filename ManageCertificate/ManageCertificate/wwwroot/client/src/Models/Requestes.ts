@@ -20,4 +20,5 @@ export interface Requestes {
     certificates: Certificate[];
     council?: RefCouncil;
     requestStatusNavigation?: RefStatus;
+    councilIdNavigation?: RefCouncil;//check it!
 }
