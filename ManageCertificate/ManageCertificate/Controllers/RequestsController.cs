@@ -45,13 +45,13 @@ public class RequestsController : Controller
         RequestByIdDTO request = await RequestBL.Get(id);
         return Ok(request);
     }
-    //[HttpGet("{id}")]
-    //public async Task<ActionResult<Request>> Put(int id,Request request)
-    //{
-    //    Request PutRequest = await RequestBL.Get(id);
-    //    RequestDTO requestDto = mapper.Map<RequestDTO>(request);
-    //    return Ok(requestDto);
-    //}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Request>> Put(int id,Request request)
+    {
+        Request PutRequest = await RequestBL.Put(id, request);
+      
+       return Ok(requestDto);
+    }
     //לשאול את יעל פה עשיתי את ההמרה בשכבת הBL
     //[HttpPut("{id}")]
 //    public async Task<IActionResult> Put(int id, [FromBody] RequestDTO requestDTO)

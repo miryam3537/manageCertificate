@@ -29,12 +29,12 @@ namespace DAL
                                  .AsNoTracking()
                                  .Take(30) 
                                  .ToListAsync();
-        }
+      
 
 
 
             return await _context.Requests.ToListAsync();
-        }
+        }  
         public async Task<Request> Get(int id)
         {
             return await _context.Requests
