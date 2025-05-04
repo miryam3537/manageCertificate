@@ -21,6 +21,17 @@ namespace DAL
         }
         public async Task<IEnumerable<Request>> GetAllRequest()
         {
+            return await _context.Requests
+                                 .Include(r => r.Council)
+                                 .Include(r => r.RequestStatusNavigation)
+                                 .Include(r => r.Certificates)
+                                 .ThenInclude(c => c.CertificateTypeNavigation)
+                                 .AsNoTracking()
+                                 .Take(30) 
+                                 .ToListAsync();
+        }
+
+
 
             return await _context.Requests.ToListAsync();
         }

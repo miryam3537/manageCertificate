@@ -4,6 +4,8 @@ using DTO;
 using Entites;
 using AutoMapper;
 using BL.Interfaces;
+using BL;
+using System.Collections.Generic;
 namespace manageCertificate;
 
 
@@ -30,9 +32,13 @@ public class RequestsController : Controller
         logger.LogInformation("e" +
             "xmple");
         logger.LogCritical("exmple");
+
         IEnumerable<Request> requests = await RequestBL.GetAllRequest();
-        return Ok(requests);
+        IEnumerable <RequestDTO> requestDto = mapper.Map< IEnumerable<RequestDTO>>(requests);
+        return Ok(requestDto);
     }
+
+
     [HttpGet("{id}")]
     public async Task<ActionResult<RequestByIdDTO>> Get(int id)
     {

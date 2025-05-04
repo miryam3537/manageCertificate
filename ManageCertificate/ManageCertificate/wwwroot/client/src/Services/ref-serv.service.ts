@@ -8,21 +8,27 @@ import { RefInventory } from '../Models/RefInventory';
   providedIn: 'root'
 })
 export class RefServService {
-  BASE_URL_REFSTATUS = "api";//למרים שיניתי פה....
-  ListRefStatus: RefStatus[] = [];
-  //private http = inject(HttpClient);
+  BASE_URL_REFSTATUS = "api/RefStatus";
+  // ListRefStatus: RefStatus[] = [];
    constructor(private http: HttpClient) { }
- 
-   getAllRefStatus(): Observable<RefStatus[]> {
-    if (this.ListRefStatus.length === 0) {
-      return this.http.get<RefStatus[]>(`${this.BASE_URL_REFSTATUS}/RefStatus`).pipe(
+   getAllRefStatus(ListRefStatus:RefStatus[]): Observable<RefStatus[]> {
+    console.log("status");
+    //סתם בדיקה
+    //לא מבינה למה צריך אובייקט שיקלוט את הסטטוסים מתי בדיוק עוד הם נשלפים?
+    if (ListRefStatus.length > 0) console.log("!!!!!האובייקט כבר מלא בסטטוסים");
+    
+    if (ListRefStatus.length == 0) {
+      return this.http.get<RefStatus[]>(this.BASE_URL_REFSTATUS).pipe(
+   
+        
         tap(data => console.log('סטטוסים :', data)),
         tap(data => {
-          this.ListRefStatus = data; 
+          ListRefStatus = data; 
+          console.log("status");
         })
       );
     }
-    return of(this.ListRefStatus); // עטיפת המערך ב-Observable
+    return of(ListRefStatus); 
   }
   getById(concilId: number,CertificateType:number): Observable<RefInventory> {
     return this.http.get<RefInventory>(`/GetInventoryById?concilId=${concilId}&certificateId=${CertificateType}`).pipe(

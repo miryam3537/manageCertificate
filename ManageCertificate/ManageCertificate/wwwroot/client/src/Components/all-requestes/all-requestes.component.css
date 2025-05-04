@@ -101,4 +101,98 @@ table.mat-table {
     margin-left: auto;
     margin-right: auto;
   }
-  
+/* עיצוב לסינונים */
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* ריווח בין האלמנטים */
+  justify-content: space-between; /* יישור האלמנטים */
+  align-items: center;
+  margin-bottom: 16px; /* ריווח מתחת לשורה */
+}
+
+.filter-item {
+  flex: 1 1 calc(25% - 16px); /* כל אלמנט תופס 25% מהרוחב */
+  min-width: 200px; /* רוחב מינימלי */
+}
+
+mat-form-field {
+  width: 100%; /* התאמה מלאה לרוחב */
+}
+/* עיצוב לסינונים */
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* ריווח בין האלמנטים */
+  justify-content: space-between; /* יישור האלמנטים */
+  align-items: center;
+  margin-bottom: 16px; /* ריווח מתחת לשורה */
+}
+
+.filter-item {
+  flex: 1 1 calc(25% - 16px); /* כל אלמנט תופס 25% מהרוחב */
+  min-width: 200px; /* רוחב מינימלי */
+}
+
+mat-form-field {
+  width: 100%; /* התאמה מלאה לרוחב */
+}
+/* עיצוב כללי לטבלה */
+table.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #f9f9f9; /* רקע אפור בהיר */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* צל עדין */
+}
+
+/* עיצוב כותרת הטבלה */
+.mat-header-cell {
+  background-color: #e91e63; /* ורוד כהה */
+  color: white; /* טקסט לבן */
+  font-weight: bold;
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+}
+
+/* עיצוב תאי הטבלה */
+.mat-cell {
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  color: #333; /* טקסט אפור כהה */
+  border-bottom: 1px solid #ddd; /* קו תחתון */
+}
+
+/* עיצוב שורות */
+.mat-row:nth-child(even) {
+  background-color: #f3f3f3; /* רקע אפור בהיר לשורות זוגיות */
+}
+
+.mat-row:nth-child(odd) {
+  background-color: #ffffff; /* רקע לבן לשורות אי-זוגיות */
+}
+
+/* עיצוב עמודת הפעולות */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* כפתורים בעמודת הפעולות */
+.actions button {
+  background-color: #e91e63; /* ורוד כהה */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.actions button:hover {
+  background-color: #d81b60; /* ורוד כהה יותר */
+}
