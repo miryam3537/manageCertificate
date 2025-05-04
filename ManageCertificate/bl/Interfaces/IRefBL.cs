@@ -1,4 +1,5 @@
-﻿using Entites;
+﻿using DTO;
+using Entites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace BL.Interfaces
     public interface IRefBL
     {
         Task<IEnumerable<RefStatus>> GetAllStatus();
-        Task<RefInventory> GetInventoryById(int id);
-        Task<List<RefInventory>> GetAllInventory();
+        Task<RefInventoryDTO> GetInventoryById(int concilId, int certificateId);
+        Task<List<RefInventoryDTO>> GetAllInventory();
     }
 }

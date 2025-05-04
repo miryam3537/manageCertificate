@@ -14,7 +14,10 @@ namespace ManageCertificate
             CreateMap<RefCouncil, RefCouncilDTO>();
             CreateMap<RefStatus, RefStatusDTO>();
             CreateMap<Certificate, CertificateDTO>();
+            CreateMap<Request, RequestByIdDTO>()
+    .ForMember(dest => dest.AllCertificates, opt => opt.Ignore());
             CreateMap<RefCertificateType, RefCertificateTypeDTO>();
+           CreateMap<RefInventory, RefInventoryDTO>();
         }
     }
 }

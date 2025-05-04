@@ -24,7 +24,7 @@ namespace DAL
 
             return await _context.Requests.ToListAsync();
         }
-        public async Task<Request> GetById(int id)
+        public async Task<Request> Get(int id)
         {
             return await _context.Requests
                                  .Include(r => r.Council)

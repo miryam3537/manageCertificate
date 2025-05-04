@@ -7,7 +7,7 @@ using BL.Interfaces;
 namespace manageCertificate;
 
 
-[Route("api/[controller]/[action]")]
+[Route("api/[controller]")]
 [ApiController]
 
 
@@ -34,38 +34,37 @@ public class RequestsController : Controller
         return Ok(requests);
     }
     [HttpGet("{id}")]
-    public async Task<ActionResult<Request>> GetById(int id)
+    public async Task<ActionResult<RequestByIdDTO>> Get(int id)
     {
-        Request request = await RequestBL.GetById(id);
-        RequestDTO requestDto = mapper.Map<RequestDTO>(request);
-        return Ok(requestDto);
+        RequestByIdDTO request = await RequestBL.Get(id);
+        return Ok(request);
     }
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Request>> Put(int id,Request request)
-    {
-        Request PutRequest = await RequestBL.Get(id);
-        RequestDTO requestDto = mapper.Map<RequestDTO>(request);
-        return Ok(requestDto);
-    }
+    //[HttpGet("{id}")]
+    //public async Task<ActionResult<Request>> Put(int id,Request request)
+    //{
+    //    Request PutRequest = await RequestBL.Get(id);
+    //    RequestDTO requestDto = mapper.Map<RequestDTO>(request);
+    //    return Ok(requestDto);
+    //}
     //לשאול את יעל פה עשיתי את ההמרה בשכבת הBL
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, [FromBody] RequestDTO requestDTO)
-    {
-        if (requestDTO == null)
-        {
-            return BadRequest("Request data is null.");
-        }
+    //[HttpPut("{id}")]
+//    public async Task<IActionResult> Put(int id, [FromBody] RequestDTO requestDTO)
+//    {
+//        if (requestDTO == null)
+//        {
+//            return BadRequest("Request data is null.");
+//        }
 
-        bool isUpdated = await RequestBL.Put(id, requestDTO);
+//        bool isUpdated = await RequestBL.Put(id, requestDTO);
 
-        if (isUpdated)
-        {
-            return NoContent(); // 204 No Content
-        }
-        else
-        {
-            return NotFound($"Request with ID {id} not found.");
-        }
-    }
+//        if (isUpdated)
+//        {
+//            return NoContent(); // 204 No Content
+//        }
+//        else
+//        {
+//            return NotFound($"Request with ID {id} not found.");
+//        }
+//    }
 
 }

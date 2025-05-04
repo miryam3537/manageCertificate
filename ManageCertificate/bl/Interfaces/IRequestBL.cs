@@ -1,10 +1,11 @@
 ﻿using Entites;
+using DTO;
 
 namespace BL.Interfaces
 {
     public interface IRequestBL
     {
         Task<IEnumerable<Request>> GetAllRequest();
-        Task<Request> GetById(int id);
+        Task<RequestByIdDTO> Get(int id);
     }
 }
