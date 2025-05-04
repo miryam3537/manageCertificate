@@ -15,8 +15,8 @@ namespace DTO
         public int? Year { get; set; }
         public int? Inventory { get; set; }
         public int? Minimum { get; set; }
-        public string? CouncilName { get; set; } 
-        public string? CertificateName { get; set; } 
+       // public string? CouncilName { get; set; } // מידע מ-RefCouncil
+      //  public string? CertificateName { get; set; } // מידע מ-RefCe);
 
     }
 }

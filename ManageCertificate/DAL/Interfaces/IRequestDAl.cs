@@ -6,6 +6,6 @@ namespace DAL.Interfaces
     public interface IRequestDAl
     {
         Task<IEnumerable<Request>> GetAllRequest();
-        Task<Request> GetById(int id);
+        Task<Request> Get(int id);
     }
 }

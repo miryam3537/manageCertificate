@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using ManageCertificate;
 using DAL.Interfaces;
 using BL.Interfaces;
+using Entites;
 
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddControllers()
@@ -19,7 +20,7 @@ builder.Services.AddScoped<IRefDAL, RefDAL>();
 builder.Services.AddScoped<IRefBL, RefBL>();
 builder.Services.AddScoped<IRequestDAl, RequestDAl>();
 builder.Services.AddScoped<IRequestBL, RequestBL>();
-
+builder.Services.AddScoped<ICertificateDAL, CertificateDAL>();
 
 
 // Add services to the container.

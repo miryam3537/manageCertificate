@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, of, tap ,catchError,throwError} from 'rxjs';
 import { RefStatus } from '../Models/RefStatus';
+import { RefInventory } from '../Models/RefInventory';
 
 @Injectable({
   providedIn: 'root'
@@ -29,4 +30,20 @@ export class RefServService {
     }
     return of(ListRefStatus); 
   }
+  getById(concilId: number,CertificateType:number): Observable<RefInventory> {
+    return this.http.get<RefInventory>(`/GetInventoryById?concilId=${concilId}&certificateId=${CertificateType}`).pipe(
+      catchError((error) => {
+        console.error('Error:', error);
+        return throwError(() => new Error('Failed to fetch data'));
+      })
+    );   
+}
+getAllInventory(): Observable<RefInventory[]> {
+  return this.http.get<RefInventory[]>("/GetAllInventory").pipe(
+    catchError((error) => {
+      console.error('Error:', error);
+      return throwError(() => new Error('Failed to fetch data'));
+    })
+  );   
+}
 }

@@ -5,6 +5,7 @@ using Entites;
 
 using BL.Interfaces;
 using BL;
+using DTO;
 namespace manageCertificate;
 
 
@@ -28,15 +29,15 @@ public class RefController : Controller
         return Ok(refStatus);
     }
     [HttpGet("/GetAllInventory")]
-    public async Task<ActionResult<IEnumerable<RefInventory>>> GetAllInventory()
+    public async Task<ActionResult<IEnumerable<RefInventoryDTO>>> GetAllInventory()
     {
-        IEnumerable<RefInventory> inventories = await RefBL.GetAllInventory();
+        IEnumerable<RefInventoryDTO> inventories = await RefBL.GetAllInventory();
         return Ok(inventories);
     }
     [HttpGet("/GetInventoryById")]
-    public async Task<ActionResult<IEnumerable<RefInventory>>> GetInventoryById(int id)
+    public async Task<ActionResult<RefInventoryDTO>> GetInventoryById(int concilId,  int certificateId)
     {
-        RefInventory inventory = await RefBL.GetInventoryById(id);
+        RefInventoryDTO inventory = await RefBL.GetInventoryById(concilId, certificateId);
         return Ok(inventory);
         
     }

@@ -20,27 +20,17 @@ namespace DAL
             return await _context.RefStatuses.ToListAsync();
         }
 
-        public async Task<RefInventory?> GetInventoryById(int id)
+        public async Task<RefInventory?> GetInventoryById(int concilId, int certificateId)
         {
             var inventory = await _context.RefInventories
                                   .Include(r => r.Certificate)
                                   .Include(r => r.Council)
-                                  .FirstOrDefaultAsync(r => r.InventoryId == id);
+                                  .FirstOrDefaultAsync(r => r.CouncilId == concilId&& r.CertificateId == certificateId);
 
             if (inventory == null)
                 return null;
             return inventory;
-            //return new RefInventoryDto
-            //{
-            //    InventoryId = inventory.InventoryId,
-            //    CouncilId = inventory.CouncilId,
-            //    CertificateId = inventory.CertificateId,
-            //    Year = inventory.Year,
-            //    Inventory = inventory.Inventory,
-            //    Minimum = inventory.Minimum,
-            //    CouncilName = inventory.Council?.Name,
-            //    CertificateName = inventory.Certificate?.Name // בהנחה שיש שדה Name ב-RefCertificateType
-            //};
+            
         }
         public async Task<List<RefInventory>> GetAllInventory()
         {

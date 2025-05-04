@@ -1,4 +1,4 @@
-<!-- <p>request-details works!</p>
+<p>request-details works!</p>
 <p>
   1.מספר בקשה	:	{{requestDetails?.requestId}}	<br/>		
   2.לשכת נישואין	:{{requestDetails?.council?.name}}<br/>
@@ -24,7 +24,7 @@
 
     <ng-container matColumnDef="certificateTypeNavigation">
       <th mat-header-cell *matHeaderCellDef> certificateTypeNavigation </th>
-      <td mat-cell *matCellDef="let element"> {{element.certificateTypeNavigation?.name}} </td>
+      <td mat-cell *matCellDef="let element">  {{ element.certificateTypeNavigation.name }}</td>
     </ng-container>
   
  
@@ -34,8 +34,8 @@
     </ng-container>
   
     <ng-container matColumnDef="Unused balance">
-      <th mat-header-cell *matHeaderCellDef> Unused balance// </th>
-      <td mat-cell *matCellDef="let element"> {{element.requestAmaunt}} </td>
+      <th mat-header-cell *matHeaderCellDef> Unused balance </th>
+      <td mat-cell *matCellDef="let element">  {{calculateUnusedBalance(element.certificateTypeNavigation.id) | async }} </td>
     </ng-container>
  
     <ng-container matColumnDef="supplyAmaunt">
@@ -51,4 +51,4 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 <button onclick="RequestApproval">אישור בקשה</button>
-  -->
+ 
