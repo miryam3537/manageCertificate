@@ -8,23 +8,25 @@ import { RefStatus } from '../Models/RefStatus';
 })
 export class RefServService {
   BASE_URL_REFSTATUS = "api/RefStatus";
-  ListRefStatus: RefStatus[] = [];
-  //private http = inject(HttpClient);
+  // ListRefStatus: RefStatus[] = [];
    constructor(private http: HttpClient) { }
- 
-   getAllRefStatus(): Observable<RefStatus[]> {
+   getAllRefStatus(ListRefStatus:RefStatus[]): Observable<RefStatus[]> {
+    console.log("status");
     //סתם בדיקה
     //לא מבינה למה צריך אובייקט שיקלוט את הסטטוסים מתי בדיוק עוד הם נשלפים?
-    if (this.ListRefStatus.length > 0) console.log("!!!!!האובייקט כבר מלא בסטטוסים");
+    if (ListRefStatus.length > 0) console.log("!!!!!האובייקט כבר מלא בסטטוסים");
     
-    if (this.ListRefStatus.length == 0) {
+    if (ListRefStatus.length == 0) {
       return this.http.get<RefStatus[]>(this.BASE_URL_REFSTATUS).pipe(
+   
+        
         tap(data => console.log('סטטוסים :', data)),
         tap(data => {
-          this.ListRefStatus = data; 
+          ListRefStatus = data; 
+          console.log("status");
         })
       );
     }
-    return of(this.ListRefStatus); 
+    return of(ListRefStatus); 
   }
 }

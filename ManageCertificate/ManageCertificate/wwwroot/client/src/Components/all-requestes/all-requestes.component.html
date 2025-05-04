@@ -1,29 +1,45 @@
 <p>TEH REQUEST:</p>
+<div *ngIf="isLoading" class="loading-container">
+ 
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
 <div>
+  
+
   <h1>סינונים</h1>
-  <select (change)="onSelectChange($event)">
-    <option value="">סינון לפי סטטוס בקשה</option>
-
-    <option *ngFor="let status of ListRefStatus" [value]="status.id">{{ status.name }}👍</option>
-  </select>
-</div>
-<div>
-  <input type="text" placeholder="סינון לפי לשכת נישואין" (input)="onInputChangeCouncil($event)">
-</div>
-
-<div>
-  <input 
-    type="text" placeholder="Filter by Request ID" (input)="onInputChangeNumReq($event)">
-</div>
-
-<div>
-  <mat-form-field appearance="fill">
-    <mat-label>סינון לפי תאריך הזמנה</mat-label>
-    <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-</div>
+  
+  <div class="filters-container">
+    <!-- סינון לפי סטטוס בקשה -->
+    <mat-form-field appearance="fill" class="filter-item">
+      <mat-label>סינון לפי סטטוס בקשה</mat-label>
+      <mat-select (selectionChange)="onSelectChange($event)">
+        <mat-option value="">בחר סטטוס</mat-option>
+        <mat-option *ngFor="let status of ListRefStatus" [value]="status.id">
+          {{ status.name }} 👍
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <!-- סינון לפי לשכת נישואין -->
+    <mat-form-field appearance="fill" class="filter-item">
+      <mat-label>סינון לפי לשכת נישואין</mat-label>
+      <input matInput type="text" placeholder="הכנס לשכה" (input)="onInputChangeCouncil($event)">
+    </mat-form-field>
+  
+    <!-- סינון לפי מספר בקשה -->
+    <mat-form-field appearance="fill" class="filter-item">
+      <mat-label>Filter by Request ID</mat-label>
+      <input matInput type="text" placeholder="הכנס מספר בקשה" (input)="onInputChangeNumReq($event)">
+    </mat-form-field>
+  
+    <!-- סינון לפי תאריך הזמנה -->
+    <mat-form-field appearance="fill" class="filter-item">
+      <mat-label>סינון לפי תאריך הזמנה</mat-label>
+      <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
 <div>
 <!-- טבלת הבקשות -->
 <table mat-table [dataSource]="ListRequestes" class="mat-elevation-z8">
