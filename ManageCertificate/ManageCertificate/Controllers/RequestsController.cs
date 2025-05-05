@@ -34,7 +34,7 @@ public class RequestsController : Controller
         logger.LogCritical("exmple");
 
         IEnumerable<Request> requests = await RequestBL.GetAllRequest();
-        IEnumerable <RequestDTO> requestDto = mapper.Map< IEnumerable<RequestDTO>>(requests);
+        IEnumerable<RequestDTO> requestDto = mapper.Map<IEnumerable<RequestDTO>>(requests);
         return Ok(requestDto);
     }
 
