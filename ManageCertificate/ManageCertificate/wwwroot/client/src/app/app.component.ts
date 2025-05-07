@@ -16,10 +16,10 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class AppComponent {
  
-  constructor() {
-   console.log("ok");
+  // constructor() {
+  //  console.log("ok");
    
     
-  }
+  // }
   title = 'client';
 }
