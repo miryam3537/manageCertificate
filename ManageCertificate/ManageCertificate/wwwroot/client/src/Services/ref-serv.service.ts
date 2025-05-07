@@ -13,8 +13,7 @@ export class RefServService {
    constructor(private http: HttpClient) { }
    getAllRefStatus(ListRefStatus:RefStatus[]): Observable<RefStatus[]> {
     console.log("status");
-    //סתם בדיקה
-    //לא מבינה למה צריך אובייקט שיקלוט את הסטטוסים מתי בדיוק עוד הם נשלפים?
+    
     if (ListRefStatus.length > 0) console.log("!!!!!האובייקט כבר מלא בסטטוסים");
     
     if (ListRefStatus.length == 0) {

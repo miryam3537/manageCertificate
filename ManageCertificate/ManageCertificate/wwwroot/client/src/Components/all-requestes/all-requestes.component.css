@@ -196,3 +196,12 @@ table.mat-table {
 .actions button:hover {
   background-color: #d81b60; /* ורוד כהה יותר */
 }
+.filters-wrapper {
+  position: sticky; /* קיבוע הקונטיינר */
+  top: 0; /* מרחק מהחלק העליון של העמוד */
+  z-index: 1000; /* עדיפות על אלמנטים אחרים */
+  background-color: white; /* רקע לבן */
+  padding: 16px; /* ריווח פנימי */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* צל עדין */
+  border-bottom: 1px solid #ddd; /* קו תחתון */
+}
