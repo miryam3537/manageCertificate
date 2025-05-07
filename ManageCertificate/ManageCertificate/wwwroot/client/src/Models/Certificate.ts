@@ -9,4 +9,5 @@ export interface Certificate {
     comment?: string;
     certificateTypeNavigation?: RefCertificateType;
     request?: Request;
+    used?:number
 }

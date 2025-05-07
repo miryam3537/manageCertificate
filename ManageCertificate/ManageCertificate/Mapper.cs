@@ -10,13 +10,14 @@ namespace ManageCertificate
     {
         public Mapper()
         {
-            CreateMap<Request, RequestDTO>();
-            CreateMap<RefCouncil, RefCouncilDTO>();
-            CreateMap<RefStatus, RefStatusDTO>();
-            CreateMap<Certificate, CertificateDTO>();
-            CreateMap<Request, RequestByIdDTO>()
-    .ForMember(dest => dest.AllCertificates, opt => opt.Ignore());
-            CreateMap<RefCertificateType, RefCertificateTypeDTO>();
+            CreateMap<Request, RequestDTO>().ReverseMap();
+            CreateMap<RefCouncil, RefCouncilDTO>().ReverseMap();
+            CreateMap<RefStatus, RefStatusDTO>().ReverseMap();
+            CreateMap<Certificate, CertificateDTO>()
+    .ForMember(dest => dest.Used, opt => opt.Ignore()) // מתעלם מהשדה בעת המיפוי
+    .ReverseMap(); 
+
+            CreateMap<RefCertificateType, RefCertificateTypeDTO>().ReverseMap();
            CreateMap<RefInventory, RefInventoryDTO>();
         }
     }

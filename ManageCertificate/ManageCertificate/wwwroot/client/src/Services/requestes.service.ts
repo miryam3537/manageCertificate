@@ -19,5 +19,9 @@ export class RequestDetailsService {
     );
      
 }
+updateStatus(requestId: number, statusId: number): Observable<void> {
+  const params = { statusId: statusId }; // Query parameters
+  return this.http.put<void>(`${this.BASE_URL}/${requestId}`, null, { params });
+}
 
 }

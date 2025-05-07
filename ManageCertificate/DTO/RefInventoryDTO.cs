@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DTO
 {
     public class RefInventoryDTO
@@ -15,8 +16,13 @@ namespace DTO
         public int? Year { get; set; }
         public int? Inventory { get; set; }
         public int? Minimum { get; set; }
-       // public string? CouncilName { get; set; } // מידע מ-RefCouncil
-      //  public string? CertificateName { get; set; } // מידע מ-RefCe);
-
+        // קישור לטבלה RefCertificateType
+        public RefCertificateTypeDTO? Certificate { get; set; }
+        // קישור לטבלה RefCouncil
+        public RefCouncilDTO? Council { get; set; }
     }
 }
+
+
+
+

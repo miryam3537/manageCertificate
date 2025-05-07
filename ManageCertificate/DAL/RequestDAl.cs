@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
 using Entites;
 using DAL.Interfaces;
 
@@ -44,6 +44,25 @@ namespace DAL
                                  .ThenInclude(c => c.CertificateTypeNavigation)
                                  .FirstOrDefaultAsync(r => r.RequestId == id);
         }
+        public async Task Put(int id, int statusId)
+        {
+            var request = await _context.Requests.FirstOrDefaultAsync(r => r.RequestId == id);
+
+         
+            if (request == null)
+            {
+                throw new KeyNotFoundException($"Request with ID {id} not found.");
+            }
+
+            // עדכון הסטטוס ותאריך הטיפול
+            request.RequestStatus = statusId;
+            request.HandlingDate = DateTime.UtcNow;
+
+            // שמירת השינויים במסד הנתונים
+            await _context.SaveChangesAsync();
+        }
+
+
     }
 
 }

@@ -26,18 +26,32 @@ namespace BL
         {
             return RequestDAl.GetAllRequest();
         }
-        public async Task<RequestByIdDTO> Get(int id)
+        public async Task<RequestDTO> Get(int id)
         {
             Request request = await RequestDAl.Get(id);
-            List<Certificate> certificate = (await CertificateDAL.Get(request.Council.Id)).ToList();
-            RequestByIdDTO requestByIdDto = mapper.Map<RequestByIdDTO>(request);
-            List<CertificateDTO> certificatesDTO = mapper.Map<List<CertificateDTO>>(certificate);
-            requestByIdDto = requestByIdDto with { AllCertificates = certificatesDTO };
-            return requestByIdDto;
+            List<Certificate> Allcertificates = (await CertificateDAL.Get(request.Council.Id)).ToList();
+            RequestDTO requestDTO = mapper.Map<RequestDTO>(request);
+            //requestByIdDto = requestByIdDto with { AllCertificates = certificatesDTO };
+            CaldulateSupplayAmountForAllCertificate(Allcertificates, requestDTO.Certificates);
+            return requestDTO;
         }
-        public async Task Put(int id, RequestDTO requestDTO)
+       public void CaldulateSupplayAmountForAllCertificate(List<Certificate> Allcertificates, IEnumerable<CertificateDTO> certificates)
         {
+            foreach (CertificateDTO cert in certificates )
+            {
+                foreach (Certificate allcert in Allcertificates)
+                {
+                    if (cert.CertificateTypeNavigation?.Id == allcert.CertificateType)
+                        cert.Used += allcert.SupplyAmaunt;
+                }
+            }
 
+        }
+        public async Task Put(int id, int statusId)
+        {
+            
+
+            await RequestDAl.Put(id, statusId);
 
         }
     }

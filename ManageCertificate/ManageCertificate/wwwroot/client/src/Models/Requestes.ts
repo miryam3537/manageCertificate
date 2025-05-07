@@ -18,7 +18,6 @@ export interface Requestes {
     officeComment?: string;
     requestStatus?: number;
     certificates: Certificate[];
-    allCertificates: Certificate[];
     council?: RefCouncil;
     requestStatusNavigation?: RefStatus;
     councilIdNavigation?: RefCouncil;//check it!
