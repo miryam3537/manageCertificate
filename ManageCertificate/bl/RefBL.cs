@@ -40,5 +40,21 @@ namespace BL
             List<RefInventoryDTO> inventoryiesDTO = mapper.Map<List<RefInventoryDTO>>(inventoryies);
             return inventoryiesDTO;
         }
+
+        public async Task<IEnumerable<CertificateDTO>> GetAllCertificate()
+        {
+            // שליפת כל הישויות מסוג Certificate
+            IEnumerable<Certificate> certificates = await refDAL.GetAllCertificate();
+
+            // מיפוי הרשימה ל-DTO
+            IEnumerable<CertificateDTO> certificateDTOs = mapper.Map<IEnumerable<CertificateDTO>>(certificates);
+
+            return certificateDTOs;
+        }
+
+        public  Task<List<RefCertificateType>> GetAllCertificateType()
+        {
+            return refDAL.GetAllCertificateType();
+        }
     }
 }

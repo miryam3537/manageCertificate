@@ -39,5 +39,15 @@ namespace DAL
                                  .Include(r => r.Council)
                                  .ToListAsync();
         }
+
+        public async Task<IEnumerable<Certificate>> GetAllCertificate()
+        {
+            return await _context.Certificates.ToListAsync();
+        }
+
+        public async Task<List<RefCertificateType>> GetAllCertificateType()
+        {
+            return await _context.RefCertificateTypes.ToListAsync();
+        }
     }
 }

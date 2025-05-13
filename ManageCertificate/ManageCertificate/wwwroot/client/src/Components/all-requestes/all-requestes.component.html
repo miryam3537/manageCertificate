@@ -1,70 +1,109 @@
 <div *ngIf="isLoading" class="loading-container">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-
-<div class="filters-wrapper">
-  <div class="reset-button-container">
-    <button mat-raised-button color="warn" (click)="resetFilters()">איפוס</button>
+<div id="inventoryBalance" class="inventory-container">
+  <div *ngIf="updatedCertificateTypes && updatedCertificateTypes.length > 0; else noData">
+    <div class="inventory-cards">
+      <mat-card *ngFor="let type of updatedCertificateTypes" class="inventory-card mat-elevation-z2">
+        <mat-card-header class="card-header">
+          <mat-card-title class="card-title">{{ type.name }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="inventory-balance">
+            <span>יתרות מלאי:</span>
+            <span 
+              class="balance-value" 
+              [ngClass]="{
+                'positive-balance': type.TOTAL_INVENTORY_BALANCES > 0,
+                'negative-balance': type.TOTAL_INVENTORY_BALANCES < 0
+              }">
+              {{ type.TOTAL_INVENTORY_BALANCES }}
+            </span>
+     
+            <span 
+              *ngIf="type.TOTAL_INVENTORY_BALANCES < 2" 
+              class="warning-balance">
+              &#x26A0; 
+            </span>
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
- 
-  <div class="filters-container">
-    <!-- סינון לפי סטטוס בקשה -->
-    <mat-form-field appearance="fill" class="filter-item">
-      <mat-label>סינון לפי סטטוס בקשה</mat-label>
-      <mat-select [value]="isReset ? '' : RequestServiceService.selectedStatus" (selectionChange)="onSelectChange($event)">
-        <mat-option value="">בחר סטטוס</mat-option>
-        <mat-option *ngFor="let status of ListRefStatus" [value]="status.id">
-          {{ status.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <!-- סינון לפי לשכת נישואין -->
-    <mat-form-field appearance="fill" class="filter-item">
-      <mat-label>סינון לפי לשכת נישואין</mat-label>
-      <input
-        matInput
-        type="text"
-        placeholder="הכנס לשכה"
-        [value]="isReset ? '' : RequestServiceService.selectedCouncilId"
-        (input)="onInputChangeCouncil($event)"
-      />
-    </mat-form-field>
-
-    <!-- סינון לפי מספר בקשה -->
-    <mat-form-field appearance="fill" class="filter-item">
-      <mat-label>סינון לפי מספר בקשה</mat-label>
-      <input
-        matInput
-        type="text"
-        placeholder="הכנס מספר בקשה"
-        [value]="isReset ? '' : RequestServiceService.selectedRequestId"
-        (input)="onInputChangeNumReq($event)"
-      />
-    </mat-form-field>
-
-    <!-- סינון לפי תאריך הזמנה -->
-    <mat-form-field appearance="fill" class="filter-item">
-      <mat-label>סינון לפי תאריך הזמנה</mat-label>
-      <input
-        matInput
-        [matDatepicker]="picker"
-        [value]="isReset ? '' : RequestServiceService.selectedDate"
-        (dateChange)="onDateChange($event)"
-      />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-  </div>
+  <ng-template #noData>
+    <p class="no-data-message">No data available to display.</p>
+  </ng-template>
 </div>
-  <div>
+<div class="filters-wrapper">
+
+  <div class="filters-wrapper">
+    <div class="reset-button-container">
+      <button mat-raised-button color="warn" (click)="resetFilters()">איפוס</button>
+      <button mat-raised-button color="warn" >דוחות מלאי</button>
+      <button mat-raised-button color="warn" >הדפס</button>
+    </div>
+    
+     
+    
+    <div class="filters-container">
+      <!-- Filter by Status -->
+      <mat-form-field appearance="fill" class="filter-item">
+        <mat-label>סינון לפי סטטוס בקשה</mat-label>
+        <mat-select [value]="isReset ? '' : RequestServiceService.selectedStatus" (selectionChange)="onSelectChange($event)">
+          <mat-option value="">בחר סטטוס</mat-option>
+          <mat-option *ngFor="let status of ListRefStatus" [value]="status.id">
+            {{ status.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Filter by Council -->
+      <mat-form-field appearance="fill" class="filter-item">
+        <mat-label>סינון לפי לשכת נישואין</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="הכנס לשכה"
+          [value]="isReset ? '' : RequestServiceService.selectedCouncilId"
+          (input)="onInputChangeCouncil($event)"
+        />
+      </mat-form-field>
+
+      <!-- Filter by Request Number -->
+      <mat-form-field appearance="fill" class="filter-item">
+        <mat-label>סינון לפי מספר בקשה</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="הכנס מספר בקשה"
+          [value]="isReset ? '' : RequestServiceService.selectedRequestId"
+          (input)="onInputChangeNumReq($event)"
+        />
+      </mat-form-field>
+
+      <!-- Filter by Date -->
+      <mat-form-field appearance="fill" class="filter-item">
+        <mat-label>סינון לפי תאריך הזמנה</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          [value]="isReset ? '' : RequestServiceService.selectedDate"
+          (dateChange)="onDateChange($event)"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+
     <!-- טבלת הבקשות -->
+    <div class="table-container">
     <table mat-table [dataSource]="ListRequestes" matSort class="mat-elevation-z8">
       <ng-container matColumnDef="requestId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> מספר בקשה </th>
         <td mat-cell *matCellDef="let element">{{ element.requestId }}</td>
       </ng-container>
-
+ 
       <ng-container matColumnDef="orderDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> תאריך בקשה </th>
         <td mat-cell *matCellDef="let element">{{ element.orderDate }}</td>
@@ -103,5 +142,6 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+
   </div>
  
