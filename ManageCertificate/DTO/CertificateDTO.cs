@@ -16,5 +16,6 @@ namespace DTO
         public string? Comment { get; set; }
         public int? CertificateType { get; set; }
 
+
     }
 }
