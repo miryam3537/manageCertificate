@@ -13,15 +13,13 @@ namespace ManageCertificate
             CreateMap<Request, RequestDTO>().ReverseMap();
             CreateMap<RefCouncil, RefCouncilDTO>().ReverseMap();
             CreateMap<RefStatus, RefStatusDTO>().ReverseMap();
-            CreateMap<Certificate, CertificateDTO>()
-    .ForMember(dest => dest.Used, opt => opt.Ignore()) // מתעלם מהשדה בעת המיפוי
-    .ReverseMap(); 
+            CreateMap<Certificate, CertificateDTO>().ReverseMap(); 
 
             CreateMap<RefCertificateType, RefCertificateTypeDTO>().ReverseMap();
            CreateMap<RefInventory, RefInventoryDTO>();
         }
     }
-}
+}//.ForMember(dest => dest.Used, opt => opt.Ignore()) //  certificateמתעלם מהשדה בעת המיפוי
 
 
 

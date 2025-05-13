@@ -39,19 +39,19 @@ public class RequestsController : Controller
     }
 
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<RequestDTO>> Get(int id)
-    {
-        RequestDTO request = await RequestBL.Get(id);
-        return Ok(request);
-    }
-    [HttpPut("{id}")]
-    public async Task<ActionResult> Put(int id, [FromQuery] int statusId)
-    {
-        await RequestBL.Put(id, statusId);
-      
-       return Ok();
-    }
+    //[HttpGet("{id}")]
+    //public async Task<ActionResult<RequestDTO>> Get(int id)
+    //{
+    //    RequestDTO request = await RequestBL.Get(id);
+    //    return Ok(request);
+    //}
+    //[HttpPut("{id}")]
+    //public async Task<ActionResult> Put(int id, [FromQuery] int statusId)
+    //{
+    //    await RequestBL.Put(id, statusId);
+
+    //    return Ok();
+    //}
 
 
 }

@@ -1,154 +1,10 @@
-/* טבלה עם רקע אחיד */
-table.mat-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* עיצוב כותרת */
-  .mat-header-cell {
-    font-weight: bold;
-    text-align: center;
-    background-color: #f4f4f9;
-    color: #333;
-    border-bottom: 2px solid #ddd;
-    font-size: 16px;
-    padding: 12px 0;
-  }
-  
-  .mat-cell {
-    text-align: center;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    vertical-align: middle;
-    background-color: #ffffff;
-  }
-  
-  /* הוספת רקע אפור לשורות הזוגיות */
-  .mat-row:nth-child(even) {
-    background-color: #f4f4f4;
-  }
-  
-  .mat-row:hover {
-    background-color: #e8e8e8;
-  }
-  
-  /* עיצוב עבור כפתורים בעמודת הפעולות */
-  .actions {
-    display: flex;
-    justify-content: center;  /* מרכז את הכפתור */
-    align-items: center;      /* ממקם אותו אנכית */
-    margin-top: 10px;         /* רווח קטן בין הכפתור לתא */
-    margin-bottom: 10px;      /* רווח קטן מתחת לכפתור */
-  }
-  
-  button[mat-icon-button] {
-    margin: 0 5px;
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
-  }
-  
-  /* אפקט של hover על הכפתור */
-  button[mat-icon-button]:hover {
-    background-color: #e0e0e0;
-    transform: scale(1.2);
-  }
-  
-  /* עיצוב לאייקון בתוך הכפתור */
-  .mat-icon {
-    font-size: 22px;
-    color: #007bff;
-  }
-  
-  /* שינוי צבע האייקון בעת ריחוף על הכפתור */
-  button[mat-icon-button]:hover .mat-icon {
-    color: #0056b3;
-  }
-  
-  /* כפתור הוספה */
-  button[mat-fab] {
-    background-color: #007bff;
-    color: white;
-    margin-bottom: 20px;
-  }
-  
-  button[mat-fab]:hover {
-    background-color: #0056b3;
-  }
-  
-  /* כותרת */
-  .title {
-    font-family: Arial, Helvetica, sans-serif;
-    text-align: center;
-    font-size: xx-large;
-    margin-bottom: 20px;
-  }
-  
-  /* כפתור הוספה יהיה ממש מתחת לכותרת */
-  button[mat-fab] {
-    margin-top: 20px;  /* מרווח בין הכפתור לכותרת */
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-/* עיצוב לסינונים */
-.filters-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px; /* ריווח בין האלמנטים */
-  justify-content: space-between; /* יישור האלמנטים */
-  align-items: center;
-  margin-bottom: 16px; /* ריווח מתחת לשורה */
-}
 
-.filter-item {
-  flex: 1 1 calc(25% - 16px); /* כל אלמנט תופס 25% מהרוחב */
-  min-width: 200px; /* רוחב מינימלי */
-}
-
-mat-form-field {
-  width: 100%; /* התאמה מלאה לרוחב */
-}
-/* עיצוב לסינונים */
-.filters-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px; /* ריווח בין האלמנטים */
-  justify-content: space-between; /* יישור האלמנטים */
-  align-items: center;
-  margin-bottom: 16px; /* ריווח מתחת לשורה */
-}
-
-.filter-item {
-  flex: 1 1 calc(25% - 16px); /* כל אלמנט תופס 25% מהרוחב */
-  min-width: 200px; /* רוחב מינימלי */
-}
-
-mat-form-field {
-  width: 100%; /* התאמה מלאה לרוחב */
-}
-/* עיצוב כללי לטבלה */
-table.mat-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #f9f9f9; /* רקע אפור בהיר */
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* צל עדין */
-}
 
 /* עיצוב כותרת הטבלה */
 .mat-header-cell {
+  position: sticky; /* קיבוע הכותרת */
+  top: 0; /* מיקום הכותרת */
+  z-index: 1; /* עדיפות על תאים אחרים */
   background-color: #e91e63; /* ורוד כהה */
   color: white; /* טקסט לבן */
   font-weight: bold;
@@ -174,34 +30,236 @@ table.mat-table {
 .mat-row:nth-child(odd) {
   background-color: #ffffff; /* רקע לבן לשורות אי-זוגיות */
 }
+/* עיצוב קונטיינר הטבלה */
+.table-container {
+  max-height: 400px; /* גובה מקסימלי לטבלה */
+  overflow-y: auto; /* גלילה אנכית */
+  border: 1px solid #ddd; /* מסגרת מסביב לטבלה */
+  border-radius: 8px; /* פינות מעוגלות */
+  font-family: 'Times New Roman', Times, serif;
+}
 
-/* עיצוב עמודת הפעולות */
-.actions {
+/* עיצוב כותרת הטבלה */
+.mat-header-cell {
+  position: sticky; /* קיבוע הכותרת */
+  top: 0; /* מיקום הכותרת */
+  z-index: 1; /* עדיפות על תאים אחרים */
+  background-color: #e91e63; /* ורוד כהה */
+  color: white; /* טקסט לבן */
+  font-weight: bold;
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+}
+
+/* עיצוב תאי הטבלה */
+.mat-cell {
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  color: #8a1313; /* טקסט אפור כהה */
+  border-bottom: 1px solid #ddd; /* קו תחתון */
+}
+
+/* עיצוב שורות */
+.mat-row:nth-child(even) {
+  background-color: #f3f3f3; /* רקע אפור בהיר לשורות זוגיות */
+}
+
+.mat-row:nth-child(odd) {
+  background-color: #ffffff; /* רקע לבן לשורות אי-זוגיות */
+}
+.inventory-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+}
+
+.inventory-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.inventory-card {
+  width: 220px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.inventory-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  background-color: #3f51b5;
+  color: white;
+  padding: 10px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.inventory-balance {
+  font-size: 14px;
+  color: #555;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.balance-value {
+  font-weight: bold;
+  font-size: 16px;
+  display: block;
+  margin-top: 4px;
+}
+
+.positive-balance {
+  color: #4caf50; /* ירוק */
+}
+
+.negative-balance {
+  color: #f44336; /* אדום */
+}
+
+.no-data-message {
+  font-size: 18px;
+  color: #999;
+  text-align: center;
+  margin-top: 20px;
+}
+.page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.loading-container {
   display: flex;
   justify-content: center;
-  gap: 8px;
+  margin: 20px 0;
 }
 
-/* כפתורים בעמודת הפעולות */
-.actions button {
-  background-color: #e91e63; /* ורוד כהה */
+.inventory-container,
+.filters-wrapper,
+.requests-table-container {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.filter-item {
+  flex: 1 1 200px;
+}
+
+.reset-button-container {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.inventory-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.inventory-card {
+  width: 220px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.inventory-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  background-color: #3f51b5;
   color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 6px 12px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 10px;
 }
 
-.actions button:hover {
-  background-color: #d81b60; /* ורוד כהה יותר */
+.card-title {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
 }
-.filters-wrapper {
-  position: sticky; /* קיבוע הקונטיינר */
-  top: 0; /* מרחק מהחלק העליון של העמוד */
-  z-index: 1000; /* עדיפות על אלמנטים אחרים */
-  background-color: white; /* רקע לבן */
-  padding: 16px; /* ריווח פנימי */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* צל עדין */
-  border-bottom: 1px solid #ddd; /* קו תחתון */
+
+.inventory-balance {
+  font-size: 14px;
+  color: #555;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.balance-value {
+  font-weight: bold;
+  font-size: 16px;
+  display: block;
+  margin-top: 4px;
+}
+
+.positive-balance {
+  color: #4caf50; /* ירוק */
+}
+
+.negative-balance {
+  color: #f44336; /* אדום */
+}
+
+.no-data-message {
+  font-size: 18px;
+  color: #999;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+  text-align: center;
+  color: #3f51b5;
+}
+.positive-balance {
+  color: #4caf50; /* ירוק */
+}
+
+.negative-balance {
+  color: #f44336; /* אדום */
+}
+
+.warning-balance {
+  color: #f44336; /* אדום */
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 5px;
 }

@@ -41,4 +41,16 @@ public class RefController : Controller
         return Ok(inventory);
         
     }
+    [HttpGet("/GetAllCertificate")]
+    public async Task<ActionResult<IEnumerable<CertificateDTO>>> GetAllCertificate()
+    {
+        IEnumerable<CertificateDTO> certificate = await RefBL.GetAllCertificate();
+        return Ok(certificate);
+    }
+    [HttpGet("/GetAllCertificateType")]
+    public async Task<ActionResult<IEnumerable<RefCertificateType>>> GetAllCertificateType()
+    {
+        IEnumerable<RefCertificateType> certificateType = await RefBL.GetAllCertificateType();
+        return Ok(certificateType);
+    }
 }

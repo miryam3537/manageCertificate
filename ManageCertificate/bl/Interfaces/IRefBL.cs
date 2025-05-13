@@ -13,5 +13,7 @@ namespace BL.Interfaces
         Task<IEnumerable<RefStatus>> GetAllStatus();
         Task<RefInventoryDTO> GetInventoryById(int concilId, int certificateId);
         Task<List<RefInventoryDTO>> GetAllInventory();
+        Task<IEnumerable<CertificateDTO>> GetAllCertificate();
+        Task<List<RefCertificateType>> GetAllCertificateType();
     }
 }

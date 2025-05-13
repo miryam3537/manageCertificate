@@ -24,7 +24,6 @@ export class RequestServiceService {
 
    getAll(): Observable<Requestes[]> {
     console.log("getAllrequestes!");
-  
     return this.http.get<Requestes[]>(this.BASE_URL);
     
   }

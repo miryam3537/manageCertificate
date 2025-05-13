@@ -8,7 +8,8 @@ namespace DAL.Interfaces
     {
         Task<IEnumerable<RefStatus>> GetAllStatus();
         Task<RefInventory> GetInventoryById(int concilId, int certificateId); // אם המחלקה מוגדרת כ-RefInventoryDto
-
+        Task<IEnumerable<Certificate>> GetAllCertificate();
         Task<List<RefInventory>> GetAllInventory();
+        Task<List<RefCertificateType>> GetAllCertificateType();
     }
 }
