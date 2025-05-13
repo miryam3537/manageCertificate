@@ -8,6 +8,5 @@ export interface Certificate {
     supplyAmaunt?: number;
     comment?: string;
     certificateTypeNavigation?: RefCertificateType;
-    request?: Request;
     used?:number
 }

@@ -44,21 +44,50 @@ namespace DAL
                                  .ThenInclude(c => c.CertificateTypeNavigation)
                                  .FirstOrDefaultAsync(r => r.RequestId == id);
         }
-        public async Task Put(int id, int statusId)
-        {
-            var request = await _context.Requests.FirstOrDefaultAsync(r => r.RequestId == id);
+       
 
-         
-            if (request == null)
-            {
+        public async Task PutRequestStatus(int id, Request upDateRequest)
+        {
+            // Retrieve the existing request from the database
+            var existingRequest = await _context.Requests
+                .Include(r => r.Certificates) // Include Certificates for proper tracking
+                .FirstOrDefaultAsync(r => r.RequestId == id);
+
+            if (existingRequest == null)
                 throw new KeyNotFoundException($"Request with ID {id} not found.");
+            upDateRequest.HandlingDate = DateTime.Now;
+            // Update the properties of the existing request
+            _context.Entry(existingRequest).CurrentValues.SetValues(upDateRequest);
+
+            // Update the Certificates collection
+            // First, remove certificates that are no longer present
+            foreach (var existingCertificate in existingRequest.Certificates.ToList())
+            {
+                if (!upDateRequest.Certificates.Any(c => c.CertificateId == existingCertificate.CertificateId))
+                {
+                    _context.Certificates.Remove(existingCertificate);
+                }
             }
 
-            // עדכון הסטטוס ותאריך הטיפול
-            request.RequestStatus = statusId;
-            request.HandlingDate = DateTime.UtcNow;
+            // Add or update certificates from the update request
+            foreach (var certificate in upDateRequest.Certificates)
+            {
+                var existingCertificate = existingRequest.Certificates
+                    .FirstOrDefault(c => c.CertificateId == certificate.CertificateId);
 
-            // שמירת השינויים במסד הנתונים
+                if (existingCertificate != null)
+                {
+                    // Update existing certificate properties
+                    _context.Entry(existingCertificate).CurrentValues.SetValues(certificate);
+                }
+                else
+                {
+                    // Add new certificate
+                    existingRequest.Certificates.Add(certificate);
+                }
+            }
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
         }
 

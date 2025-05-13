@@ -6,7 +6,7 @@
   <div class="reset-button-container">
     <button mat-raised-button color="warn" (click)="resetFilters()">איפוס</button>
   </div>
-
+ 
   <div class="filters-container">
     <!-- סינון לפי סטטוס בקשה -->
     <mat-form-field appearance="fill" class="filter-item">
@@ -94,7 +94,8 @@
         <th mat-header-cell *matHeaderCellDef> הצגת פרטי הבקשה </th>
         <td mat-cell *matCellDef="let element">
           <div class="actions">
-            <mat-icon>info</mat-icon>
+            <a [routerLink]="['/RequestDetails', element?.requestId ]"><mat-icon>info</mat-icon>Go to Request Details</a>
+            
           </div>
         </td>
       </ng-container>
@@ -103,3 +104,4 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </div>
+ 
