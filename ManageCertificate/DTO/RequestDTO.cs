@@ -4,7 +4,8 @@ namespace DTO
 {
     public record RequestDTO(
         int RequestId,
-        RefCouncilDTO? Council,
+        int? CouncilId,
+        int? RequestStatus, 
         string? OrdererName,
         string? OrdererRole,
         string? OrdererPhone,
@@ -16,6 +17,7 @@ namespace DTO
         string? DeliveredTo,
         DateTime? HandlingDate,
         string? OfficeComment,
+        RefCouncilDTO? Council,
         ICollection<CertificateDTO> Certificates,
         RefStatusDTO? RequestStatusNavigation
     );

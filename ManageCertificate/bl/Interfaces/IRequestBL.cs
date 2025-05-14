@@ -6,7 +6,7 @@ namespace BL.Interfaces
     public interface IRequestBL
     {
         Task<IEnumerable<Request>> GetAllRequest();
-        //Task<RequestDTO> Get(int id);
-        Task Put(int id, int statusId);
+        Task<RequestDTO> Get(int id);
+        Task<bool> PutRequestStatus(int id,int previousStatusId, RequestDTO PutRequest);
     }
 }

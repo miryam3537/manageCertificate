@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BL;
+using BL.Interfaces;
+using Entites;
 [ApiController]
 [Route("api/[controller]")]
 public class EmailController : ControllerBase
 {
-    private readonly EmailBL emailBL;
+    private readonly IEmailBL emailBL;
 
-    public EmailController()
+    public EmailController(IEmailBL emailBL)
     {
-        emailBL = new EmailBL(); // ניתן להשתמש ב-DI במקום
+        this.emailBL = emailBL;
     }
 
     [HttpPost("send")]
@@ -16,20 +18,15 @@ public class EmailController : ControllerBase
     {
         try
         {
-            emailBL.SendEmail(request.ToEmail, request.Subject, request.Body);
-            return Ok("Email sent successfully!");
+            emailBL.SendEmail(request);
+            return Ok(new { message = "Email sent successfully!" });
         }
         catch (Exception ex)
         {
-            return StatusCode(500, $"Failed to send email: {ex.Message}");
+            return StatusCode(500, new { error = $"Failed to send email: {ex.Message}" });
         }
     }
 }
 
-public class EmailRequest
-{
-    public string ToEmail { get; set; }
-    public string Subject { get; set; }
-    public string Body { get; set; }
-}
+
 

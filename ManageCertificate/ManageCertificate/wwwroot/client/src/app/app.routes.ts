@@ -1,5 +1,11 @@
 import { Routes } from '@angular/router';
 import { AllRequestesComponent } from '../Components/all-requestes/all-requestes.component';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+import { provideRouter } from '@angular/router';
+import { RequestDetailsComponent } from '../Components/request-details/request-details.component';
 export const routes: Routes = [
-    { path: 'Allrequestes', component: AllRequestesComponent },
+    { path: '', component: AllRequestesComponent },
+    { path: 'RequestDetails/:id', component: RequestDetailsComponent },
 ];
+

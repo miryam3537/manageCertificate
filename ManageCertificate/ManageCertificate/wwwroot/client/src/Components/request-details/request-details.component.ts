@@ -5,11 +5,13 @@ import { RefServService } from '../../Services/ref-serv.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import {CommonModule} from '@angular/common';
-import { NgModule } from '@angular/core';
 import { RefInventory } from '../../Models/RefInventory';
 import { Observable } from 'rxjs';
 import { Requestes } from '../../Models/Requestes';
 import { Certificate } from '../../Models/Certificate';
+import { EmailService } from '../../Services/email.service';
+import { ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -19,63 +21,57 @@ export interface PeriodicElement {
 
 @Component({
   selector: 'app-request-details',
-  imports: [MatTableModule,HttpClientModule ,CommonModule],
+  imports: [MatTableModule,HttpClientModule ,CommonModule,FormsModule],
   templateUrl: './request-details.component.html',
   styleUrls:['./request-details.component.css'] ,
- providers: [RequestDetailsService,RefServService]
+ providers: [RequestDetailsService,RefServService,EmailService]
 })
 export class RequestDetailsComponent {
-  constructor(private requestDetailsService:RequestDetailsService,private RefServService:RefServService) { }
+  constructor(private route: ActivatedRoute,private requestDetailsService:RequestDetailsService,private RefServService:RefServService,private EmailService:EmailService) { }
   requestDetails!: Requestes;
-  inventoryies!:RefInventory[];
+  inventories!:RefInventory[];
   displayedColumns: string[] = ['certificateTypeNavigation', 'requestAmaunt','Unused balance','supplyAmaunt','comment'];
   dataSource = new MatTableDataSource<any>([]); // אתחול למערך ריק
-   requestId = 93;
+   requestId! :number ;
+   officeEmail:string = "38215557299@mby.co.il"//יצטרך שינוי בעתיד...
   ngOnInit() {
-   
+     // Retrieve the 'id' parameter from the route
+     this.route.paramMap.subscribe(params => {
+      this.requestId =Number( params.get('id'));
+      this.fetchRequestDetails(); // Fetch details for the specific request
+    });
+  }
+
+  private fetchRequestDetails(): void {
+    // Fetch the details of the request from the service
     this.requestDetailsService.get(this.requestId).subscribe(
-     (data: any) => {
-        this.requestDetails = data;
-        this.dataSource.data = this.requestDetails.certificates || []; // עדכון ה-dataSource עם הנתונים שהתקבלו
-        console.log(this.requestDetails);
-        this.GetAllInvetory()
+      (data: Requestes) => {
+        this.requestDetails = data; // Set request details
+        this.dataSource.data = this.requestDetails.certificates || []; // Update dataSource with the certificates data
+        this.GetAllInvetory(); // Fetch inventory data
       },
-     (error) => {
-        console.error('Error fetching request details:', error);
+      (error) => {
+        console.error('Error fetching request details:', error); // Log any errors
       }
     );
-}
+  }
 
-GetAllInvetory(): void {
+  private GetAllInvetory(): void {
   
   this.RefServService.getAllInventory().subscribe(
     (data:RefInventory[])=>{
-     this.inventoryies = data
-     console.log('Inventory:', this.inventoryies);
+     this.inventories = data
+     console.log('Inventory:', this.inventories);
      
+    },(error) => {
+      console.error('Error fetching inventory:', error); // Log any errors
     })
 }
-// calculateNumberOfCertificates(certificateType: number): number { 
-//   let numberOfCertificates = 0;
-//   if (!this.allCertificates) {
-//     console.warn('AllCertificates is undefined or empty');
-//     return 0; // ערך ברירת מחדל במקרה של נתונים חסרים
-//   }
-//   this.allCertificates.forEach((certificate: any) => {
-//     if (certificate.certificateTypeNavigation.id === certificateType) {
-//       numberOfCertificates = numberOfCertificates+certificate.supllayAmount//requestAmaunt;
-//     }
-//   });
-//   return numberOfCertificates? numberOfCertificates : 0; // החזרת מספר התעודות או 0 אם לא נמצא
-// }
-
 calculateUnusedBalance(certificate: Certificate): Observable<number> {
-
   return new Observable<number>((observer) => {
-    const inventory = this.inventoryies?.find(
+    const inventory = this.inventories?.find(
       (item: RefInventory) => item.certificateId === certificate.certificateTypeNavigation?.id && item.councilId === this.requestDetails?.council?.id
     );
-
     const unusedBalance =//inventory ? (inventory.inventory ?? 0) -0:0
     inventory ? (inventory.inventory ?? 0) - (certificate.used ?? 0) : 0;
     observer.next(unusedBalance);
@@ -83,21 +79,52 @@ calculateUnusedBalance(certificate: Certificate): Observable<number> {
   });
 }
 changeStatus(statusId: number) {
-  const requestId = this.requestId;
-  this.requestDetailsService.updateStatus(requestId, statusId).subscribe(
+  const previousStatusId = this.requestDetails.requestStatus?this.requestDetails.requestStatus:-1; 
+this.requestDetails.requestStatus = statusId; // עדכון הסטטוס הנוכחי
+  this.requestDetailsService.updateStatus( this.requestId,previousStatusId, this.requestDetails).subscribe(
     () => {
-      console.log('Status updated successfully');
-      
+      console.log('Status updated successfully'); 
     },
     (error) => {
       console.error('Error updating status:', error);
     }
   );
 }
-RequestApproval(){
+ sentEmailToTheOffice(subject: string, body: string) {
+  const emailRequest = {
+    ToEmail: this.officeEmail,
+    Subject: subject,
+    Body: body
+  };  
+  this.EmailService.SentEmail(emailRequest).subscribe(
+    () => {
+      console.log('Email sent successfully');
+    },
+    (error) => {
+      console.error('Error sending email:', error);
+    }
+  );  
+ }
+ requestApproval(){
   const statusId = 2; 
   this.changeStatus(statusId);
-  
+  //משתנה כמות אספקה יהיה בתחילה כמו כמות ויהיה אפשר לשנות אותו והוא ישתנה במשתנה
+  var body:string = "";
+    this.requestDetails.certificates.forEach((certificate: Certificate,index) => {
+      body += `${index}. ${certificate.supplyAmaunt} ${certificate.certificateTypeNavigation?.name}כרטיסים נשלחו ל${this.requestDetails?.council?.name} .\n`; 
+    });
+  this.sentEmailToTheOffice(` אושרה בקשה מספר ${this.requestDetails.requestId}`,body)
 }
- }
-
+cancelRequest(): void {
+  const statusId = 4; 
+  this.changeStatus(statusId);
+  this.requestDetails.certificates.forEach((certificate: Certificate) => {
+   certificate.supplyAmaunt = 0; 
+  });
+this.sentEmailToTheOffice(`בוטלה בקשה מספר ${this.requestDetails.requestId}`,`הבקשה בוטלה על ידי המשרד`)
+}
+readyForDelivery(): void {
+  const statusId = 3; 
+  this.changeStatus(statusId);
+}
+}

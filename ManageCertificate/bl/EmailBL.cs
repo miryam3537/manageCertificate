@@ -5,34 +5,50 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using BL.Interfaces;
+using Entites;
+using Microsoft.Extensions.Configuration;
 
 namespace BL
 {
-    public class EmailBL
+    public class EmailBL : IEmailBL
     {
-        public void SendEmail(string toEmail, string subject, string body)
-        {
-            var fromEmail = "siteloggermail@gmail.com";
-            var smtpPassword = "xclbrhazlcfxuwps";
+        private readonly IConfiguration _configuration;
 
-            using (var smtpClient = new SmtpClient("smtp.gmail.com", 587))
+        public EmailBL(IConfiguration configuration)
+        {
+            this._configuration = configuration;
+        }
+
+        public void SendEmail(EmailRequest emailRequest)
+        {
+            var fromEmail = _configuration["EmailSettings:FromEmail"];
+            var smtpPassword = _configuration["EmailSettings:SmtpPassword"];
+            var smtpHost = _configuration["EmailSettings:SmtpHost"];
+            var smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]);
+            // פרטי האימייל והסיסמה
+
+            // הגדרת ה-SMTP של Outlook
+            using (var smtpClient = new SmtpClient(smtpHost, smtpPort))
             {
                 smtpClient.Credentials = new NetworkCredential(fromEmail, smtpPassword);
                 smtpClient.EnableSsl = true;
 
+                // יצירת הודעת האימייל
                 var mailMessage = new MailMessage
                 {
                     From = new MailAddress(fromEmail),
-                    Subject = subject,
-                    Body = body,
+                    Subject = emailRequest.Subject,
+                    Body = emailRequest.Body,
                     IsBodyHtml = false
                 };
-                mailMessage.To.Add(toEmail);
+                mailMessage.To.Add(emailRequest.ToEmail);
 
+                // שליחת האימייל
                 smtpClient.Send(mailMessage);
             }
         }
     }
-
-
 }
+
+

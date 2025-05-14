@@ -8,6 +8,7 @@ using DTO;
 using DAL.Interfaces;
 using BL.Interfaces;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 namespace BL
 {
@@ -16,11 +17,13 @@ namespace BL
         IMapper mapper;
         IRequestDAl RequestDAl;
         ICertificateDAL CertificateDAL;
-        public RequestBL(IRequestDAl RequestDAl, ICertificateDAL CertificateDAL,IMapper mapper)
+        ILogger<RequestBL> logger;
+        public RequestBL(IRequestDAl RequestDAl, ICertificateDAL CertificateDAL,IMapper mapper,ILogger<RequestBL> logger)
         {
             this.mapper = mapper;
             this.CertificateDAL = CertificateDAL;
             this.RequestDAl = RequestDAl;
+            this.logger = logger;
         }
         public Task<IEnumerable<Request>> GetAllRequest()
         {
@@ -46,13 +49,27 @@ namespace BL
        //         }
        //     }
 
-       // }
-        public async Task Put(int id, int statusId)
-        {
-            
-
-            await RequestDAl.Put(id, statusId);
-
         }
+        public async Task<bool> PutRequestStatus(int id, int previousStatusId, RequestDTO PutRequest)
+        {
+            Request request = await RequestDAl.Get(id);
+            if (request == null)
+                throw new Exception("Request not found");
+
+            if (request.RequestStatus == previousStatusId)
+            {
+ 
+                Request upDateRequest = mapper.Map<DTO.RequestDTO, Request>(PutRequest);
+                await RequestDAl.PutRequestStatus(id,upDateRequest);
+                return true; // עדכון הצליח
+            }
+            else
+            {
+                logger.LogCritical("Request status mismatch. Expected: {expectedStatus}, Actual: {actualStatus}", previousStatusId, request.RequestStatus);
+                // החזרת false במקום לזרוק שגיאה
+                return false;
+            }
+        }
+
     }
 }

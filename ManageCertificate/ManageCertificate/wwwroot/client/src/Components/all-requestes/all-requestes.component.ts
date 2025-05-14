@@ -10,7 +10,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { combineLatest } from 'rxjs';
-
+import { RouterLink } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { RefServService } from '../../Services/ref-serv.service';
 import { RequestServiceService } from '../../Services/request-service.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -28,6 +29,7 @@ import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-all-requestes',
   imports: [
+    RouterModule,
     MatIconModule,
     HttpClientModule,
     CommonModule,

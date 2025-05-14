@@ -21,7 +21,7 @@ builder.Services.AddScoped<IRefBL, RefBL>();
 builder.Services.AddScoped<IRequestDAl, RequestDAl>();
 builder.Services.AddScoped<IRequestBL, RequestBL>();
 builder.Services.AddScoped<ICertificateDAL, CertificateDAL>();
-
+builder.Services.AddScoped<IEmailBL, EmailBL>();
 
 // Add services to the container.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
