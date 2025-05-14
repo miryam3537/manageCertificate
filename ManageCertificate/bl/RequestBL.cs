@@ -18,7 +18,7 @@ namespace BL
         IRequestDAl RequestDAl;
         ICertificateDAL CertificateDAL;
         ILogger<RequestBL> logger;
-        public RequestBL(IRequestDAl RequestDAl, ICertificateDAL CertificateDAL,IMapper mapper,ILogger<RequestBL> logger)
+        public RequestBL(IRequestDAl RequestDAl, ICertificateDAL CertificateDAL, IMapper mapper, ILogger<RequestBL> logger)
         {
             this.mapper = mapper;
             this.CertificateDAL = CertificateDAL;
@@ -45,7 +45,7 @@ namespace BL
                 foreach (Certificate allcert in Allcertificates)
                 {
                     if (cert.CertificateTypeNavigation?.Id == allcert.CertificateType)
-                        cert.used += allcert.SupplyAmaunt;
+                        cert.Used += allcert.SupplyAmaunt;
                 }
             }
 
@@ -58,9 +58,9 @@ namespace BL
 
             if (request.RequestStatus == previousStatusId)
             {
- 
+
                 Request upDateRequest = mapper.Map<DTO.RequestDTO, Request>(PutRequest);
-                await RequestDAl.PutRequestStatus(id,upDateRequest);
+                await RequestDAl.PutRequestStatus(id, upDateRequest);
                 return true; // עדכון הצליח
             }
             else
@@ -73,3 +73,4 @@ namespace BL
 
     }
 }
+
