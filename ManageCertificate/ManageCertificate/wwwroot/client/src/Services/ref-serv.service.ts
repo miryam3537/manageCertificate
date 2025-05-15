@@ -11,9 +11,8 @@ import { RefCertificateType } from '../Models/RefCertificateType';
 })
 export class RefServService {
   BASE_URL_REFSTATUS = "api/RefStatus";
-  // ListRefStatus: RefStatus[] = [];
    constructor(private http: HttpClient) { }
-
+ 
    getAllInventory(): Observable<RefInventory[]> {
     console.log("getAllInventory");
     return this.http.get<RefInventory[]>("/GetAllInventory");

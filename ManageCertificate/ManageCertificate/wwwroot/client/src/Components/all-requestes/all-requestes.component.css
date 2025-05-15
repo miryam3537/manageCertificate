@@ -1,17 +1,7 @@
 
 
 /* עיצוב כותרת הטבלה */
-.mat-header-cell {
-  position: sticky; /* קיבוע הכותרת */
-  top: 0; /* מיקום הכותרת */
-  z-index: 1; /* עדיפות על תאים אחרים */
-  background-color: #e91e63; /* ורוד כהה */
-  color: white; /* טקסט לבן */
-  font-weight: bold;
-  text-align: center;
-  padding: 12px;
-  font-size: 14px;
-}
+
 
 /* עיצוב תאי הטבלה */
 .mat-cell {
@@ -262,4 +252,42 @@
   font-size: 16px;
   font-weight: bold;
   margin-left: 5px;
+}
+/* עיצוב כותרת הטבלה */
+.mat-header-cell {
+  background-color: #3f51b5; /* כחול כהה */
+  color: white; /* טקסט לבן */
+  font-weight: bold;
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  border-bottom: 2px solid #ddd; /* קו תחתון */
+}
+
+/* עיצוב תאי הטבלה */
+.mat-cell {
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  color: #333; /* טקסט אפור כהה */
+  border-bottom: 1px solid #ddd; /* קו תחתון */
+}
+
+/* עיצוב שורות */
+.mat-row:nth-child(even) {
+  background-color: #e3f2fd; /* רקע כחול בהיר לשורות זוגיות */
+}
+
+.mat-row:nth-child(odd) {
+  background-color: #ffffff; /* רקע לבן לשורות אי-זוגיות */
+}
+
+
+
+/* עיצוב קונטיינר הטבלה */
+.table-container {
+  background-color: #f9f9f9; /* רקע בהיר */
+  border: 1px solid #c41a1a; /* מסגרת מסביב לטבלה */
+  border-radius: 8px; /* פינות מעוגלות */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* צל עדין */
 }

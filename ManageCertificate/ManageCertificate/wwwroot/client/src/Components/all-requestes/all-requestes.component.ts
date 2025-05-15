@@ -67,8 +67,6 @@ export class AllRequestesComponent implements OnInit {
   amount: number = 0; 
   inventory:object[] = [];
   @ViewChild(MatSort) sort!: MatSort;
-
-
   constructor(
     public RequestServiceService: RequestServiceService,
     private RefServService: RefServService
@@ -95,15 +93,12 @@ export class AllRequestesComponent implements OnInit {
         this.ListRefStatus = refStatuses;
         this.ListRefInventory = inventories;
         this.ListAllCertificate = certificates;
-
         console.log('ListRequestes:', this.ListRequestes);
         console.log('ListRefCertificateType:', this.ListRefCertificateType);
         console.log('ListRefStatus:', this.ListRefStatus);
         console.log('ListRefInventory:', this.ListRefInventory);
         console.log('ListAllCertificate:', this.ListAllCertificate);
-
         this.supplyAmauntByType();
-
         this.isLoading = false;
       },
       (error) => {
@@ -153,17 +148,19 @@ export class AllRequestesComponent implements OnInit {
     this.initialData();
   }
   supplyAmauntByType() {
+    const currentYear = new Date().getFullYear();
     this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
       const totalSupplyAmount = this.ListAllCertificate
           .filter(certificate => certificate.certificateType === refCertificateType.id)
           .reduce((acc, certificate) => acc + (certificate.supplyAmaunt || 0), 0);
       const totalInventory = this.ListRefInventory
-          .filter(inventory => inventory.certificateId === refCertificateType.id)
+          .filter(inventory => inventory.certificateId === refCertificateType.id && inventory.year === currentYear)
           .reduce((acc, inventory) => acc + (inventory.inventory || 0), 0);
-
+      //const minimumInventory = this.ListRefInventory
       return {
         ...refCertificateType, 
-        TOTAL_INVENTORY_BALANCES:(totalSupplyAmount-totalInventory) || 0
+        TOTAL_INVENTORY_BALANCES:(totalInventory-totalSupplyAmount) || -1,
+        //MINIMUM_INVENTORY_BALANCES: refCertificateType.minimum || 0,
       };
     });
   
