@@ -7,6 +7,6 @@ namespace DAL.Interfaces
     {
         Task<IEnumerable<Request>> GetAllRequest();
         Task<Request> Get(int id);
-        Task PutRequestStatus(int id,Request upDateRequest);
+        Task<Request> PutRequest(int id,Request upDateRequest);
     }
 }

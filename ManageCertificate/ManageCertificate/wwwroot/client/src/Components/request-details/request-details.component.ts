@@ -12,6 +12,9 @@ import { Certificate } from '../../Models/Certificate';
 import { EmailService } from '../../Services/email.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -21,7 +24,7 @@ export interface PeriodicElement {
 
 @Component({
   selector: 'app-request-details',
-  imports: [MatTableModule,HttpClientModule ,CommonModule,FormsModule],
+  imports: [MatTableModule,HttpClientModule ,CommonModule,FormsModule,MatButtonModule,MatCardModule,MatIcon],
   templateUrl: './request-details.component.html',
   styleUrls:['./request-details.component.css'] ,
  providers: [RequestDetailsService,RefServService,EmailService]
@@ -81,6 +84,7 @@ calculateUnusedBalance(certificate: Certificate): Observable<number> {
 changeStatus(statusId: number) {
   const previousStatusId = this.requestDetails.requestStatus?this.requestDetails.requestStatus:-1; 
 this.requestDetails.requestStatus = statusId; // עדכון הסטטוס הנוכחי
+console.log('requestDetails:', this.requestDetails);
   this.requestDetailsService.updateStatus( this.requestId,previousStatusId, this.requestDetails).subscribe(
     () => {
       console.log('Status updated successfully'); 
@@ -111,7 +115,7 @@ this.requestDetails.requestStatus = statusId; // עדכון הסטטוס הנו�
   //משתנה כמות אספקה יהיה בתחילה כמו כמות ויהיה אפשר לשנות אותו והוא ישתנה במשתנה
   var body:string = "";
     this.requestDetails.certificates.forEach((certificate: Certificate,index) => {
-      body += `${index}. ${certificate.supplyAmaunt} ${certificate.certificateTypeNavigation?.name}כרטיסים נשלחו ל${this.requestDetails?.council?.name} .\n`; 
+      body += `${index + 1}. ${certificate.supplyAmaunt} ${certificate.certificateTypeNavigation?.name}נשלחו ל${this.requestDetails?.council?.name}.\n`; 
     });
   this.sentEmailToTheOffice(` אושרה בקשה מספר ${this.requestDetails.requestId}`,body)
 }
@@ -126,5 +130,8 @@ this.sentEmailToTheOffice(`בוטלה בקשה מספר ${this.requestDetails.re
 readyForDelivery(): void {
   const statusId = 3; 
   this.changeStatus(statusId);
+}
+save(){
+  
 }
 }

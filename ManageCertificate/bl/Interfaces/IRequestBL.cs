@@ -7,6 +7,6 @@ namespace BL.Interfaces
     {
         Task<IEnumerable<Request>> GetAllRequest();
         Task<RequestDTO> Get(int id);
-        Task<bool> PutRequestStatus(int id,int previousStatusId, RequestDTO PutRequest);
+        Task<RequestDTO> PutRequest(int id,int? previousStatusId, RequestDTO PutRequest);
     }
 }

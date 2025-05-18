@@ -50,24 +50,24 @@ namespace BL
             }
 
         }
-        public async Task<bool> PutRequestStatus(int id, int previousStatusId, RequestDTO PutRequest)
+        public async Task<RequestDTO> PutRequest(int id, int? previousStatusId, RequestDTO PutRequest)
         {
             Request request = await RequestDAl.Get(id);
             if (request == null)
                 throw new Exception("Request not found");
-
-            if (request.RequestStatus == previousStatusId)
+            if(previousStatusId==null|| request.RequestStatus == previousStatusId)
             {
 
                 Request upDateRequest = mapper.Map<DTO.RequestDTO, Request>(PutRequest);
-                await RequestDAl.PutRequestStatus(id, upDateRequest);
-                return true; // עדכון הצליח
+             Request  returnUpDateRequest  = await RequestDAl.PutRequest(id, upDateRequest);
+                RequestDTO requestDTO = mapper.Map<Request, RequestDTO> (returnUpDateRequest);
+                return requestDTO; // עדכון הצליח
             }
             else
             {
                 logger.LogCritical("Request status mismatch. Expected: {expectedStatus}, Actual: {actualStatus}", previousStatusId, request.RequestStatus);
                 // החזרת false במקום לזרוק שגיאה
-                return false;
+                return null;
             }
         }
 

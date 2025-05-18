@@ -46,7 +46,7 @@ namespace DAL
         }
        
 
-        public async Task PutRequestStatus(int id, Request upDateRequest)
+        public async Task<Request> PutRequest(int id, Request upDateRequest)
         {
             // Retrieve the existing request from the database
             var existingRequest = await _context.Requests
@@ -89,6 +89,7 @@ namespace DAL
 
             // Save changes to the database
             await _context.SaveChangesAsync();
+            return upDateRequest;
         }
 
 
