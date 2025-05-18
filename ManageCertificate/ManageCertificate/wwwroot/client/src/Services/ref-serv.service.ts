@@ -5,7 +5,7 @@ import { RefStatus } from '../Models/RefStatus';
 import { RefInventory } from '../Models/RefInventory';
 import { Certificate } from '../Models/Certificate';
 import { RefCertificateType } from '../Models/RefCertificateType';
-
+import { RefCouncil } from '../Models/RefCouncil';
 @Injectable({
   providedIn: 'root'
 })
@@ -60,6 +60,19 @@ export class RefServService {
     //   })
       
     );   
+  }
+  getAllRefCouncil(ListRefCouncil:RefCouncil[]): Observable<RefCouncil[]> {
+    console.log("getAllRefCouncil");
+    if(ListRefCouncil.length<=0) 
+    return this.http.get<RefCouncil[]>("/GetAllRefCouncil").pipe(
+      tap(data => console.log('ListRefCouncil :', data)),
+      tap(data => {   
+        ListRefCouncil = data; 
+        console.log("ListRefCouncil-שירות");
+      }
+      )
+    );
+    else return of(ListRefCouncil);
   }
   getById(concilId: number,CertificateType:number): Observable<RefInventory> {
     return this.http.get<RefInventory>(`/GetInventoryById?concilId=${concilId}&certificateId=${CertificateType}`).pipe(

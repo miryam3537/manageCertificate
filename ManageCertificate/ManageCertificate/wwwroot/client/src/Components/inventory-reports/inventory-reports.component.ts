@@ -20,6 +20,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { RefCouncil } from '../../Models/RefCouncil';
 
 @Component({
   selector: 'app-inventory-reports',
@@ -51,6 +52,7 @@ export class InventoryReportsComponent implements OnInit{
   ListRefInventory: RefInventory[] = [];
   ListAllCertificates: Certificate[] = [];
   ListRefCertificateType: RefCertificateType[] = [];
+  ListRefCouncil: RefCouncil[] = [];
   updatedCertificateTypes: any[] = [];
   isLoading: boolean = true;
   isReset: boolean = false;
@@ -58,6 +60,7 @@ export class InventoryReportsComponent implements OnInit{
   selectedCouncilId: number | null = null;
   currentYear = new Date().getFullYear();
   displayedColumns: string[] = ['name', 'inventoryBalance','inventory','minimumBalance','save'];
+  inventoryDisplayedCol: string[] = ['councilName','year','certificate','inventory','supplyAmmount','inventoryBalance','save'];
   constructor(
     public RefServService: RefServService
   ) {}
@@ -72,11 +75,14 @@ export class InventoryReportsComponent implements OnInit{
         this.RefServService.getAllCertificateType(this.ListRefCertificateType),
         this.RefServService.getAllInventory(),
         this.RefServService.getAllCertificate(),
+        this.RefServService.getAllRefCouncil(this.ListRefCouncil),
       ]).subscribe(
-        ([ certificateTypes, inventories, certificates]) => {
+        ([ certificateTypes, inventories, certificates, refCouncil]) => {
           this.ListRefCertificateType = certificateTypes;
           this.ListRefInventory = inventories;
           this.ListAllCertificates = certificates;
+          this.ListRefCouncil = refCouncil;
+          console.log('ListRefCouncil: קומפ', this.ListRefCouncil);
           console.log('ListRefCertificateType:', this.ListRefCertificateType);
           console.log('ListRefInventory:', this.ListRefInventory);
           console.log('ListAllCertificate:', this.ListAllCertificates);
@@ -89,6 +95,8 @@ export class InventoryReportsComponent implements OnInit{
         }
       );
     }
+
+    
     InventoryManagement(year:number){
       this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
       const totalSupplyAmount = this.ListAllCertificates
@@ -108,6 +116,8 @@ export class InventoryReportsComponent implements OnInit{
     });
     console.log(this.updatedCertificateTypes,"@@@@@@@@@@@");
     }
+
+   
     onInputChangeYear(event: Event): void{
       this.selectedYear = (event.target as HTMLInputElement).valueAsNumber;
       this.InventoryManagement(this.selectedYear);
@@ -116,4 +126,5 @@ export class InventoryReportsComponent implements OnInit{
       this.selectedCouncilId = (event?.target as HTMLInputElement).valueAsNumber;
       // this.updatedCertificateTypes = this.updatedCertificateTypes.filter(x=>x.this.selectedCouncilId)
     }
+   
 }
