@@ -52,11 +52,11 @@ public class RequestsController : Controller
 
         if (requestDTO != null)
         {
-            return Ok(new { success = true, data = requestDTO, message = "XXXX" });
+            return Ok(new { success = true, data = requestDTO });
         }
         else
         {
-            return BadRequest(new { success = false, message = "XXXX" });
+            return BadRequest(new { success = false});
         }
     }
 

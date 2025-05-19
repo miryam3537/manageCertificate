@@ -14,7 +14,8 @@
       </button>
     </div>
 </div>
-
+<mat-spinner *ngIf="loading" class="loading-spinner" ></mat-spinner>
+<!-- [diameter]="50 -->
 <mat-card class="request-details-card">
   <mat-card-header>
     <mat-card-title>פרטי הבקשה</mat-card-title>
@@ -22,53 +23,53 @@
   <mat-card-content>
     <ul class="list-group">
       <li class="list-group-item">
-        <strong>מספר בקשה:</strong> {{requestDetails?.requestId}}
+        <strong>מספר בקשה:</strong> {{requestDetails()?.requestId}}
       </li>
       <li class="list-group-item">
-        <strong>סטטוס בקשה</strong> {{requestDetails?.requestStatus}}
+        <strong>סטטוס בקשה</strong> {{requestDetails()?.requestStatusNavigation?.name}}
       </li>
       <li class="list-group-item">
-        <strong>לשכת נישואין:</strong> {{requestDetails?.council?.name}}
+        <strong>לשכת נישואין:</strong> {{requestDetails()?.council?.name}}
       </li>
       <li class="list-group-item">
-        <strong>שם המזמין:</strong> {{requestDetails?.ordererName}}
+        <strong>שם המזמין:</strong> {{requestDetails()?.ordererName}}
       </li>
       <li class="list-group-item">
-        <strong>תפקיד המזמין:</strong> {{requestDetails?.ordererRole}}
+        <strong>תפקיד המזמין:</strong> {{requestDetails()?.ordererRole}}
       </li>
       <li class="list-group-item">
-        <strong>טלפון מזמין:</strong> {{requestDetails?.ordererPhone}}
+        <strong>טלפון מזמין:</strong> {{requestDetails()?.ordererPhone}}
       </li>
       <li class="list-group-item">
-        <strong>אימייל מזמין:</strong> {{requestDetails?.ordererEmail}}
+        <strong>אימייל מזמין:</strong> {{requestDetails()?.ordererEmail}}
       </li>
       <li class="list-group-item">
-        <strong>תאריך הזמנה:</strong> {{requestDetails?.orderDate | date:'dd/MM/yyyy'}}
+        <strong>תאריך הזמנה:</strong> {{requestDetails()?.orderDate | date:'dd/MM/yyyy'}}
       </li>
       <li class="list-group-item">
-        <strong>הערות המזמין:</strong> {{requestDetails?.ordererComment}}
+        <strong>הערות המזמין:</strong> {{requestDetails()?.ordererComment}}
       </li>
       <li class="list-group-item">
-        <strong>אופן המסירה:</strong> {{requestDetails?.deliveryMethod}}
+        <strong>אופן המסירה:</strong> {{requestDetails()?.deliveryMethod}}
       </li>
-      <li class="list-group-item" *ngIf="requestDetails?.address">
-        <strong>כתובת למשלוח:</strong> {{requestDetails?.address}}
+      <li class="list-group-item" *ngIf="requestDetails()?.address">
+        <strong>כתובת למשלוח:</strong> {{requestDetails()?.address}}
       </li>
-      <li class="list-group-item" *ngIf="!requestDetails?.address">
+      <li class="list-group-item" *ngIf="!requestDetails()?.address">
         <strong>לידי מי נמסר:</strong> 
         <input 
           type="text" 
-          [(ngModel)]="requestDetails.deliveredTo" 
+          [(ngModel)]="deliveredTo" 
           class="editable-input" 
         />
       </li>
       
       <li class="list-group-item">
-        <strong>תאריך טיפול:</strong> {{requestDetails?.handlingDate | date:'dd/MM/yyyy'}}
+        <strong>תאריך טיפול:</strong> {{requestDetails()?.handlingDate | date:'dd/MM/yyyy'}}
       </li>
       <li class="list-group-item">
         <strong>הערות המשרד להזמנה:</strong> 
-        <textarea class="form-control" [(ngModel)]="requestDetails.officeComment"></textarea>
+        <textarea class="form-control" [(ngModel)]="officeComment"></textarea>
       </li>
     </ul>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table-bordered" >
