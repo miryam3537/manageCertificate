@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RefCouncil } from '../../Models/RefCouncil';
 import { MatGridList, MatGridListModule } from '@angular/material/grid-list';
+import { CertificateService } from '../../Services/certificate.service';
 
 @Component({
   selector: 'app-inventory-reports',
@@ -47,7 +48,7 @@ import { MatGridList, MatGridListModule } from '@angular/material/grid-list';
     MatCardModule],
   templateUrl: './inventory-reports.component.html',
   styleUrl: './inventory-reports.component.css',
-  providers: [RefServService ]
+  providers: [RefServService,CertificateService ]
 })
 export class InventoryReportsComponent implements OnInit{
   
@@ -68,10 +69,12 @@ export class InventoryReportsComponent implements OnInit{
   filteredInventory: RefInventory[] = [];
   
   constructor(
-    public RefServService: RefServService
+    public RefServService: RefServService,
+    public certificateService: CertificateService,
   ) {}
    ngOnInit() {
       this.loadData();
+      this.ListAllCertificates==this.certificateService.ListCertificate;
     }
 
     loadData() {
@@ -80,13 +83,13 @@ export class InventoryReportsComponent implements OnInit{
       combineLatest([
         this.RefServService.getAllCertificateType(this.ListRefCertificateType),
         this.RefServService.getAllInventory(),
-        this.RefServService.getAllCertificate(),
+        // this.certificateService.getAllCertificate(),
         this.RefServService.getAllRefCouncil(this.ListRefCouncil),
       ]).pipe(take(1)).subscribe({
-        next: ([certificateTypes, inventories, certificates, refCouncil]) => {
+        next: ([certificateTypes, inventories, refCouncil]) => {
           this.ListRefCertificateType = certificateTypes;
           this.ListRefInventory = inventories;
-          this.ListAllCertificates = certificates;
+          //this.ListAllCertificates = certificates;
           this.ListRefCouncil = refCouncil;
           console.log('ListRefCouncil: קומפ', this.ListRefCouncil);
           console.log('ListRefCertificateType:', this.ListRefCertificateType);

@@ -25,6 +25,7 @@ import { RefInventory } from '../../Models/RefInventory';
 import { RefCertificateType } from '../../Models/RefCertificateType';
 import { Certificate } from '../../Models/Certificate';
 import { MatCardModule } from '@angular/material/card';
+import { CertificateService } from '../../Services/certificate.service';
 
 @Component({
   selector: 'app-all-requestes',
@@ -50,7 +51,7 @@ import { MatCardModule } from '@angular/material/card';
   ],
   templateUrl: './all-requestes.component.html',
   styleUrl: './all-requestes.component.css',
-  providers: [RequestServiceService, RefServService],
+  providers: [RequestServiceService, RefServService, CertificateService],
 })
 export class AllRequestesComponent implements OnInit {
   displayedColumns: string[] = ['requestId', 'orderDate', 'deliveryMethod', 'officeComment', 'requestStatus', 'councilId', 'Actions'];
@@ -69,7 +70,8 @@ export class AllRequestesComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   constructor(
     public RequestServiceService: RequestServiceService,
-    private RefServService: RefServService
+    private RefServService: RefServService,
+    public certificateService: CertificateService
   ) {}
 
   ngOnInit() {
@@ -84,7 +86,7 @@ export class AllRequestesComponent implements OnInit {
       this.RefServService.getAllCertificateType(this.ListRefCertificateType),
       this.RefServService.getAllRefStatus(this.ListRefStatus),
       this.RefServService.getAllInventory(),
-      this.RefServService.getAllCertificate(),
+      this.certificateService.getAllCertificate(),
     ]).pipe(take(1)).subscribe({
       next:
       ([requests, certificateTypes, refStatuses, inventories, certificates]) => {

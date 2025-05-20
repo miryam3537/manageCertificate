@@ -12,6 +12,7 @@ import { Certificate } from '../../Models/Certificate';
 import { EmailService } from '../../Services/email.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CertificateService } from '../../Services/certificate.service';
 export interface PeriodicElement {
   name: string;
   position: number;

@@ -10,6 +10,7 @@ import { RefCouncil } from '../Models/RefCouncil';
   providedIn: 'root'
 })
 export class RefServService {
+  ListCertificate: Certificate[] = [];
   BASE_URL_REFSTATUS = "api/RefStatus";
    constructor(private http: HttpClient) { }
  
@@ -44,24 +45,7 @@ export class RefServService {
       )
     );   
   }
-  getAllCertificate(): Observable<Certificate[]> {
-    console.log("getAllCertificate");
-    return this.http.get<Certificate[]>("/GetAllCertificate").pipe(
-      tap(data => console.log('AllCertificate :', data))
-      // ,tap(data => {   
-      //   // ListCertificate = data; 
-      //   //אם אני לא ירצה לשלוף עוד פעם ועוד פעם את האובייקט הזה
-      //   console.log("ListCertificate");
-      // }
-      // ))
-    // return this.http.get<Certificate[]>("/GetAllCertificate").pipe(
-    //   catchError((error) => {
-    //     console.error('Error:', error);
-    //     return throwError(() => new Error('Failed to fetch data'));
-    //   })
-      
-    );   
-  }
+ 
   getAllRefCouncil(ListRefCouncil:RefCouncil[]): Observable<RefCouncil[]> {
     console.log("getAllRefCouncil");
     if(ListRefCouncil.length<=0) 
