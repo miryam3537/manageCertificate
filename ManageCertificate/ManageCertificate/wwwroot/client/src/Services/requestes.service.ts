@@ -19,9 +19,10 @@ export class RequestDetailsService {
     );
      
 }
-updateStatus(requestId: number, previousStatusId:number, request:Requestes): Observable<void> {
-  const params = { previousStatusId: previousStatusId}; // Query parameters
-  return this.http.put<void>(`${this.BASE_URL}/${requestId}`, request, { params });
+updateRequest(requestId: number, previousStatusId: number | null, request: Requestes|null): Observable<Requestes> {
+  return this.http.put<Requestes>(`${this.BASE_URL}/${requestId}`, request, {
+    params: previousStatusId !== null ? { previousStatusId: previousStatusId.toString() } : undefined
+  });
 }
 
 }

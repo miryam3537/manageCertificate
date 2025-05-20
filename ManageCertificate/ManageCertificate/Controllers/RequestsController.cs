@@ -46,17 +46,17 @@ public class RequestsController : Controller
         return Ok(request);
     }
     [HttpPut("{id}")]
-    public async Task<ActionResult> PutRequestStatus(int id, [FromQuery] int previousStatusId, [FromBody] RequestDTO PutRequest)
+    public async Task<ActionResult<RequestDTO>> PutRequestStatus(int id, [FromQuery] int? previousStatusId, [FromBody] RequestDTO PutRequest)
     {
-        bool answer = await RequestBL.PutRequestStatus(id, previousStatusId, PutRequest);
+        RequestDTO requestDTO = await RequestBL.PutRequest(id, previousStatusId, PutRequest);
 
-        if (answer)
+        if (requestDTO != null)
         {
-            return Ok(new { success = true, message = "Request updated successfully." });
+            return Ok(new { success = true, data = requestDTO });
         }
         else
         {
-            return BadRequest(new { success = false, message = "Failed to update request. Status mismatch or invalid data." });
+            return BadRequest(new { success = false});
         }
     }
 
