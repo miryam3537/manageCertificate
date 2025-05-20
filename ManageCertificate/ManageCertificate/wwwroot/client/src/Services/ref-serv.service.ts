@@ -17,6 +17,7 @@ export class RefServService {
     console.log("getAllInventory");
     return this.http.get<RefInventory[]>("/GetAllInventory");
   }
+ 
    getAllRefStatus(ListRefStatus:RefStatus[]): Observable<RefStatus[]> {
     console.log("status");
     

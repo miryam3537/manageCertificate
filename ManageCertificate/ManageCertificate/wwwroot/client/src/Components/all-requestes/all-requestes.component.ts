@@ -9,7 +9,7 @@ import { RefStatus } from '../../Models/RefStatus';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { combineLatest } from 'rxjs';
+import { combineLatest, take } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { RefServService } from '../../Services/ref-serv.service';
@@ -85,7 +85,8 @@ export class AllRequestesComponent implements OnInit {
       this.RefServService.getAllRefStatus(this.ListRefStatus),
       this.RefServService.getAllInventory(),
       this.RefServService.getAllCertificate(),
-    ]).subscribe(
+    ]).pipe(take(1)).subscribe({
+      next:
       ([requests, certificateTypes, refStatuses, inventories, certificates]) => {
         this.ListRequestes.data = requests;
         this.ListRequestes.sort = this.sort; 
@@ -101,11 +102,11 @@ export class AllRequestesComponent implements OnInit {
         this.supplyAmauntByType();
         this.isLoading = false;
       },
-      (error) => {
+      error:(error) => {
         console.error('Error while loading data:', error);
         this.isLoading = false;
       }
-    );
+  });
   }
 
  
