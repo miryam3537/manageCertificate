@@ -15,9 +15,10 @@
               class="balance-value" 
               [ngClass]="{
                 'positive-balance': type.TOTAL_INVENTORY_BALANCES > 0,
-                'negative-balance': type.TOTAL_INVENTORY_BALANCES < 0
+                'negative-balance': type.TOTAL_INVENTORY_BALANCES < type.minimumBalance,
               }">
-              {{ type.TOTAL_INVENTORY_BALANCES }}
+              {{ type.TOTAL_INVENTORY_BALANCES < 0 ? 'חסר הגדרה' : type.TOTAL_INVENTORY_BALANCES }}
+              
             </span>
      
             <span 
@@ -39,7 +40,7 @@
   <div class="filters-wrapper">
     <div class="reset-button-container">
       <button mat-raised-button color="warn" (click)="resetFilters()">איפוס</button>
-      <button mat-raised-button color="warn" >דוחות מלאי</button>
+      <button mat-raised-button color="warn" ><a [routerLink]="['/InventoryReports']">דוחות מלאי</a> </button>
       <button mat-raised-button color="warn" >הדפס</button>
     </div>
     
@@ -49,8 +50,8 @@
       <!-- Filter by Status -->
       <mat-form-field appearance="fill" class="filter-item">
         <mat-label>סינון לפי סטטוס בקשה</mat-label>
-        <mat-select [value]="isReset ? '' : RequestService.selectedStatus" (selectionChange)="onSelectChange($event)">
-          <mat-option value="">בחר סטטוס</mat-option>
+        <mat-select [value]="isReset ? '' : RequestServiceService.selectedStatus" (selectionChange)="onSelectChange($event)">
+         
           <mat-option *ngFor="let status of ListRefStatus" [value]="status.id">
             {{ status.name }}
           </mat-option>
@@ -106,7 +107,7 @@
  
       <ng-container matColumnDef="orderDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> תאריך בקשה </th>
-        <td mat-cell *matCellDef="let element">{{ element.orderDate }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.orderDate | date:'dd/MM/yyyy'}}</td>
       </ng-container>
 
       <ng-container matColumnDef="deliveryMethod">

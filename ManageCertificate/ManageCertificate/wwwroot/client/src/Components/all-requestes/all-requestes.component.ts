@@ -9,7 +9,7 @@ import { RefStatus } from '../../Models/RefStatus';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { combineLatest } from 'rxjs';
+import { combineLatest, take } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { RefServService } from '../../Services/ref-serv.service';
@@ -25,6 +25,7 @@ import { RefInventory } from '../../Models/RefInventory';
 import { RefCertificateType } from '../../Models/RefCertificateType';
 import { Certificate } from '../../Models/Certificate';
 import { MatCardModule } from '@angular/material/card';
+import { CertificateService } from '../../Services/certificate.service';
 
 @Component({
   selector: 'app-all-requestes',
@@ -50,7 +51,7 @@ import { MatCardModule } from '@angular/material/card';
   ],
   templateUrl: './all-requestes.component.html',
   styleUrl: './all-requestes.component.css',
-  providers: [RequestService, RefServService],
+  providers: [RequestServiceService, RefServService, CertificateService],
 })
 export class AllRequestesComponent implements OnInit {
   displayedColumns: string[] = ['requestId', 'orderDate', 'deliveryMethod', 'officeComment', 'requestStatus', 'councilId', 'Actions'];
@@ -67,11 +68,10 @@ export class AllRequestesComponent implements OnInit {
   amount: number = 0; 
   inventory:object[] = [];
   @ViewChild(MatSort) sort!: MatSort;
-
-
   constructor(
-    public RequestService: RequestService,
-    private RefServService: RefServService
+    public RequestServiceService: RequestServiceService,
+    private RefServService: RefServService,
+    public certificateService: CertificateService
   ) {}
 
   ngOnInit() {
@@ -86,8 +86,9 @@ export class AllRequestesComponent implements OnInit {
       this.RefServService.getAllCertificateType(this.ListRefCertificateType),
       this.RefServService.getAllRefStatus(this.ListRefStatus),
       this.RefServService.getAllInventory(),
-      this.RefServService.getAllCertificate(),
-    ]).subscribe(
+      this.certificateService.getAllCertificate(),
+    ]).pipe(take(1)).subscribe({
+      next:
       ([requests, certificateTypes, refStatuses, inventories, certificates]) => {
         this.ListRequestes.data = requests;
         this.ListRequestes.sort = this.sort; 
@@ -95,22 +96,19 @@ export class AllRequestesComponent implements OnInit {
         this.ListRefStatus = refStatuses;
         this.ListRefInventory = inventories;
         this.ListAllCertificate = certificates;
-
         console.log('ListRequestes:', this.ListRequestes);
         console.log('ListRefCertificateType:', this.ListRefCertificateType);
         console.log('ListRefStatus:', this.ListRefStatus);
         console.log('ListRefInventory:', this.ListRefInventory);
         console.log('ListAllCertificate:', this.ListAllCertificate);
-
         this.supplyAmauntByType();
-
         this.isLoading = false;
       },
-      (error) => {
+      error:(error) => {
         console.error('Error while loading data:', error);
         this.isLoading = false;
       }
-    );
+  });
   }
 
  
@@ -153,17 +151,19 @@ export class AllRequestesComponent implements OnInit {
     this.initialData();
   }
   supplyAmauntByType() {
+    const currentYear = new Date().getFullYear();
     this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
       const totalSupplyAmount = this.ListAllCertificate
           .filter(certificate => certificate.certificateType === refCertificateType.id)
           .reduce((acc, certificate) => acc + (certificate.supplyAmaunt || 0), 0);
       const totalInventory = this.ListRefInventory
-          .filter(inventory => inventory.certificateId === refCertificateType.id)
+          .filter(inventory => inventory.certificateId === refCertificateType.id && inventory.year === currentYear)
           .reduce((acc, inventory) => acc + (inventory.inventory || 0), 0);
-
+      //const minimumInventory = this.ListRefInventory
       return {
         ...refCertificateType, 
-        TOTAL_INVENTORY_BALANCES:(totalSupplyAmount-totalInventory) || 0
+        TOTAL_INVENTORY_BALANCES:(totalInventory-totalSupplyAmount) || -1,
+        //MINIMUM_INVENTORY_BALANCES: refCertificateType.minimum || 0,
       };
     });
   

@@ -15,7 +15,6 @@ export class RequestService {
   selectedCouncilId: string | null = null;
   selectedRequestId: number | null = null;
   selectedDate: Date | null = null;
-
   allRequests: Requestes[] = [];
   BASE_URL = "api/Requests";
   BASE_URL_REFSTATUS = "api/RefStatus";
