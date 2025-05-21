@@ -49,7 +49,7 @@
       <!-- Filter by Status -->
       <mat-form-field appearance="fill" class="filter-item">
         <mat-label>סינון לפי סטטוס בקשה</mat-label>
-        <mat-select [value]="isReset ? '' : RequestServiceService.selectedStatus" (selectionChange)="onSelectChange($event)">
+        <mat-select [value]="isReset ? '' : RequestService.selectedStatus" (selectionChange)="onSelectChange($event)">
           <mat-option value="">בחר סטטוס</mat-option>
           <mat-option *ngFor="let status of ListRefStatus" [value]="status.id">
             {{ status.name }}
@@ -64,7 +64,7 @@
           matInput
           type="text"
           placeholder="הכנס לשכה"
-          [value]="isReset ? '' : RequestServiceService.selectedCouncilId"
+          [value]="isReset ? '' : RequestService.selectedCouncilId"
           (input)="onInputChangeCouncil($event)"
         />
       </mat-form-field>
@@ -76,7 +76,7 @@
           matInput
           type="text"
           placeholder="הכנס מספר בקשה"
-          [value]="isReset ? '' : RequestServiceService.selectedRequestId"
+          [value]="isReset ? '' : RequestService.selectedRequestId"
           (input)="onInputChangeNumReq($event)"
         />
       </mat-form-field>
@@ -87,7 +87,7 @@
         <input
           matInput
           [matDatepicker]="picker"
-          [value]="isReset ? '' : RequestServiceService.selectedDate"
+          [value]="isReset ? '' : RequestService.selectedDate"
           (dateChange)="onDateChange($event)"
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

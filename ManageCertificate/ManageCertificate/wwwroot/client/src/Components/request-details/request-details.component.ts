@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,inject } from '@angular/core';
 import {MatTableModule} from '@angular/material/table';
 import{RequestDetailsService} from '../../Services/requestes.service';
 import { RefServService } from '../../Services/ref-serv.service';
@@ -17,6 +17,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatSpinner } from '@angular/material/progress-spinner';
 import { signal, effect } from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -26,12 +27,14 @@ export interface PeriodicElement {
 
 @Component({
   selector: 'app-request-details',
+ 
   imports: [MatTableModule,HttpClientModule ,CommonModule,FormsModule,MatButtonModule,MatCardModule,MatIcon,MatSpinner],
   templateUrl: './request-details.component.html',
   styleUrls:['./request-details.component.css'] ,
  providers: [RequestDetailsService,RefServService,EmailService]
 })
 export class RequestDetailsComponent {
+  private _snackBar = inject(MatSnackBar);
   requestDetails = signal<Requestes | null>(null);
   inventories!:RefInventory[];
   displayedColumns: string[] = ['certificateTypeNavigation', 'requestAmaunt','Unused balance','supplyAmaunt','comment'];
@@ -41,6 +44,7 @@ export class RequestDetailsComponent {
    loading: boolean = false; // Flag to indicate loading state
    officeComment: string = '';
 deliveredTo: string = '';
+
 constructor(private route: ActivatedRoute,private requestDetailsService:RequestDetailsService,private RefServService:RefServService,private EmailService:EmailService){
   // This allows effect to be set in the constructor which is within an injection context
   effect(() => {
@@ -95,8 +99,7 @@ calculateUnusedBalance(certificate: Certificate): Observable<number> {
     const inventory = this.inventories?.find(
       (item: RefInventory) => item.certificateId === certificate.certificateTypeNavigation?.id && item.councilId === this.requestDetails()?.council?.id
     );
-    const unusedBalance =//inventory ? (inventory.inventory ?? 0) -0:0
-    inventory ? (inventory.inventory ?? 0) - (certificate.used ?? 0) : 0;
+    const unusedBalance = inventory ? (inventory.inventory ?? 0) - (certificate.used ?? 0) : 0;
     observer.next(unusedBalance);
     observer.complete();
   });
@@ -129,14 +132,14 @@ this.upDateRequest(previousStatusId); // עדכון הסטטוס הקודם
     this.requestDetails()?.certificates.forEach((certificate: Certificate,index) => {
       body += `${index + 1}. ${certificate.supplyAmaunt} ${certificate.certificateTypeNavigation?.name}נשלחו ל${this.requestDetails()?.council?.name}.\n`; 
     });
-  this.sentEmailToTheOffice(` אושרה בקשה מספר ${this.requestDetails()?.requestId}`,body)
+  this.sentEmailToTheOffice(`אושרה בקשה מספר ${this.requestDetails()?.requestId}`,body)
 }
 cancelRequest(): void {
   const statusId = 4; 
-  this.changeStatus(statusId);
   this.requestDetails()?.certificates.forEach((certificate: Certificate) => {
    certificate.supplyAmaunt = 0; 
   });
+  this.changeStatus(statusId);
 this.sentEmailToTheOffice(`בוטלה בקשה מספר ${this.requestDetails()?.requestId}`,`הבקשה בוטלה על ידי המשרד`)
 }
 readyForDelivery(): void {
@@ -144,22 +147,47 @@ readyForDelivery(): void {
   this.changeStatus(statusId);
 }
 save(){
-  this.loading = true;
   this.upDateRequest(null);
-  this.loading = false;
 }
 upDateRequest(previousStatusId: number|null) {
+  this.loading = true;
+ if( this.checkNegitiveInventoryBalance()){
   console.log('requestDetails:', this.requestDetails);
   this.requestDetails.update(current => ({ ...current, officeComment: this.officeComment,deliveredTo:this.deliveredTo } as Requestes)); 
   this.requestDetailsService.updateRequest( this.requestId,previousStatusId, this.requestDetails()).subscribe(
     (data:any) => {
       this.requestDetails.set(data.data); // Update the request details with the response data
       console.log('Request updated successfully:', data);
+      this.loading = false;
+    this.openSnackBar("הבקשה עודכנה בהצלחה", "succsses")
+    //  let snackBarRef = snackBar.open('Message archived', 'Undo');
     },
     (error) => {
       console.error('Error updating status:', error);
     },
     () => this.loading = false
   );
+}
+}
+
+checkNegitiveInventoryBalance(): boolean {
+  let isNegitive = false;
+  this.requestDetails()?.certificates.forEach((certificate: Certificate) => {
+   if(certificate.supplyAmaunt ?? 0>(Number)(this.calculateUnusedBalance(certificate)))
+    isNegitive = true;
+   });
+   if(isNegitive){
+    
+      if (confirm(` \n  עבור אחד או יתר מהתעודות כמות האספקה גדולה מכמות היתרה  האם אתה בטוח שברצנוך לעדכן בקשה זו?`)) {
+       return true
+      } else {
+       return false
+   }
+}
+return true
+}
+
+openSnackBar(message: string, action: string) {
+  this._snackBar.open(message, action);
 }
 }

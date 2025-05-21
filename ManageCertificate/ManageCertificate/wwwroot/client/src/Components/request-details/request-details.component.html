@@ -1,4 +1,5 @@
 <a  href="/">חזרה לרשימת הבקשות</a>
+
 <div class="button-group">
   <button mat-button color="primary" (click)="requestApproval()">אישור בקשה</button>
   <button mat-button color="warn" (click)="cancelRequest()">ביטול בקשה</button>
@@ -66,6 +67,7 @@
       
       <li class="list-group-item">
         <strong>תאריך טיפול:</strong> {{requestDetails()?.handlingDate | date:'dd/MM/yyyy'}}
+    
       </li>
       <li class="list-group-item">
         <strong>הערות המשרד להזמנה:</strong> 

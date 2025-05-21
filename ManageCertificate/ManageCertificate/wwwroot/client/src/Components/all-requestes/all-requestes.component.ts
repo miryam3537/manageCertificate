@@ -13,7 +13,7 @@ import { combineLatest } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { RefServService } from '../../Services/ref-serv.service';
-import { RequestServiceService } from '../../Services/request-service.service';
+import { RequestService } from '../../Services/request.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -50,7 +50,7 @@ import { MatCardModule } from '@angular/material/card';
   ],
   templateUrl: './all-requestes.component.html',
   styleUrl: './all-requestes.component.css',
-  providers: [RequestServiceService, RefServService],
+  providers: [RequestService, RefServService],
 })
 export class AllRequestesComponent implements OnInit {
   displayedColumns: string[] = ['requestId', 'orderDate', 'deliveryMethod', 'officeComment', 'requestStatus', 'councilId', 'Actions'];
@@ -70,7 +70,7 @@ export class AllRequestesComponent implements OnInit {
 
 
   constructor(
-    public RequestServiceService: RequestServiceService,
+    public RequestService: RequestService,
     private RefServService: RefServService
   ) {}
 
@@ -82,7 +82,7 @@ export class AllRequestesComponent implements OnInit {
     this.isLoading = true;
 
     combineLatest([
-      this.RequestServiceService.getAll(),
+      this.RequestService.getAll(),
       this.RefServService.getAllCertificateType(this.ListRefCertificateType),
       this.RefServService.getAllRefStatus(this.ListRefStatus),
       this.RefServService.getAllInventory(),
@@ -115,37 +115,37 @@ export class AllRequestesComponent implements OnInit {
 
  
   applyFilters() {
-    this.RequestServiceService.getAll().subscribe((res: Requestes[]) => {
+    this.RequestService.getAll().subscribe((res: Requestes[]) => {
       this.allRequests = res;
-      this.ListRequestes.data = this.RequestServiceService.filterRequests(this.allRequests);
+      this.ListRequestes.data = this.RequestService.filterRequests(this.allRequests);
     });
   }
   onSelectChange(event: MatSelectChange) {
-    this.RequestServiceService.selectedStatus = event.value;
+    this.RequestService.selectedStatus = event.value;
     this.applyFilters();
   }
 
   onInputChangeCouncil(event: Event) {
-    this.RequestServiceService.selectedCouncilId = (event.target as HTMLInputElement).value;
+    this.RequestService.selectedCouncilId = (event.target as HTMLInputElement).value;
     this.applyFilters();
   }
 
   onInputChangeNumReq(event: Event) {
     const input = (event.target as HTMLInputElement).value;
-    this.RequestServiceService.selectedRequestId = input ? parseInt(input, 10) : null;
+    this.RequestService.selectedRequestId = input ? parseInt(input, 10) : null;
     this.applyFilters();
   }
 
   onDateChange(event: MatDatepickerInputEvent<Date>) {
-    this.RequestServiceService.selectedDate = event.value;
+    this.RequestService.selectedDate = event.value;
     this.applyFilters();
   }
 
   resetFilters() {
-    this.RequestServiceService.selectedStatus = null;
-    this.RequestServiceService.selectedCouncilId = null;
-    this.RequestServiceService.selectedRequestId = null;
-    this.RequestServiceService.selectedDate = null;
+    this.RequestService.selectedStatus = null;
+    this.RequestService.selectedCouncilId = null;
+    this.RequestService.selectedRequestId = null;
+    this.RequestService.selectedDate = null;
     this.isReset = true; 
     setTimeout(() => {
       this.isReset = false; 

@@ -59,6 +59,10 @@ namespace BL
             {
 
                 Request upDateRequest = mapper.Map<DTO.RequestDTO, Request>(PutRequest);
+                if (previousStatusId != null)
+                {
+                    upDateRequest.HandlingDate = DateTime.Now;
+                }
              Request  returnUpDateRequest  = await RequestDAl.PutRequest(id, upDateRequest);
                 RequestDTO requestDTO = mapper.Map<Request, RequestDTO> (returnUpDateRequest);
                 return requestDTO; // עדכון הצליח
