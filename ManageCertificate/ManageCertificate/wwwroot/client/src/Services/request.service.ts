@@ -2,10 +2,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Requestes } from '../Models/Requestes';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap,map } from 'rxjs/operators';
 import { RefStatus } from '../Models/RefStatus';
 import { MatTableDataSource } from '@angular/material/table';
+import { catchError, Observable,throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +23,17 @@ export class RequestService {
 
    getAll(): Observable<Requestes[]> {
     console.log("getAllrequestes!");
-    return this.http.get<Requestes[]>(this.BASE_URL);
-    
+    return this.http.get<Requestes[]>(this.BASE_URL).pipe(tap(data => {
+      this.allRequests = data;
+    }));
   }
+  
+  getRequestById(requestId: number): Observable<Requestes | undefined> {
+    return this.getAll().pipe(
+      map(requestes=> requestes.find(r => r.requestId === requestId))
+    );
+  }
+  
   filterRequests(requests: Requestes[]): Requestes[] {
     return requests.filter(x => {
       const statusMatch = this.selectedStatus === null || 
@@ -39,5 +47,19 @@ export class RequestService {
       return statusMatch && councilMatch && requestMatch && dateMatch;
     });
   }
-  
+  getRequestByIdServer(id: number): Observable<Requestes> {
+    return this.http.get<Requestes>(`${this.BASE_URL}/${id}`).pipe(
+      catchError((error) => {
+        console.error('Error:', error);
+        return throwError(() => new Error('Failed to fetch data'));
+      })
+    );
+     
+}
+updateRequest(requestId: number, previousStatusId: number | null, request: Requestes|null): Observable<Requestes> {
+  return this.http.put<Requestes>(`${this.BASE_URL}/${requestId}`, request, {
+    params: previousStatusId !== null ? { previousStatusId: previousStatusId.toString() } : undefined
+  });
+}
+ 
 }
