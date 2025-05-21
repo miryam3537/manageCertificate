@@ -67,16 +67,17 @@ ngOnInit() {
 
   private fetchRequestDetails(): void {
     // Fetch the details of the request from the service
-    this.RequestService.get(this.requestId).subscribe(
-      (data: Requestes) => {
-        this.requestDetails.set(data); // Set request details
-        this.dataSource.data = this.requestDetails()?.certificates || []; // Update dataSource with the certificates data
-        this.GetAllInvetory(); // Fetch inventory data
-      },
-      (error) => {
-        console.error('Error fetching request details:', error); // Log any errors
-      }
-    );
+    this.requestDetails = this.RequestService.getAll().find(r=> r.requestId == this.requestId)
+    // this.RequestService.get(this.requestId).subscribe(
+    //   (data: Requestes) => {
+    //     this.requestDetails.set(data); // Set request details
+    //     this.dataSource.data = this.requestDetails()?.certificates || []; // Update dataSource with the certificates data
+    //     this.GetAllInvetory(); // Fetch inventory data
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching request details:', error); // Log any errors
+    //   }
+    // );
   }
 
   private GetAllInvetory(): void {
@@ -159,7 +160,7 @@ upDateRequest(previousStatusId: number|null) {
       this.requestDetails.set(data.data); // Update the request details with the response data
       console.log('Request updated successfully:', data);
       this.loading = false;
-    this.openSnackBar("הבקשה עודכנה בהצלחה", "succsses")
+    this.openSnackBar("הבקשה עודכנה בהצלחה", "אישור")
     //  let snackBarRef = snackBar.open('Message archived', 'Undo');
     },
     (error) => {
