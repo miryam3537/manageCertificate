@@ -1,6 +1,6 @@
 import { Component,inject } from '@angular/core';
 import {MatTableModule} from '@angular/material/table';
-import{RequestDetailsService} from '../../Services/requestes.service';
+import{RequestService} from '../../Services/request.service';
 import { RefServService } from '../../Services/ref-serv.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
@@ -31,7 +31,7 @@ export interface PeriodicElement {
   imports: [MatTableModule,HttpClientModule ,CommonModule,FormsModule,MatButtonModule,MatCardModule,MatIcon,MatSpinner],
   templateUrl: './request-details.component.html',
   styleUrls:['./request-details.component.css'] ,
- providers: [RequestDetailsService,RefServService,EmailService]
+ providers: [RequestService,RefServService,EmailService]
 })
 export class RequestDetailsComponent {
   private _snackBar = inject(MatSnackBar);
@@ -45,7 +45,7 @@ export class RequestDetailsComponent {
    officeComment: string = '';
 deliveredTo: string = '';
 
-constructor(private route: ActivatedRoute,private requestDetailsService:RequestDetailsService,private RefServService:RefServService,private EmailService:EmailService){
+constructor(private route: ActivatedRoute,private RequestService:RequestService,private RefServService:RefServService,private EmailService:EmailService){
   // This allows effect to be set in the constructor which is within an injection context
   effect(() => {
     const details = this.requestDetails();
@@ -67,7 +67,7 @@ ngOnInit() {
 
   private fetchRequestDetails(): void {
     // Fetch the details of the request from the service
-    this.requestDetailsService.get(this.requestId).subscribe(
+    this.RequestService.get(this.requestId).subscribe(
       (data: Requestes) => {
         this.requestDetails.set(data); // Set request details
         this.dataSource.data = this.requestDetails()?.certificates || []; // Update dataSource with the certificates data
@@ -154,7 +154,7 @@ upDateRequest(previousStatusId: number|null) {
  if( this.checkNegitiveInventoryBalance()){
   console.log('requestDetails:', this.requestDetails);
   this.requestDetails.update(current => ({ ...current, officeComment: this.officeComment,deliveredTo:this.deliveredTo } as Requestes)); 
-  this.requestDetailsService.updateRequest( this.requestId,previousStatusId, this.requestDetails()).subscribe(
+  this.RequestService.updateRequest( this.requestId,previousStatusId, this.requestDetails()).subscribe(
     (data:any) => {
       this.requestDetails.set(data.data); // Update the request details with the response data
       console.log('Request updated successfully:', data);
