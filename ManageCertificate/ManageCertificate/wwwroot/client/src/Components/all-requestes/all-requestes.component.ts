@@ -51,7 +51,7 @@ import { CertificateService } from '../../Services/certificate.service';
   ],
   templateUrl: './all-requestes.component.html',
   styleUrl: './all-requestes.component.css',
-  providers: [RequestServiceService, RefServService, CertificateService],
+  providers: [RequestService, RefServService, CertificateService],
 })
 export class AllRequestesComponent implements OnInit {
   displayedColumns: string[] = ['requestId', 'orderDate', 'deliveryMethod', 'officeComment', 'requestStatus', 'councilId', 'Actions'];
@@ -69,7 +69,7 @@ export class AllRequestesComponent implements OnInit {
   inventory:object[] = [];
   @ViewChild(MatSort) sort!: MatSort;
   constructor(
-    public RequestServiceService: RequestServiceService,
+    public RequestService: RequestService,
     private RefServService: RefServService,
     public certificateService: CertificateService
   ) {}

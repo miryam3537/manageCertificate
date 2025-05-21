@@ -95,7 +95,7 @@ export class InventoryReportsComponent implements OnInit{
           console.log('ListRefCertificateType:', this.ListRefCertificateType);
           console.log('ListRefInventory:', this.ListRefInventory);
           console.log('ListAllCertificate:', this.ListAllCertificates);
-          this.InventoryManagement(this.currentYear);
+          this.OfficeSupplies(this.currentYear);
           this.isLoading = false;
           this.applyFilter()
         },
@@ -105,7 +105,38 @@ export class InventoryReportsComponent implements OnInit{
         }
       });
     }
-
+    UtilizationPerYear() {
+      const utilizationResults = this.ListRefInventory.map(inventory => {
+        // חיפוש כל התעודות המתאימות
+        const matchingCertificates = this.ListAllCertificates.filter(certificate => {
+          // בדיקת התאמת סוג התעודה
+          const isTypeMatch = certificate.certificateType === inventory.certificateId;
+    
+          // בדיקת התאמת הלשכה דרך טבלת הבקשות
+          // const request = this.RefServService.getRequestById(certificate.requestId); // פונקציה לדוגמה
+          // const isCouncilMatch = request && request.councilId === inventory.councilId;
+    
+          // return isTypeMatch && isCouncilMatch;
+        });
+    
+        // חישוב סך כל ה-supplyAmaunt
+        const totalSupplyAmount = matchingCertificates.reduce((sum, certificate) => {
+          return sum + (certificate.supplyAmaunt || 0);
+        }, 0);
+    
+        return {
+          // inventoryId: inventory.id,
+          councilId: inventory.councilId,
+          certificateId: inventory.certificateId,
+          totalSupplyAmount
+        };
+      });
+    
+      console.log('Utilization Results:', utilizationResults);
+      return utilizationResults;
+    }
+    
+    
     applyFilter() {
       this.filteredInventory = this.ListRefInventory.filter(item => {
         const yearMatch = this.selectedYearTable1 === null || item.year === this.selectedYearTable1;
@@ -130,7 +161,7 @@ export class InventoryReportsComponent implements OnInit{
     }
     onInputChangeYearTable2(event: Event) {
       this.selectedYearTable2 = (event.target as HTMLInputElement).valueAsNumber || null;
-      this.InventoryManagement(this.selectedYearTable2 || this.currentYear);
+      this.OfficeSupplies(this.selectedYearTable2 || this.currentYear);
       
     }
     resetFilters() {
@@ -142,7 +173,9 @@ export class InventoryReportsComponent implements OnInit{
       }, 0);
       this.filteredInventory = [...this.ListRefInventory]; // איפוס הסינון
     }
-    InventoryManagement(year:number){
+
+
+    OfficeSupplies(year:number){
       this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
       const totalSupplyAmount = this.ListAllCertificates
           .filter(certificate => certificate.certificateType === refCertificateType.id)

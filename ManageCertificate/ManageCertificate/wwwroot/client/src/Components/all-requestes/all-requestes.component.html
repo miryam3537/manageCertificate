@@ -50,7 +50,7 @@
       <!-- Filter by Status -->
       <mat-form-field appearance="fill" class="filter-item">
         <mat-label>סינון לפי סטטוס בקשה</mat-label>
-        <mat-select [value]="isReset ? '' : RequestServiceService.selectedStatus" (selectionChange)="onSelectChange($event)">
+        <mat-select [value]="isReset ? '' : RequestService.selectedStatus" (selectionChange)="onSelectChange($event)">
          
           <mat-option *ngFor="let status of ListRefStatus" [value]="status.id">
             {{ status.name }}
