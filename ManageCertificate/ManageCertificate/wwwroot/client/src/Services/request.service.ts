@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 @Injectable({
   providedIn: 'root'
 })
-export class RequestServiceService {
+export class RequestService {
   selectedStatus: number | null = null;
   selectedCouncilId: string | null = null;
   selectedRequestId: number | null = null;

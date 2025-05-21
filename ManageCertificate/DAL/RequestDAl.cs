@@ -46,7 +46,7 @@ namespace DAL
         }
        
 
-        public async Task PutRequestStatus(int id, Request upDateRequest)
+        public async Task<Request> PutRequest(int id, Request upDateRequest)
         {
             // Retrieve the existing request from the database
             var existingRequest = await _context.Requests
@@ -55,7 +55,7 @@ namespace DAL
 
             if (existingRequest == null)
                 throw new KeyNotFoundException($"Request with ID {id} not found.");
-            upDateRequest.HandlingDate = DateTime.Now;
+        
             // Update the properties of the existing request
             _context.Entry(existingRequest).CurrentValues.SetValues(upDateRequest);
 
@@ -89,9 +89,15 @@ namespace DAL
 
             // Save changes to the database
             await _context.SaveChangesAsync();
+            return await _context.Requests
+                                  .Include(r => r.Council)
+                                  .Include(r => r.RequestStatusNavigation)
+                                  .Include(r => r.Certificates)
+                                  .ThenInclude(c => c.CertificateTypeNavigation)
+                                  .FirstOrDefaultAsync(r => r.RequestId == id);
         }
 
 
     }
-
+   
 }
