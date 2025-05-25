@@ -9,6 +9,7 @@ using DAL.Interfaces;
 using BL.Interfaces;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
+using DAL;
 
 namespace BL
 {
@@ -38,6 +39,22 @@ namespace BL
             CaldulateSupplayAmountForAllCertificate(Allcertificates, requestDTO.Certificates);
             return requestDTO;
         }
+        public async Task<int> GetCouncilIdByRequestIdAsync(int requestId)
+        {
+            // קריאה לפונקציה בשכבת ה-DAL
+            var councilId = await RequestDAl.GetCouncilIdByRequestIdAsync(requestId);
+
+            // בדיקה אם הבקשה קיימת
+            if (!councilId.HasValue)
+            {
+                throw new Exception($"Council ID not found for Request ID {requestId}.");
+            }
+
+            // החזרת ה-CouncilId
+            return councilId.Value;
+        }
+
+
         public void CaldulateSupplayAmountForAllCertificate(List<Certificate> Allcertificates, IEnumerable<CertificateDTO> certificates)
         {
             foreach (CertificateDTO cert in certificates)

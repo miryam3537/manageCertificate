@@ -3,7 +3,7 @@ import { RefServService } from '../../Services/ref-serv.service';
 import { RefInventory } from '../../Models/RefInventory';
 import { Certificate } from '../../Models/Certificate';
 import { RefCertificateType } from '../../Models/RefCertificateType';
-import { combineLatest, take } from 'rxjs';
+import { catchError, combineLatest, forkJoin, map, Observable, of, take } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import {  MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
@@ -23,6 +23,10 @@ import { RouterModule } from '@angular/router';
 import { RefCouncil } from '../../Models/RefCouncil';
 import { MatGridList, MatGridListModule } from '@angular/material/grid-list';
 import { CertificateService } from '../../Services/certificate.service';
+import { RequestService } from '../../Services/request.service';
+import { firstValueFrom } from 'rxjs';
+// import { forkJoin } from 'rxjs';
+// import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-inventory-reports',
@@ -48,7 +52,7 @@ import { CertificateService } from '../../Services/certificate.service';
     MatCardModule],
   templateUrl: './inventory-reports.component.html',
   styleUrl: './inventory-reports.component.css',
-  providers: [RefServService,CertificateService ]
+  providers: [RefServService,CertificateService, RequestService]
 })
 export class InventoryReportsComponent implements OnInit{
   
@@ -65,31 +69,35 @@ export class InventoryReportsComponent implements OnInit{
   selectedCouncilId: number | null = null;
   currentYear = new Date().getFullYear();
   displayedColumns: string[] = ['name', 'inventoryBalance','inventory','minimumBalance','save'];
-  inventoryDisplayedCol: string[] = ['councilName','year','certificate','inventory','supplyAmmount','inventoryBalance','save'];
+  inventoryDisplayedCol: string[] = ['councilName','year','certificate','inventory', 'totalSupplyAmount', 'inventoryBalance','save'];
   filteredInventory: RefInventory[] = [];
-  
+  finalResults: any[] = []; // משתנה לשמירת התוצאות
   constructor(
     public RefServService: RefServService,
     public certificateService: CertificateService,
+    public requestService: RequestService,
   ) {}
    ngOnInit() {
       this.loadData();
-      this.ListAllCertificates==this.certificateService.ListCertificate;
+  
+      //לבדוק למה אי אפשר לקבל מהשירות בצורה כזאת את הרשימה
+      //this.ListAllCertificates==this.certificateService.ListCertificate;
     }
 
     loadData() {
       this.isLoading = true;
-  
+     
       combineLatest([
         this.RefServService.getAllCertificateType(this.ListRefCertificateType),
         this.RefServService.getAllInventory(),
-        // this.certificateService.getAllCertificate(),
+        this.certificateService.getAllCertificate(),
         this.RefServService.getAllRefCouncil(this.ListRefCouncil),
+        
       ]).pipe(take(1)).subscribe({
-        next: ([certificateTypes, inventories, refCouncil]) => {
+        next: ([certificateTypes, inventories, certificates,refCouncil]) => {
           this.ListRefCertificateType = certificateTypes;
           this.ListRefInventory = inventories;
-          //this.ListAllCertificates = certificates;
+          this.ListAllCertificates = certificates;
           this.ListRefCouncil = refCouncil;
           console.log('ListRefCouncil: קומפ', this.ListRefCouncil);
           console.log('ListRefCertificateType:', this.ListRefCertificateType);
@@ -98,6 +106,7 @@ export class InventoryReportsComponent implements OnInit{
           this.OfficeSupplies(this.currentYear);
           this.isLoading = false;
           this.applyFilter()
+           this.UtilizationPerYear();
         },
         error: (error) => {
           console.error('Error while loading data:', error);
@@ -105,44 +114,99 @@ export class InventoryReportsComponent implements OnInit{
         }
       });
     }
+
     UtilizationPerYear() {
-      const utilizationResults = this.ListRefInventory.map(inventory => {
-        // חיפוש כל התעודות המתאימות
-        const matchingCertificates = this.ListAllCertificates.filter(certificate => {
-          // בדיקת התאמת סוג התעודה
-          const isTypeMatch = certificate.certificateType === inventory.certificateId;
+      const utilizationResults$ = this.ListRefInventory.map(inventory => {
+        // חיפוש כל התעודות המתאימות ל-inventory הנוכחי
+        const matchingCertificates = this.ListAllCertificates.filter(certificate => 
+          certificate.certificateType === inventory.certificateId
+        );
     
-          // בדיקת התאמת הלשכה דרך טבלת הבקשות
-          // const request = this.RefServService.getRequestById(certificate.requestId); // פונקציה לדוגמה
-          // const isCouncilMatch = request && request.councilId === inventory.councilId;
+        // עבור כל תעודה מתאימה
+        const requests = matchingCertificates.map(certificate => 
+          this.requestService.getCouncilId(certificate.requestId || 76).pipe(
+            map(councilId => ({
+              certificate,
+              isCouncilMatch: councilId === inventory.councilId // בדיקת התאמה בין המועצה לתעודה
+            })),
+            catchError(() => of({ certificate, isCouncilMatch: false })) 
+          )
+        );
     
-          // return isTypeMatch && isCouncilMatch;
-        });
+    //אם אין
+        if (requests.length === 0) {
+          return of({ inventory, totalSupplyAmount: 0 });
+        }
     
-        // חישוב סך כל ה-supplyAmaunt
-        const totalSupplyAmount = matchingCertificates.reduce((sum, certificate) => {
-          return sum + (certificate.supplyAmaunt || 0);
-        }, 0);
-    
-        return {
-          // inventoryId: inventory.id,
-          councilId: inventory.councilId,
-          certificateId: inventory.certificateId,
-          totalSupplyAmount
-        };
+        // שילוב התוצאות עבור כל inventory
+        return forkJoin(requests).pipe(
+          map(results => ({
+            inventory,
+            totalSupplyAmount: results
+              .filter(result => result.isCouncilMatch) // סינון תעודות עם התאמה
+              .reduce((sum, result) => sum + (result.certificate.supplyAmaunt || 0), 0) // חישוב סך ה-supplyAmount
+          }))
+        );
       });
+      if (utilizationResults$.length > 0) {
+        forkJoin(utilizationResults$).subscribe(
+          finalResults => {
+            // שילוב התוצאות עם רשימת ה-inventory להצגה בטבלה
+            this.filteredInventory = this.ListRefInventory.map(inventory => {
+              const result = finalResults.find(r => r.inventory === inventory);
+              return {
+                ...inventory,
+                totalSupplyAmount: result ? result.totalSupplyAmount : 0
+              };
+            });
+          },
+          error => {
+            console.error("Error processing results:", error); 
+          }
+        );
+      }
+  }
+    // UtilizationPerYear(inventory: any): Observable<number> {
+    //   // חיפוש כל התעודות המתאימות ל-inventory הנוכחי
+    //   const matchingCertificates = this.ListAllCertificates.filter(certificate =>
+    //     certificate.certificateType === inventory.certificateId
+    //   );
     
-      console.log('Utilization Results:', utilizationResults);
-      return utilizationResults;
-    }
+    //   // עבור כל תעודה מתאימה
+    //   const requests = matchingCertificates.map(certificate =>
+    //     this.requestService.getCouncilId(certificate.requestId || 76).pipe(
+    //       map(councilId => ({
+    //         certificate,
+    //         isCouncilMatch: councilId === inventory.councilId // בדיקת התאמה בין המועצה לתעודה
+    //       })),
+    //       catchError(() => of({ certificate, isCouncilMatch: false }))
+    //     )
+    //   );
+    
+    //   // אם אין תעודות מתאימות
+    //   if (requests.length === 0) {
+    //     return of(0); // ערך ברירת מחדל
+    //   }
+    
+    //   // שילוב התוצאות עבור inventory
+    //   return forkJoin(requests).pipe(
+    //     map(results =>
+    //       results
+    //         .filter(result => result.isCouncilMatch) // סינון תעודות עם התאמה
+    //         .reduce((sum, result) => sum + (result.certificate.supplyAmaunt || 0), 0) // חישוב סך ה-supplyAmount
+    //     )
+    //   );
+    // }
     
     
+
     applyFilter() {
       this.filteredInventory = this.ListRefInventory.filter(item => {
         const yearMatch = this.selectedYearTable1 === null || item.year === this.selectedYearTable1;
         const councilMatch = this.selectCouncil === '' || item.council?.name?.toLowerCase().includes(this.selectCouncil.toLowerCase());
         return yearMatch && councilMatch;
       });
+
     }
   
     onInputChangeYearTable1(event: Event) {

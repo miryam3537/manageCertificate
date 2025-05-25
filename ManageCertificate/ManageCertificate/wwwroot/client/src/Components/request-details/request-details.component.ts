@@ -67,7 +67,7 @@ ngOnInit() {
 
   private fetchRequestDetails(): void {
     // Fetch the details of the request from the service
-    this.requestDetails = this.RequestService.getAll().find(r=> r.requestId == this.requestId)
+    //this.requestDetails = this.RequestService.getAll().find(r=> r.requestId == this.requestId)
     // this.RequestService.get(this.requestId).subscribe(
     //   (data: Requestes) => {
     //     this.requestDetails.set(data); // Set request details

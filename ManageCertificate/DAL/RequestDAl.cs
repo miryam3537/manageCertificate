@@ -44,7 +44,16 @@ namespace DAL
                                  .ThenInclude(c => c.CertificateTypeNavigation)
                                  .FirstOrDefaultAsync(r => r.RequestId == id);
         }
-       
+
+        public async Task<int?> GetCouncilIdByRequestIdAsync(int requestId)
+        {
+            return await _context.Requests
+                .Where(r => r.RequestId == requestId)
+                .Select(r => r.CouncilId)
+                .FirstOrDefaultAsync();
+        }
+
+
 
         public async Task<Request> PutRequest(int id, Request upDateRequest)
         {

@@ -24,6 +24,9 @@
         (input)="onInputChangeCouncil($event)"
       />
     </mat-form-field>
+ 
+
+    
 <h3 class="inventory-title">מאזן מלאי למועצה</h3>
     <button mat-raised-button color="primary" (click)="resetFilters()">איפוס סינון</button>
   </div>
@@ -55,14 +58,16 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="supplyAmmount">
-          <th mat-header-cell *matHeaderCellDef> ניצול שנתי (תעודות שסופקו) </th>
-          <td mat-cell *matCellDef="let item"></td>
+        <ng-container matColumnDef="totalSupplyAmount">
+          <th mat-header-cell *matHeaderCellDef> ניצול שנתי </th>
+          <td mat-cell *matCellDef="let item"> {{ item.totalSupplyAmount || 0 }} </td>
         </ng-container>
-
+      
         <ng-container matColumnDef="inventoryBalance">
           <th mat-header-cell *matHeaderCellDef> יתרה לא מנוצלת </th>
-          <td mat-cell *matCellDef="let item"></td>
+          <td mat-cell *matCellDef="let item">
+            {{ (item.inventory.inventory || 0) - (item.totalSupplyAmount || 0) }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="save">

@@ -47,13 +47,30 @@ export class RequestService {
       return statusMatch && councilMatch && requestMatch && dateMatch;
     });
   }
-  getRequestByIdServer(id: number): Observable<Requestes> {
-    return this.http.get<Requestes>(`${this.BASE_URL}/${id}`).pipe(
-      catchError((error) => {
-        console.error('Error:', error);
-        return throwError(() => new Error('Failed to fetch data'));
-      })
-    );
+  getCouncilId(requestId: number): Observable<number> {
+    const url = `${this.BASE_URL}/GetCouncilId/${requestId}`;
+    console.log(url,"💖😢😢🎶🎶😎🎶😎");
+    return this.http.get<number>(url);
+
+    
+  }
+  // getRequestByIdServer(id: number): Observable<Requestes> {
+  //   return this.http.get<Requestes>(`${this.BASE_URL}/${id}`).pipe(
+  //     catchError((error) => {
+  //       console.error('Error:', error);
+  //       return throwError(() => new Error('Failed to fetch data'));
+  //     })
+  //   );
+    getRequestByIdServer(id: number): Observable<Requestes> {
+      return this.http.get<Requestes>(`${this.BASE_URL}/${id}`).pipe(
+        tap((response) => console.log('Response from server:', response)),
+        catchError((error) => {
+          console.error('Error:', error);
+          return throwError(() => new Error('Failed to fetch data'));
+        })
+      );
+    
+    
      
 }
 updateRequest(requestId: number, previousStatusId: number | null, request: Requestes|null): Observable<Requestes> {
