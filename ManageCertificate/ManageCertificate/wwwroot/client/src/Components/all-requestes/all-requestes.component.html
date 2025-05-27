@@ -41,7 +41,10 @@
     <div class="reset-button-container">
       <button mat-raised-button color="warn" (click)="resetFilters()">איפוס</button>
       <button mat-raised-button color="warn" ><a [routerLink]="['/InventoryReports']">דוחות מלאי</a> </button>
-      <button mat-raised-button color="warn" >הדפס</button>
+      <button mat-raised-button color="primary" (click)="printTable()">
+        <mat-icon>print</mat-icon>
+        הדפסה
+      </button>
     </div>
     
      

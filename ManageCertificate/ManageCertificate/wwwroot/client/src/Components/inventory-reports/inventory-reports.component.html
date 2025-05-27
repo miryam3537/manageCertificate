@@ -1,6 +1,9 @@
 <div class="page-container">
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
 <!-- Filters Section -->
+<button mat-icon-button color="primary" (click)="goBackToRequests()">
+  <mat-icon>arrow_forward</mat-icon>
+</button>
 <div class="filters-wrapper">
   <div class="filters-container">
     <mat-form-field appearance="fill" class="filter-item">
@@ -26,9 +29,14 @@
     </mat-form-field>
  
 
-    
+
 <h3 class="inventory-title">מאזן מלאי למועצה</h3>
+<button mat-raised-button color="primary" (click)="onPrintTable(1)">
+  <mat-icon>print</mat-icon>
+  הדפסה
+</button>
     <button mat-raised-button color="primary" (click)="resetFilters()">איפוס סינון</button>
+
   </div>
 </div>
 
@@ -70,11 +78,12 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="save">
+        <ng-container matColumnDef="Actions">
           <th mat-header-cell *matHeaderCellDef> שמור </th>
           <td mat-cell *matCellDef="let item">
             <mat-icon>save</mat-icon>
           </td>
+          
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="inventoryDisplayedCol"></tr>
@@ -86,8 +95,12 @@
       </p>
     </div>
   </div>
-
+  
   <div class="filters-wrapper">
+    <button mat-raised-button color="primary" (click)="onPrintTable(2)">
+      <mat-icon>print</mat-icon>
+      הדפסה
+    </button>
     <div class="filters-container">
       <mat-form-field appearance="fill" class="filter-item">
         <mat-label>סינון לפי שנה</mat-label>
@@ -136,8 +149,8 @@
           <td mat-cell *matCellDef="let type">{{ type.MINIMUM_INVENTORY_BALANCES }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="save">
-          <th mat-header-cell *matHeaderCellDef> שמירה </th>
+        <ng-container matColumnDef="Actions">
+          <th mat-header-cell *matHeaderCellDef> שמור </th>
           <td mat-cell *matCellDef="let type">
             <div class="actions">
               <mat-icon>save</mat-icon>

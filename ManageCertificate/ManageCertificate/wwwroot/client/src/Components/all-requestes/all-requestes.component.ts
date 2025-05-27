@@ -111,7 +111,95 @@ export class AllRequestesComponent implements OnInit {
   });
   }
 
- 
+  printTable(): void {
+    
+    const orginalTable = document.querySelector('.table-container') as HTMLElement;
+    const tableContainer = orginalTable.cloneNode(true) as HTMLElement;
+    const actionsColumn = tableContainer.querySelector('ng-container[matColumnDef="Actions"]') as HTMLElement;
+    const headerRow = tableContainer.querySelector('tr[mat-header-row]') as HTMLElement;
+    const dataRows = tableContainer.querySelectorAll('tr[mat-row]');
+  
+    // שמירת עמודת ה-Actions
+    const actionsColumnClone = actionsColumn?.cloneNode(true);
+  
+    // הסרת עמודת ה-Actions
+    if (actionsColumn) {
+      actionsColumn.remove();
+    }
+    if (headerRow) {
+      const headerCells = headerRow.querySelectorAll('th');
+      headerCells.forEach((cell) => {
+        if (cell.textContent?.trim() === 'הצגת פרטי הבקשה') {
+          cell.remove();
+        }
+      });
+    }
+    dataRows.forEach((row) => {
+      const cells = row.querySelectorAll('td');
+      if (cells.length > 0) {
+        cells[cells.length - 1].remove(); // הסרת התא האחרון (עמודת ה-Actions)
+      }
+    });
+    if (headerRow) {
+      const headerCells = Array.from(headerRow.querySelectorAll('th'));
+      headerCells.reverse().forEach((cell) => headerRow.appendChild(cell));
+    }
+   
+    // הפיכת סדר העמודות בשורות הנתונים
+    dataRows.forEach((row) => {
+      const cells = Array.from(row.querySelectorAll('td'));
+      cells.reverse().forEach((cell) => row.appendChild(cell));
+    });
+    // פתיחת חלון ההדפסה
+    const WindowPrt = window.open('', '', 'width=900,height=650');
+    if (WindowPrt) {
+      WindowPrt.document.write(`
+        <html>
+          <head>
+            <title>הדפסת טבלה</title>
+            <style>
+              table {
+                width: 100%;
+                border-collapse: collapse;
+              }
+              th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+              }
+              th {
+                background-color: #f2f2f2;
+              }
+              .mat-sort-header-arrow {
+                display: none !important; /* הסתרת החיצים למיון */
+              }
+              .table-container {
+                margin: 0;
+                padding: 0;
+              }
+              table {
+                font-size: 12px; /* הקטנת גודל הטקסט */
+              }
+            </style>
+          </head>
+          <body>
+            ${tableContainer.innerHTML}
+          </body>
+        </html>
+      `);
+      WindowPrt.document.close();
+      WindowPrt.focus();
+      WindowPrt.print();
+      WindowPrt.close();
+    }
+  
+    // שחזור עמודת ה-Actions
+    if (actionsColumnClone) {
+      tableContainer.appendChild(actionsColumnClone);
+    }
+  }
+  
+  
   applyFilters() {
     this.RequestService.getAll().subscribe((res: Requestes[]) => {
       this.allRequests = res;
