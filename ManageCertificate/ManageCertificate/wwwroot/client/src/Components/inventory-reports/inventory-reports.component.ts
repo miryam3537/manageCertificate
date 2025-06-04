@@ -26,6 +26,7 @@ import { CertificateService } from '../../Services/certificate.service';
 import { RequestService } from '../../Services/request.service';
 import { firstValueFrom } from 'rxjs';
 import { PrintService } from '../../Services/print.service';
+
 // import { forkJoin } from 'rxjs';
 // import { map } from 'rxjs/operators';
 
@@ -242,5 +243,27 @@ calculateUtilizationPerYear() {
     }
     onPrintTable(tableId: number): void {
       this.printService.printTable(tableId);
+    }
+    downloadInventoryTable() {
+      const formattedData = this.filteredInventory.map((item) => ({
+        'שם מועצה': item.council?.name ?? 'N/A',
+        'שנה': item.year ?? 'N/A',
+        'שם תעודה': item.certificate?.name ?? 'N/A',
+        //'אומדן שנתי': item.inventory?.i ?? 'N/A',
+// 'ניצול שנתי': item.totalSupplyAmount ? item.totalSupplyAmount : 0,
+// 'יתרה לא מנוצלת': item.inventory && item.inventory.inventory
+//   ? item.inventory.inventory - (item.totalSupplyAmount || 0)
+//   : 0,
+      }));
+      this.printService.downloadExcel(formattedData, 'InventoryTable', 'Inventory');
+    }
+    downloadCertificateTypesTable() {
+      const formattedData = this.updatedCertificateTypes.map((type) => ({
+        'שם': type.name,
+        'מלאי עדכני': type.CURRENT_iNVENTORY < 0 ? 'חסר הגדרה' : type.CURRENT_iNVENTORY,
+        'יתרת מלאי לא מנוצלת': type.TOTAL_INVENTORY_BALANCES < 0 ? 'חסר הגדרה' : type.TOTAL_INVENTORY_BALANCES,
+        'מינימום': type.MINIMUM_INVENTORY_BALANCES,
+      }));
+      this.printService.downloadExcel(formattedData, 'CertificateTypesTable', 'CertificateTypes');
     }
   }    

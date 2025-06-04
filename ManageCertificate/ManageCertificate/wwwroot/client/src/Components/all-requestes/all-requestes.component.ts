@@ -26,7 +26,8 @@ import { RefCertificateType } from '../../Models/RefCertificateType';
 import { Certificate } from '../../Models/Certificate';
 import { MatCardModule } from '@angular/material/card';
 import { CertificateService } from '../../Services/certificate.service';
-
+import { PrintService } from '../../Services/print.service';
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-all-requestes',
   imports: [
@@ -51,7 +52,7 @@ import { CertificateService } from '../../Services/certificate.service';
   ],
   templateUrl: './all-requestes.component.html',
   styleUrl: './all-requestes.component.css',
-  providers: [RequestService, RefServService, CertificateService],
+  providers: [RequestService, RefServService, CertificateService,PrintService],
 })
 export class AllRequestesComponent implements OnInit {
   displayedColumns: string[] = ['requestId', 'orderDate', 'deliveryMethod', 'officeComment', 'requestStatus', 'councilId', 'Actions'];
@@ -71,7 +72,8 @@ export class AllRequestesComponent implements OnInit {
   constructor(
     public RequestService: RequestService,
     private RefServService: RefServService,
-    public certificateService: CertificateService
+    public certificateService: CertificateService,
+    public PrintService: PrintService
   ) {}
 
   ngOnInit() {
@@ -110,96 +112,9 @@ export class AllRequestesComponent implements OnInit {
       }
   });
   }
-
-  printTable(): void {
-    
-    const orginalTable = document.querySelector('.table-container') as HTMLElement;
-    const tableContainer = orginalTable.cloneNode(true) as HTMLElement;
-    const actionsColumn = tableContainer.querySelector('ng-container[matColumnDef="Actions"]') as HTMLElement;
-    const headerRow = tableContainer.querySelector('tr[mat-header-row]') as HTMLElement;
-    const dataRows = tableContainer.querySelectorAll('tr[mat-row]');
-  
-    // שמירת עמודת ה-Actions
-    const actionsColumnClone = actionsColumn?.cloneNode(true);
-  
-    // הסרת עמודת ה-Actions
-    if (actionsColumn) {
-      actionsColumn.remove();
-    }
-    if (headerRow) {
-      const headerCells = headerRow.querySelectorAll('th');
-      headerCells.forEach((cell) => {
-        if (cell.textContent?.trim() === 'הצגת פרטי הבקשה') {
-          cell.remove();
-        }
-      });
-    }
-    dataRows.forEach((row) => {
-      const cells = row.querySelectorAll('td');
-      if (cells.length > 0) {
-        cells[cells.length - 1].remove(); // הסרת התא האחרון (עמודת ה-Actions)
-      }
-    });
-    if (headerRow) {
-      const headerCells = Array.from(headerRow.querySelectorAll('th'));
-      headerCells.reverse().forEach((cell) => headerRow.appendChild(cell));
-    }
-   
-    // הפיכת סדר העמודות בשורות הנתונים
-    dataRows.forEach((row) => {
-      const cells = Array.from(row.querySelectorAll('td'));
-      cells.reverse().forEach((cell) => row.appendChild(cell));
-    });
-    // פתיחת חלון ההדפסה
-    const WindowPrt = window.open('', '', 'width=900,height=650');
-    if (WindowPrt) {
-      WindowPrt.document.write(`
-        <html>
-          <head>
-            <title>הדפסת טבלה</title>
-            <style>
-              table {
-                width: 100%;
-                border-collapse: collapse;
-              }
-              th, td {
-                border: 1px solid black;
-                padding: 8px;
-                text-align: left;
-              }
-              th {
-                background-color: #f2f2f2;
-              }
-              .mat-sort-header-arrow {
-                display: none !important; /* הסתרת החיצים למיון */
-              }
-              .table-container {
-                margin: 0;
-                padding: 0;
-              }
-              table {
-                font-size: 12px; /* הקטנת גודל הטקסט */
-              }
-            </style>
-          </head>
-          <body>
-            ${tableContainer.innerHTML}
-          </body>
-        </html>
-      `);
-      WindowPrt.document.close();
-      WindowPrt.focus();
-      WindowPrt.print();
-      WindowPrt.close();
-    }
-  
-    // שחזור עמודת ה-Actions
-    if (actionsColumnClone) {
-      tableContainer.appendChild(actionsColumnClone);
-    }
-  }
-  
-  
+onPrintAllRequestesTable() {
+  this.PrintService.printAllRequestesTable();
+}
   applyFilters() {
     this.RequestService.getAll().subscribe((res: Requestes[]) => {
       this.allRequests = res;
@@ -256,5 +171,47 @@ export class AllRequestesComponent implements OnInit {
     });
   
     console.log('Updated Certificate Types with Total Supply Amount:', this.updatedCertificateTypes);
+  }
+  downloadTableAsExcel() {
+    // עיצוב הנתונים לפני יצירת קובץ ה-Excel
+    const formattedData = this.ListRequestes.data.map((request) => ({
+      'מספר בקשה': request.requestId,
+      'רשם': request.ordererRole,
+      'שם רשם': request.ordererName,
+      'מספר טלפון רשם': request.ordererPhone,
+      'כתובת אימייל רשם': request.ordererEmail,
+      'תאריך הזמנה': request.orderDate,
+      'שיטת משלוח': request.deliveryMethod,
+      'הערות משרד': request.officeComment,
+      'סטטוס בקשה': request.requestStatusNavigation?.name,
+      ' לשכה': request.council?.name,
+      'סוג איסוף': request.deliveryMethod ,
+      'כתובת': request.address,
+      'נשלח אל': request.deliveredTo,
+    }));
+  
+    // יצירת גיליון עבודה עם הנתונים המעוצבים
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
+  
+    // יצירת חוברת עבודה
+    const workbook: XLSX.WorkBook = { Sheets: { 'Requests': worksheet }, SheetNames: ['Requests'] };
+  
+    // כתיבת הקובץ בפורמט Excel
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  
+    // יצירת Blob להורדה
+    const blob: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+  
+    // יצירת URL זמני להורדה
+    const url = window.URL.createObjectURL(blob);
+  
+    // יצירת אלמנט להורדה
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'AllRequests.xlsx';
+    a.click();
+  
+    // ניקוי ה-URL הזמני
+    window.URL.revokeObjectURL(url);
   }
 }

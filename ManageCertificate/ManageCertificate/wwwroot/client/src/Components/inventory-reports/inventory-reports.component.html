@@ -4,7 +4,8 @@
 <button mat-icon-button color="primary" (click)="goBackToRequests()">
   <mat-icon>arrow_forward</mat-icon>
 </button>
-<div class="filters-wrapper">
+<h3 class="inventory-title">מאזן מלאי למועצה</h3>
+<div class="filters-wrapper" id="filtersWrapper1">
   <div class="filters-container">
     <mat-form-field appearance="fill" class="filter-item">
       <mat-label>סינון לפי שנה</mat-label>
@@ -27,17 +28,21 @@
         (input)="onInputChangeCouncil($event)"
       />
     </mat-form-field>
- 
 
 
-<h3 class="inventory-title">מאזן מלאי למועצה</h3>
-<button mat-raised-button color="primary" (click)="onPrintTable(1)">
+
+</div>
+
+<button mat-raised-button color="primary" class="myBtn" (click)="downloadInventoryTable()">
+  <mat-icon>download</mat-icon>
+  הורד טבלת מלאי למועצה
+</button>
+<button mat-raised-button color="primary" class="myBtn" (click)="onPrintTable(1)">
   <mat-icon>print</mat-icon>
   הדפסה
 </button>
-    <button mat-raised-button color="primary" (click)="resetFilters()">איפוס סינון</button>
+    <button mat-raised-button color="primary" class="myBtn" (click)="resetFilters()">איפוס סינון</button>
 
-  </div>
 </div>
 
   <!-- Inventory List Section -->
@@ -95,12 +100,10 @@
       </p>
     </div>
   </div>
-  
-  <div class="filters-wrapper">
-    <button mat-raised-button color="primary" (click)="onPrintTable(2)">
-      <mat-icon>print</mat-icon>
-      הדפסה
-    </button>
+  <h3 class="inventory-title">מאזן מלאי תעודות שנתי למשרד</h3>
+  <div class="filters-wrapper" id="filtersWrapper2">
+    
+      
     <div class="filters-container">
       <mat-form-field appearance="fill" class="filter-item">
         <mat-label>סינון לפי שנה</mat-label>
@@ -112,8 +115,17 @@
           (input)="onInputChangeYearTable2($event)"
         />
       </mat-form-field>
-      <h3 class="inventory-title">מאזן מלאי תעודות שנתי למשרד</h3>
+     
     </div>
+    <button mat-raised-button color="primary" class="myBtn" (click)="downloadCertificateTypesTable()">
+      <mat-icon>download</mat-icon>
+      הורד טבלת מלאי תעודות
+    </button>
+ 
+  <button mat-raised-button color="primary"class="myBtn"  (click)="onPrintTable(2)">
+    <mat-icon>print</mat-icon>
+    הדפסה
+  </button>
   </div>
   <!-- Inventory Balance Section -->
   <div id="inventoryBalance" class="inventory-container">
@@ -161,7 +173,6 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-
       <p *ngIf="updatedCertificateTypes.length === 0" class="no-data-message">
         אין נתונים להצגה.
       </p>
