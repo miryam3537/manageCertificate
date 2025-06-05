@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -26,6 +27,8 @@ import { RefCertificateType } from '../../Models/RefCertificateType';
 import { Certificate } from '../../Models/Certificate';
 import { MatCardModule } from '@angular/material/card';
 import { CertificateService } from '../../Services/certificate.service';
+import { PrintService } from '../../Services/print.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-all-requestes',
@@ -51,8 +54,9 @@ import { CertificateService } from '../../Services/certificate.service';
   ],
   templateUrl: './all-requestes.component.html',
   styleUrl: './all-requestes.component.css',
-  providers: [RequestService, RefServService, CertificateService],
+  providers: [RequestService, RefServService, CertificateService,PrintService, ],
 })
+
 export class AllRequestesComponent implements OnInit {
   displayedColumns: string[] = ['requestId', 'orderDate', 'deliveryMethod', 'officeComment', 'requestStatus', 'councilId', 'Actions'];
   ListRefStatus: RefStatus[] = [];
@@ -71,7 +75,8 @@ export class AllRequestesComponent implements OnInit {
   constructor(
     public RequestService: RequestService,
     private RefServService: RefServService,
-    public certificateService: CertificateService
+    public certificateService: CertificateService,
+    public PrintService: PrintService
   ) {}
 
   ngOnInit() {
@@ -90,7 +95,10 @@ export class AllRequestesComponent implements OnInit {
     ]).pipe(take(1)).subscribe({
       next:
       ([requests, certificateTypes, refStatuses, inventories, certificates]) => {
-        this.ListRequestes.data = requests;
+        this.allRequests = requests;
+      this.ListRequestes.data = this.allRequests.filter(request =>
+        request.requestStatus === 1 || request.requestStatus === 3
+      ); 
         this.ListRequestes.sort = this.sort; 
         this.ListRefCertificateType = certificateTypes;
         this.ListRefStatus = refStatuses;
@@ -101,7 +109,7 @@ export class AllRequestesComponent implements OnInit {
         console.log('ListRefStatus:', this.ListRefStatus);
         console.log('ListRefInventory:', this.ListRefInventory);
         console.log('ListAllCertificate:', this.ListAllCertificate);
-        this.supplyAmauntByType();
+        this.totalInventoryBalance();
         this.isLoading = false;
       },
       error:(error) => {
@@ -110,8 +118,9 @@ export class AllRequestesComponent implements OnInit {
       }
   });
   }
-
- 
+onPrintAllRequestesTable() {
+  this.PrintService.printAllRequestesTable();
+}
   applyFilters() {
     this.RequestService.getAll().subscribe((res: Requestes[]) => {
       this.allRequests = res;
@@ -150,7 +159,7 @@ export class AllRequestesComponent implements OnInit {
     }, 0);
     this.initialData();
   }
-  supplyAmauntByType() {
+  totalInventoryBalance() {
     const currentYear = new Date().getFullYear();
     this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
       const totalSupplyAmount = this.ListAllCertificate
@@ -162,11 +171,53 @@ export class AllRequestesComponent implements OnInit {
       //const minimumInventory = this.ListRefInventory
       return {
         ...refCertificateType, 
-        TOTAL_INVENTORY_BALANCES:(totalInventory-totalSupplyAmount) || -1,
+        TOTAL_INVENTORY_BALANCES:(totalInventory-totalSupplyAmount) || 0,
         //MINIMUM_INVENTORY_BALANCES: refCertificateType.minimum || 0,
       };
     });
   
     console.log('Updated Certificate Types with Total Supply Amount:', this.updatedCertificateTypes);
+  }
+  downloadTableAsExcel() {
+    // עיצוב הנתונים לפני יצירת קובץ ה-Excel
+    const formattedData = this.ListRequestes.data.map((request) => ({
+      'מספר בקשה': request.requestId,
+      'רשם': request.ordererRole,
+      'שם רשם': request.ordererName,
+      'מספר טלפון רשם': request.ordererPhone,
+      'כתובת אימייל רשם': request.ordererEmail,
+      'תאריך הזמנה': request.orderDate,
+      'שיטת משלוח': request.deliveryMethod,
+      'הערות משרד': request.officeComment,
+      'סטטוס בקשה': request.requestStatusNavigation?.name,
+      ' לשכה': request.council?.name,
+      'סוג איסוף': request.deliveryMethod ,
+      'כתובת': request.address,
+      'נשלח אל': request.deliveredTo,
+    }));
+  
+    // יצירת גיליון עבודה עם הנתונים המעוצבים
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(formattedData);
+  
+    // יצירת חוברת עבודה
+    const workbook: XLSX.WorkBook = { Sheets: { 'Requests': worksheet }, SheetNames: ['Requests'] };
+  
+    // כתיבת הקובץ בפורמט Excel
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  
+    // יצירת Blob להורדה
+    const blob: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+  
+    // יצירת URL זמני להורדה
+    const url = window.URL.createObjectURL(blob);
+  
+    // יצירת אלמנט להורדה
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'AllRequests.xlsx';
+    a.click();
+  
+    // ניקוי ה-URL הזמני
+    window.URL.revokeObjectURL(url);
   }
 }

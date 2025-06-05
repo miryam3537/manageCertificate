@@ -38,6 +38,23 @@ public class RequestsController : Controller
         return Ok(requestDto);
     }
 
+    [HttpGet("GetCouncilId/{requestId}")]
+    public async Task<IActionResult> GetCouncilId(int requestId)
+    {
+        try
+        {
+            // קריאה לפונקציה בשכבת ה-BL
+            int councilId = await RequestBL.GetCouncilIdByRequestIdAsync(requestId);
+
+            // החזרת התוצאה למשתמש
+            return Ok(councilId);
+        }
+        catch (Exception ex)
+        {
+            // טיפול בשגיאות והחזרת הודעה מתאימה
+            return NotFound(new { Message = ex.Message });
+        }
+    }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<RequestDTO>> Get(int id)

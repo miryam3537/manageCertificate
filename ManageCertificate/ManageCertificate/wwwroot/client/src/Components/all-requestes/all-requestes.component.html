@@ -1,4 +1,5 @@
-<div *ngIf="isLoading" class="loading-container">
+<body>
+  <div *ngIf="isLoading" class="loading-container">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
 <div id="inventoryBalance" class="inventory-container">
@@ -39,9 +40,13 @@
 
   <div class="filters-wrapper">
     <div class="reset-button-container">
-      <button mat-raised-button color="warn" (click)="resetFilters()">איפוס</button>
       <button mat-raised-button color="warn" ><a [routerLink]="['/InventoryReports']">דוחות מלאי</a> </button>
-      <button mat-raised-button color="warn" >הדפס</button>
+      <button mat-raised-button color="warn" (click)="resetFilters()">איפוס סינון</button>
+      <button mat-raised-button color="warn" (click)="downloadTableAsExcel()">  הורדה <mat-icon>download</mat-icon></button>
+      <button mat-raised-button color="primary" (click)="onPrintAllRequestesTable()">
+        <mat-icon>print</mat-icon>
+        הדפסה
+      </button>
     </div>
     
      
@@ -121,7 +126,7 @@
       </ng-container>
 
       <ng-container matColumnDef="councilId">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> מספר לשכה</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>  לשכה</th>
         <td mat-cell *matCellDef="let element">{{ element?.council?.name }}</td>
       </ng-container>
 
@@ -145,4 +150,3 @@
     </table>
 
   </div>
- 
