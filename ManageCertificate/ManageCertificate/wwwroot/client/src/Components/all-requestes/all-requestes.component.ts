@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -28,6 +29,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CertificateService } from '../../Services/certificate.service';
 import { PrintService } from '../../Services/print.service';
 import * as XLSX from 'xlsx';
+
 @Component({
   selector: 'app-all-requestes',
   imports: [
@@ -52,8 +54,9 @@ import * as XLSX from 'xlsx';
   ],
   templateUrl: './all-requestes.component.html',
   styleUrl: './all-requestes.component.css',
-  providers: [RequestService, RefServService, CertificateService,PrintService],
+  providers: [RequestService, RefServService, CertificateService,PrintService, ],
 })
+
 export class AllRequestesComponent implements OnInit {
   displayedColumns: string[] = ['requestId', 'orderDate', 'deliveryMethod', 'officeComment', 'requestStatus', 'councilId', 'Actions'];
   ListRefStatus: RefStatus[] = [];
@@ -92,7 +95,10 @@ export class AllRequestesComponent implements OnInit {
     ]).pipe(take(1)).subscribe({
       next:
       ([requests, certificateTypes, refStatuses, inventories, certificates]) => {
-        this.ListRequestes.data = requests;
+        this.allRequests = requests;
+      this.ListRequestes.data = this.allRequests.filter(request =>
+        request.requestStatus === 1 || request.requestStatus === 3
+      ); 
         this.ListRequestes.sort = this.sort; 
         this.ListRefCertificateType = certificateTypes;
         this.ListRefStatus = refStatuses;
@@ -103,7 +109,7 @@ export class AllRequestesComponent implements OnInit {
         console.log('ListRefStatus:', this.ListRefStatus);
         console.log('ListRefInventory:', this.ListRefInventory);
         console.log('ListAllCertificate:', this.ListAllCertificate);
-        this.supplyAmauntByType();
+        this.totalInventoryBalance();
         this.isLoading = false;
       },
       error:(error) => {
@@ -153,7 +159,7 @@ onPrintAllRequestesTable() {
     }, 0);
     this.initialData();
   }
-  supplyAmauntByType() {
+  totalInventoryBalance() {
     const currentYear = new Date().getFullYear();
     this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
       const totalSupplyAmount = this.ListAllCertificate
@@ -165,7 +171,7 @@ onPrintAllRequestesTable() {
       //const minimumInventory = this.ListRefInventory
       return {
         ...refCertificateType, 
-        TOTAL_INVENTORY_BALANCES:(totalInventory-totalSupplyAmount) || -1,
+        TOTAL_INVENTORY_BALANCES:(totalInventory-totalSupplyAmount) || 0,
         //MINIMUM_INVENTORY_BALANCES: refCertificateType.minimum || 0,
       };
     });
