@@ -70,8 +70,11 @@ textarea.form-control {
 div.button-group{
   text-align: center;
 }
-.example-button-container{
+/* .example-button-container{
 position: relative;
 right: 45%;
 margin-top: -2%;
 }
+#print-button-container{
+  
+} */

@@ -1,4 +1,4 @@
-<a  href="/">חזרה לרשימת הבקשות</a>
+<a  href="/AllRequestes">חזרה לרשימת הבקשות</a>
 
 <div class="button-group">
   <button mat-button color="primary" (click)="requestApproval()">אישור בקשה</button>
@@ -14,6 +14,14 @@
        שמור
       </button>
     </div>
+</div>
+<div class="example-flex-container" id="print-button-container">
+  <div class="example-button-container">
+    <button mat-fab extended (click)="print()">
+      <mat-icon>print</mat-icon>
+     הדפסה
+    </button>
+  </div>
 </div>
 <mat-spinner *ngIf="loading" class="loading-spinner" ></mat-spinner>
 <!-- [diameter]="50 -->
@@ -60,7 +68,7 @@
         <strong>לידי מי נמסר:</strong> 
         <input 
           type="text" 
-          [(ngModel)]="deliveredTo" 
+          [formControl]="deliveredTo" 
           class="editable-input" 
         />
       </li>
@@ -71,7 +79,7 @@
       </li>
       <li class="list-group-item">
         <strong>הערות המשרד להזמנה:</strong> 
-        <textarea class="form-control" [(ngModel)]="officeComment"></textarea>
+        <textarea class="form-control" [formControl]="officeComment"></textarea>
       </li>
     </ul>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table-bordered" >

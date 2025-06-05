@@ -1,0 +1,33 @@
+/* .ifactiveDiv{
+    height: 200px;
+    width: 200px;
+    background-color: rgb(105, 104, 104);
+    position: absolute;
+    top: 10px;
+    left: 40%;
+    color: white;
+} */
+.inactive-card {
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: center;
+    padding: 16px;
+    position: fixed;
+    top: 0;
+    left: 40%;
+    z-index: 1000;
+  }
+  
+  mat-card-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  mat-card-content h1 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  mat-card-actions button {
+    margin: 0 8px;
+  }
