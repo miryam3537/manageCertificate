@@ -209,24 +209,38 @@ print() {
     // Clone the content to manipulate it without affecting the original DOM
     const clonedContent = content.cloneNode(true) as HTMLElement;
 
-    // Update input fields with their current values
-    const inputs = clonedContent.querySelectorAll("input");
-    inputs.forEach((input) => {
-      const originalInput = content.querySelector(`input[name="${input.getAttribute("name")}"]`) as HTMLInputElement;
-      if (originalInput) {
-        input.setAttribute("value", originalInput.value); // Set the value attribute for printing
-      }
-    });
+    //  const inputs = clonedContent.querySelectorAll("input");
+    // inputs.forEach((input) => {
+    //   // Handle inputs bound to formControl
+    //    if (input.hasAttribute("formControlName") && input.getAttribute("formControlName") === "deliveredTo") {
+    //     input.setAttribute("value", this.deliveredTo.value); // Set the value from the form control
+    //   }
+    
+    //   // Handle inputs bound to ngModel
+    //   if (input.hasAttribute("ngModel") && input.getAttribute("ngModel") === "element.supplyAmaunt") {
+    //     const originalInput = content.querySelector(`input[ngModel="element.supplyAmaunt"]`) as HTMLInputElement;
+    //     if (originalInput) {
+    //       input.setAttribute("value", originalInput.value); // Set the value from the original DOM
+    //     }
+    //   }
+    // });
 
     // Update textarea fields with their current values
     const textareas = clonedContent.querySelectorAll("textarea");
     textareas.forEach((textarea) => {
-      const originalTextarea = content.querySelector(`textarea[name="${textarea.getAttribute("name")}"]`) as HTMLTextAreaElement;
-      if (originalTextarea) {
-        textarea.textContent = originalTextarea.value; // Set the text content for printing
+      if (textarea.hasAttribute("formControlName") && textarea.getAttribute("formControlName") === "officeComment") {
+        textarea.textContent = this.officeComment.value; // Set the value from the form control
       }
     });
-
+    textareas.forEach((textarea) => {
+      // Handle textareas bound to ngModel
+      if (textarea.hasAttribute("ngModel") && textarea.getAttribute("ngModel") === "element.comment") {
+        const originalTextarea = content.querySelector(`textarea[ngModel="element.comment"]`) as HTMLTextAreaElement;
+        if (originalTextarea) {
+          textarea.textContent = originalTextarea.value; // Set the value from the original DOM
+        }
+      }
+    });
     // Write the updated content to the print window
     printWindow.document.open();
     printWindow.document.write(`

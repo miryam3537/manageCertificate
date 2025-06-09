@@ -5,7 +5,6 @@ using Entites;
 
 namespace DAL;
 
-
 public partial class DatotDbContext : DbContext
 {
     public DatotDbContext()
@@ -19,6 +18,8 @@ public partial class DatotDbContext : DbContext
 
     public virtual DbSet<Certificate> Certificates { get; set; }
 
+    public virtual DbSet<OfficeInventory> OfficeInventories { get; set; }
+
     public virtual DbSet<RefCertificateType> RefCertificateTypes { get; set; }
 
     public virtual DbSet<RefCouncil> RefCouncils { get; set; }
@@ -29,12 +30,16 @@ public partial class DatotDbContext : DbContext
 
     public virtual DbSet<Request> Requests { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=SRV2\\Teachers;Database=DatotDB;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("MBYDOMAIN\\215557299");
+
         modelBuilder.Entity<Certificate>(entity =>
         {
             entity.ToTable("Certificate", "dbo");
@@ -55,6 +60,11 @@ public partial class DatotDbContext : DbContext
             entity.HasOne(d => d.Request).WithMany(p => p.Certificates)
                 .HasForeignKey(d => d.RequestId)
                 .HasConstraintName("FK_Certificate_Request");
+        });
+
+        modelBuilder.Entity<OfficeInventory>(entity =>
+        {
+            entity.ToTable("Office_Inventory", "dbo");
         });
 
         modelBuilder.Entity<RefCertificateType>(entity =>
@@ -90,6 +100,7 @@ public partial class DatotDbContext : DbContext
             entity.Property(e => e.InventoryId).HasColumnName("inventory_id");
             entity.Property(e => e.CertificateId).HasColumnName("certificate_id");
             entity.Property(e => e.CouncilId).HasColumnName("council_id");
+            entity.Property(e => e.Estimate).HasColumnName("estimate");
             entity.Property(e => e.Inventory).HasColumnName("inventory");
             entity.Property(e => e.Minimum).HasColumnName("minimum");
             entity.Property(e => e.Year).HasColumnName("year");
@@ -174,6 +185,21 @@ public partial class DatotDbContext : DbContext
             entity.HasOne(d => d.RequestStatusNavigation).WithMany(p => p.Requests)
                 .HasForeignKey(d => d.RequestStatus)
                 .HasConstraintName("FK_Request_REF_Status");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__users__3213E83F9761F033");
+
+            entity.HasIndex(e => e.Email, "UQ__users__AB6E61649CE05D89").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .HasColumnName("email");
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .HasColumnName("name");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background: linear-gradient(135deg, #f4f5f5, #f1f1f1); 
     color: #333;
 }
 
@@ -39,8 +39,8 @@ header {
 .hero {
     text-align: center;
     padding: 19rem 1rem;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    color: #fff;
+    background: linear-gradient(135deg, #e3f2fd, #e8f5e9); 
+    color: #918b8b;
 }
 
 .hero h1 {
@@ -72,4 +72,7 @@ footer {
     padding: 1rem 0;
     background-color: #333;
     color: #fff;
+}
+a{
+    color: #333; 
 }

@@ -25,7 +25,7 @@ export class AppComponent {
   counterSecond: number = 0
   isModalVisible = false
   setIntervalId: any
-  private inactivityTime: number = 1000; // Time in milliseconds (1 minute)
+  private inactivityTime: number = 1000000; // Time in milliseconds (1 minute)
   private watingTime: number = 300000; // Time in milliseconds (5 minutes)
   private timeout: any;
   setTimeId: any;

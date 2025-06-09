@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Entites;
+ namespace Entites;
 
 public partial class RefStatus
 {
