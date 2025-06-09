@@ -1,0 +1,18 @@
+
+<h2 mat-dialog-title>Add User</h2>
+<mat-dialog-content>
+  <form #userForm="ngForm">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Enter name" name="name" ngModel required />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Enter email" name="email" ngModel required />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="userForm.value" [disabled]="!userForm.valid" >Add</button>
+</mat-dialog-actions>

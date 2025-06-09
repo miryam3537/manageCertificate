@@ -83,7 +83,6 @@ export class InventoryReportsComponent implements OnInit{
   ) {}
    ngOnInit() {
       this.loadData();
-  
       //לבדוק למה אי אפשר לקבל מהשירות בצורה כזאת את הרשימה
       //this.ListAllCertificates==this.certificateService.ListCertificate;
     }
@@ -122,9 +121,7 @@ export class InventoryReportsComponent implements OnInit{
 
  
 calculateUtilizationPerYear() {
-  // יצירת מערך של Observable לחישוב הניצול השנתי עבור כל רשומה
   const utilizationResults$ = this.ListRefInventory.map((inventory) => {
-    // חיפוש כל התעודות המתאימות ל-inventory הנוכחי
     const matchingCertificates = this.ListAllCertificates.filter(
       (certificate) => certificate.certificateType === inventory.certificateId
     );
@@ -134,13 +131,13 @@ calculateUtilizationPerYear() {
       this.requestService.getCouncilId(certificate.requestId || 76).pipe(
         map((councilId) => ({
           certificate,
-          isCouncilMatch: councilId === inventory.councilId, // בדיקת התאמה בין המועצה לתעודה
+          isCouncilMatch: councilId === inventory.councilId, 
         })),
-        catchError(() => of({ certificate, isCouncilMatch: false })) // טיפול בשגיאות
+        catchError(() => of({ certificate, isCouncilMatch: false })) 
       )
     );
 
-    // אם אין תעודות מתאימות, החזר ערך ברירת מחדל
+
     if (requests.length === 0) {
       return of({ inventory, totalSupplyAmount: 0 });
     }
@@ -150,11 +147,11 @@ calculateUtilizationPerYear() {
       map((results) => ({
         inventory,
         totalSupplyAmount: results
-          .filter((result) => result.isCouncilMatch) // סינון תעודות עם התאמה
+          .filter((result) => result.isCouncilMatch) 
           .reduce(
             (sum, result) => sum + (result.certificate.supplyAmaunt || 0),
             0
-          ), // חישוב סך ה-supplyAmount
+          ), 
       }))
     );
   });
@@ -168,11 +165,10 @@ calculateUtilizationPerYear() {
           const result = finalResults.find((r) => r.inventory === inventory);
           return {
             ...inventory,
-            totalSupplyAmount: result ? result.totalSupplyAmount : 0, // הוספת totalSupplyAmount לכל רשומה
+            totalSupplyAmount: result ? result.totalSupplyAmount : 0, 
           };
         });
 
-        // עדכון הטבלה לאחר חישוב הניצול השנתי
         this.applyFilter();
       },
       (error) => {
@@ -217,7 +213,7 @@ calculateUtilizationPerYear() {
       setTimeout(() => {
         this.isReset = false;
       }, 0);
-      this.filteredInventory = [...this.ListRefInventory]; // איפוס הסינון
+      this.filteredInventory = [...this.ListRefInventory]; 
     }
   
     OfficeSupplies(year:number){
@@ -239,7 +235,7 @@ calculateUtilizationPerYear() {
     console.log(this.updatedCertificateTypes,"@@@@@@@ @@@");
     }
     goBackToRequests(): void {
-      this.router.navigate(['']); // נווט לדף הבקשות
+      this.router.navigate(['']); 
     }
     onPrintTable(tableId: number): void {
       this.printService.printTable(tableId);

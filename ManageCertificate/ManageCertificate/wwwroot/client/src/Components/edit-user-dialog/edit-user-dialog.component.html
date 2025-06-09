@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>ערוך משתמש</h2>
+<mat-dialog-content>
+  <form>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>שם</mat-label>
+      <input matInput [(ngModel)]="user.name" placeholder="הכנס שם" required />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>אימייל</mat-label>
+      <input matInput [(ngModel)]="user.email" placeholder="הכנס אימייל" required />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>ביטול</button>
+  <button mat-button (click)="save()" [disabled]="!user.name || !user.email">שמור</button>
+</mat-dialog-actions>

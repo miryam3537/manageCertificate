@@ -19,9 +19,7 @@
                 'negative-balance': type.TOTAL_INVENTORY_BALANCES < type.minimumBalance,
               }">
               {{ type.TOTAL_INVENTORY_BALANCES < 0 ? 'חסר הגדרה' : type.TOTAL_INVENTORY_BALANCES }}
-              
             </span>
-     
             <span 
               *ngIf="type.TOTAL_INVENTORY_BALANCES < 2" 
               class="warning-balance">
@@ -40,14 +38,15 @@
 
   <div class="filters-wrapper">
     <div class="reset-button-container">
+      <button mat-raised-button color="warn" ><a [routerLink]="['/manageUsers']">ניהול משתמשים </a> </button>
       <button mat-raised-button color="warn" ><a [routerLink]="['/InventoryReports']">דוחות מלאי</a> </button>
       <button mat-raised-button color="warn" (click)="resetFilters()">איפוס סינון</button>
       <button mat-raised-button color="warn" (click)="downloadTableAsExcel()">  הורדה <mat-icon>download</mat-icon></button>
       <button mat-raised-button color="primary" (click)="onPrintAllRequestesTable()">
         <mat-icon>print</mat-icon>
-        הדפסה
+        הדפסה 
       </button>
-    </div>
+    </div>        
     
      
     

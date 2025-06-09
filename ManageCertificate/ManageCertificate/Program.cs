@@ -64,6 +64,10 @@ app.UseErrorHandlingMiddleware();
 app.UseHttpsRedirection();
 
 
+//Scaffold - DbContext "Server=srv2\Teachers;Database=DatotDB;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer - OutputDir Models - Tables NewTableName - Force
+
+
+
 
 
 app.UseAuthorization();
