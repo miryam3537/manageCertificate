@@ -82,7 +82,6 @@ public partial class DatotDbContext : DbContext
         modelBuilder.Entity<RefCouncil>(entity =>
         {
             entity.ToTable("REF_Council", "dbo");
-
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");

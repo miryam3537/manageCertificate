@@ -29,6 +29,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CertificateService } from '../../Services/certificate.service';
 import { PrintService } from '../../Services/print.service';
 import * as XLSX from 'xlsx';
+import { OfficeInventoryService } from '../../Services/office-inventory.service';
 
 @Component({
   selector: 'app-all-requestes',
@@ -76,7 +77,8 @@ export class AllRequestesComponent implements OnInit {
     public RequestService: RequestService,
     private RefServService: RefServService,
     public certificateService: CertificateService,
-    public PrintService: PrintService
+    public PrintService: PrintService,
+    public OfficeInventoryService:OfficeInventoryService
   ) {}
 
   ngOnInit() {
@@ -160,23 +162,26 @@ onPrintAllRequestesTable() {
     this.initialData();
   }
   totalInventoryBalance() {
-    const currentYear = new Date().getFullYear();
-    this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
-      const totalSupplyAmount = this.ListAllCertificate
-          .filter(certificate => certificate.certificateType === refCertificateType.id)
-          .reduce((acc, certificate) => acc + (certificate.supplyAmaunt || 0), 0);
-      const totalInventory = this.ListRefInventory
-          .filter(inventory => inventory.certificateId === refCertificateType.id && inventory.year === currentYear)
-          .reduce((acc, inventory) => acc + (inventory.inventory || 0), 0);
-      //const minimumInventory = this.ListRefInventory
-      return {
-        ...refCertificateType, 
-        TOTAL_INVENTORY_BALANCES:(totalInventory-totalSupplyAmount) || 0,
-        //MINIMUM_INVENTORY_BALANCES: refCertificateType.minimum || 0,
-      };
-    });
+   const currentYear = new Date().getFullYear();
+   th
+    // this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
+    //   const totalSupplyAmount = this.ListAllCertificate
+    //       .filter(certificate => certificate.certificateType === refCertificateType.id)
+    //       .reduce((acc, certificate) => acc + (certificate.supplyAmaunt || 0), 0);
+    //   const totalInventory = this.ListRefInventory
+    //       .filter(inventory => inventory.certificateId === refCertificateType.id && inventory.year === currentYear)
+    //       .reduce((acc, inventory) => acc + (inventory.inventory || 0), 0);
+    //   //const minimumInventory = this.ListRefInventory
+    //   return {
+    //     ...refCertificateType, 
+    //     TOTAL_INVENTORY_BALANCES:(totalInventory-totalSupplyAmount) || 0,
+    //     //MINIMUM_INVENTORY_BALANCES: refCertificateType.minimum || 0,
+    //   };
+    // });
   
-    console.log('Updated Certificate Types with Total Supply Amount:', this.updatedCertificateTypes);
+    // console.log('Updated Certificate Types with Total Supply Amount:', this.updatedCertificateTypes);
+
+
   }
   downloadTableAsExcel() {
     // עיצוב הנתונים לפני יצירת קובץ ה-Excel
