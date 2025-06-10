@@ -1,5 +1,19 @@
 
-<!-- <app-request-details></app-request-details> -->
+
 <router-outlet></router-outlet>
-<!-- <app-all-requestes></app-all-requestes> -->
+<div *ngIf="isModalVisible" class="ifactiveDiv">
+  <mat-card class="inactive-card">
+    <mat-card-header>
+      <mat-card-title>You have been inactive</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Do you want to exit?</p>
+      <h1>{{ counterMinuts }}:{{ counterSecond }}</h1>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-raised-button color="warn" (click)="exit()">Yes</button>
+      <button mat-raised-button color="primary" (click)="stay()">No</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
 

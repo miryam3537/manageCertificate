@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace Entites;
 public partial class RefInventory
 {
@@ -15,6 +16,8 @@ public partial class RefInventory
     public int? Inventory { get; set; }
 
     public int? Minimum { get; set; }
+
+    public int? Estimate { get; set; }
 
     public virtual RefCertificateType? Certificate { get; set; }
 

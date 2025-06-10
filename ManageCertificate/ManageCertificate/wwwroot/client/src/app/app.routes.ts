@@ -7,7 +7,7 @@ import { RequestDetailsComponent } from '../Components/request-details/request-d
 import { InventoryReportsComponent } from '../Components/inventory-reports/inventory-reports.component';
 import { UserComponent } from '../Components/user/user.component';
 export const routes: Routes = [
-    { path: '', component: AllRequestesComponent },
+    { path: 'AllRequestes', component: AllRequestesComponent },
     { path: 'RequestDetails/:id', component: RequestDetailsComponent },
     { path: 'InventoryReports', component:InventoryReportsComponent } ,
     { path: 'manageUsers', component:UserComponent } 

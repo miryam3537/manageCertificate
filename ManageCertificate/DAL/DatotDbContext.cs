@@ -18,6 +18,8 @@ public partial class DatotDbContext : DbContext
 
     public virtual DbSet<Certificate> Certificates { get; set; }
 
+    public virtual DbSet<OfficeInventory> OfficeInventories { get; set; }
+
     public virtual DbSet<RefCertificateType> RefCertificateTypes { get; set; }
 
     public virtual DbSet<RefCouncil> RefCouncils { get; set; }
@@ -36,6 +38,8 @@ public partial class DatotDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("MBYDOMAIN\\215557299");
+
         modelBuilder.Entity<Certificate>(entity =>
         {
             entity.ToTable("Certificate", "dbo");
@@ -56,6 +60,11 @@ public partial class DatotDbContext : DbContext
             entity.HasOne(d => d.Request).WithMany(p => p.Certificates)
                 .HasForeignKey(d => d.RequestId)
                 .HasConstraintName("FK_Certificate_Request");
+        });
+
+        modelBuilder.Entity<OfficeInventory>(entity =>
+        {
+            entity.ToTable("Office_Inventory", "dbo");
         });
 
         modelBuilder.Entity<RefCertificateType>(entity =>
@@ -181,8 +190,6 @@ public partial class DatotDbContext : DbContext
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__users__3213E83F9761F033");
-
-            entity.ToTable("Users", "MBYDOMAIN\\215557299");
 
             entity.HasIndex(e => e.Email, "UQ__users__AB6E61649CE05D89").IsUnique();
 

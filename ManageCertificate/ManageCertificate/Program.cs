@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 //    {
 //        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
 //    });
-
+builder.Services.AddAuthentication(Microsoft.AspNetCore.Server.IISIntegration.IISDefaults.AuthenticationScheme);
 builder.Services.AddDbContext<DatotDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SchooleConnection")));
 builder.Services.AddScoped<IRefDAL, RefDAL>();
 builder.Services.AddScoped<IRefBL, RefBL>();
@@ -24,6 +24,8 @@ builder.Services.AddScoped<ICertificateDAL, CertificateDAL>();
 builder.Services.AddScoped<IEmailBL, EmailBL>();
 builder.Services.AddScoped<ICouncilDAL, CouncilDAL>();
 builder.Services.AddScoped<ICouncilBL, CouncilBL>();
+builder.Services.AddScoped<IUserDAL, UserDAL>();
+builder.Services.AddScoped<IUserBL, UserBL>();
 
 // Add services to the container.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -69,7 +71,7 @@ app.UseHttpsRedirection();
 
 
 
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

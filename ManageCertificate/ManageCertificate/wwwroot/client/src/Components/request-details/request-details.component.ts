@@ -6,7 +6,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import {CommonModule} from '@angular/common';
 import { RefInventory } from '../../Models/RefInventory';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { Requestes } from '../../Models/Requestes';
 import { Certificate } from '../../Models/Certificate';
 import { EmailService } from '../../Services/email.service';
@@ -18,6 +18,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatSpinner } from '@angular/material/progress-spinner';
 import { signal, effect } from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -28,7 +30,7 @@ export interface PeriodicElement {
 @Component({
   selector: 'app-request-details',
  
-  imports: [MatTableModule,HttpClientModule ,CommonModule,FormsModule,MatButtonModule,MatCardModule,MatIcon,MatSpinner],
+  imports: [MatTableModule,HttpClientModule ,CommonModule,FormsModule,MatButtonModule,MatCardModule,MatIcon,MatSpinner,ReactiveFormsModule],
   templateUrl: './request-details.component.html',
   styleUrls:['./request-details.component.css'] ,
  providers: [RequestService,RefServService,EmailService]
@@ -42,8 +44,8 @@ export class RequestDetailsComponent {
    requestId! :number ;
    officeEmail:string = "38215557299@mby.co.il"//יצטרך שינוי בעתיד...
    loading: boolean = false; // Flag to indicate loading state
-   officeComment: string = '';
-deliveredTo: string = '';
+   officeComment = new FormControl(''); // Form control for office comment
+deliveredTo =  new FormControl('');;
 
 constructor(private route: ActivatedRoute,private RequestService:RequestService,private RefServService:RefServService,private EmailService:EmailService){
   // This allows effect to be set in the constructor which is within an injection context
@@ -51,8 +53,8 @@ constructor(private route: ActivatedRoute,private RequestService:RequestService,
     const details = this.requestDetails();
     if (details) {
       this.dataSource.data = details.certificates || [];
-      this.officeComment = details.officeComment || '';
-      this.deliveredTo = details.deliveredTo || '';
+      this.officeComment.setValue(details.officeComment || '');
+      this.deliveredTo.setValue(details.deliveredTo || '');
     }
   });
 }
@@ -67,7 +69,10 @@ ngOnInit() {
 
   private fetchRequestDetails(): void {
     // Fetch the details of the request from the service
-    //this.requestDetails = this.RequestService.getAll().find(r=> r.requestId == this.requestId)
+    this.RequestService.getRequestById(this.requestId).subscribe(request=> {
+      console.log(request);
+      this.requestDetails.set(request ?? null);
+    });
     // this.RequestService.get(this.requestId).subscribe(
     //   (data: Requestes) => {
     //     this.requestDetails.set(data); // Set request details
@@ -154,20 +159,25 @@ upDateRequest(previousStatusId: number|null) {
   this.loading = true;
  if( this.checkNegitiveInventoryBalance()){
   console.log('requestDetails:', this.requestDetails);
-  this.requestDetails.update(current => ({ ...current, officeComment: this.officeComment,deliveredTo:this.deliveredTo } as Requestes)); 
-  this.RequestService.updateRequest( this.requestId,previousStatusId, this.requestDetails()).subscribe(
-    (data:any) => {
+  this.requestDetails.update(current => ({ ...current, officeComment: this.officeComment.value,deliveredTo:this.deliveredTo.value } as Requestes)); 
+  this.RequestService.updateRequest( this.requestId,previousStatusId, this.requestDetails()).subscribe({
+    next: (data:any) => {
       this.requestDetails.set(data.data); // Update the request details with the response data
       console.log('Request updated successfully:', data);
       this.loading = false;
     this.openSnackBar("הבקשה עודכנה בהצלחה", "אישור")
     //  let snackBarRef = snackBar.open('Message archived', 'Undo');
-    },
-    (error) => {
+  },
+   error: (error) => {
       console.error('Error updating status:', error);
     },
-    () => this.loading = false
-  );
+    complete:() => this.loading = false
+ });
+}
+else {
+  // Handle case where inventory balance is negative
+  this.loading = false;
+  this.openSnackBar("לא ניתן לעדכן את הבקשה עקב מלאי שלילי", "סגור");
 }
 }
 
@@ -190,5 +200,69 @@ return true
 
 openSnackBar(message: string, action: string) {
   this._snackBar.open(message, action);
+}
+print() {
+  const content = document.querySelector(".request-details-card"); // Select the card content
+  const printWindow = window.open("", "_blank", "width=800,height=600");
+
+  if (content && printWindow) {
+    // Clone the content to manipulate it without affecting the original DOM
+    const clonedContent = content.cloneNode(true) as HTMLElement;
+
+    //  const inputs = clonedContent.querySelectorAll("input");
+    // inputs.forEach((input) => {
+    //   // Handle inputs bound to formControl
+    //    if (input.hasAttribute("formControlName") && input.getAttribute("formControlName") === "deliveredTo") {
+    //     input.setAttribute("value", this.deliveredTo.value); // Set the value from the form control
+    //   }
+    
+    //   // Handle inputs bound to ngModel
+    //   if (input.hasAttribute("ngModel") && input.getAttribute("ngModel") === "element.supplyAmaunt") {
+    //     const originalInput = content.querySelector(`input[ngModel="element.supplyAmaunt"]`) as HTMLInputElement;
+    //     if (originalInput) {
+    //       input.setAttribute("value", originalInput.value); // Set the value from the original DOM
+    //     }
+    //   }
+    // });
+
+    // Update textarea fields with their current values
+    const textareas = clonedContent.querySelectorAll("textarea");
+    textareas.forEach((textarea) => {
+      if (textarea.hasAttribute("formControlName") && textarea.getAttribute("formControlName") === "officeComment") {
+        textarea.textContent = this.officeComment.value; // Set the value from the form control
+      }
+    });
+    textareas.forEach((textarea) => {
+      // Handle textareas bound to ngModel
+      if (textarea.hasAttribute("ngModel") && textarea.getAttribute("ngModel") === "element.comment") {
+        const originalTextarea = content.querySelector(`textarea[ngModel="element.comment"]`) as HTMLTextAreaElement;
+        if (originalTextarea) {
+          textarea.textContent = originalTextarea.value; // Set the value from the original DOM
+        }
+      }
+    });
+    // Write the updated content to the print window
+    printWindow.document.open();
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>פרטי הבקשה</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            .request-details-card { width: 100%; }
+            .list-group-item { margin-bottom: 10px; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+            th { background-color: #f4f4f4; }
+          </style>
+        </head>
+        <body>
+          ${clonedContent.outerHTML} <!-- Use the cloned content -->
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+  }
 }
 }
