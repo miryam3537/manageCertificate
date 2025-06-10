@@ -27,7 +27,7 @@ namespace BL
             var smtpHost = _configuration["EmailSettings:SmtpHost"];
             var smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]);
             // פרטי האימייל והסיסמה
-
+            
             // הגדרת ה-SMTP של Outlook
             using (var smtpClient = new SmtpClient(smtpHost, smtpPort))
             {

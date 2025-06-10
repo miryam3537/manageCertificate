@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Entites;
 
-namespace ManageCertificate.Models;
+namespace DAL;
 
 public partial class DatotDbContext : DbContext
 {
@@ -101,7 +101,7 @@ public partial class DatotDbContext : DbContext
             entity.Property(e => e.CouncilId).HasColumnName("council_id");
             entity.Property(e => e.Estimate).HasColumnName("estimate");
             entity.Property(e => e.Inventory).HasColumnName("inventory");
-            entity.Property(e => e.Minimum).HasColumnNa7me("minimum");
+            entity.Property(e => e.Minimum).HasColumnName("minimum");
             entity.Property(e => e.Year).HasColumnName("year");
 
             entity.HasOne(d => d.Certificate).WithMany(p => p.RefInventories)
