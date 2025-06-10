@@ -1,5 +1,8 @@
 ﻿using BL;
+using BL.Interfaces;
+using DAL.Interfaces;
 using Entites;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace ManageCertificate.Controllers
@@ -8,12 +11,19 @@ namespace ManageCertificate.Controllers
     [ApiController]
     public class OfficeInventoryController: ControllerBase
     {
+        private readonly IOfficeInventoryBL OfficeInventoryBL;
+
+        public OfficeInventoryController(IOfficeInventoryBL officeInventoryBL)
+        {
+            this.OfficeInventoryBL = officeInventoryBL;
+        }
 
         [HttpGet("/GetAllOfficeInventory")]
         public async Task<ActionResult<IEnumerable<OfficeInventory>>> GetAllOfficeInventory()
         {
-            IEnumerable<OfficeInventory> OfficeInventory = await councilBL.GetAllcouncil();
-            return Ok(refcouncils);
+            IEnumerable<OfficeInventory> OfficeInventory = await OfficeInventoryBL.GetAllOfficeInventory();
+            return Ok(OfficeInventory);
+           
         }
     }
 }

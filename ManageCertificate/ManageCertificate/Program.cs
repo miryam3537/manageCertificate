@@ -26,7 +26,8 @@ builder.Services.AddScoped<ICouncilDAL, CouncilDAL>();
 builder.Services.AddScoped<ICouncilBL, CouncilBL>();
 builder.Services.AddScoped<IUserDAL, UserDAL>();
 builder.Services.AddScoped<IUserBL, UserBL>();
-
+builder.Services.AddScoped<IOfficeInventoryDAL, OfficeInventoryDAL>();
+builder.Services.AddScoped<IOfficeInventoryBL, OfficeInventoryBL>();
 // Add services to the container.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Host.UseNLog();
