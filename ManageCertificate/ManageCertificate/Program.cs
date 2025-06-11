@@ -14,6 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 //    {
 //        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
 //    });
+//builder.Services.AddDbContext<YourDbContext>(options =>
+//    options.UseSqlServer("Server=srv2\\Teachers;Database=DatotDB;Trusted_Connection=True;TrustServerCertificate=True;"));
+
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Server.IISIntegration.IISDefaults.AuthenticationScheme);
 builder.Services.AddDbContext<DatotDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SchooleConnection")));
 builder.Services.AddScoped<IRefDAL, RefDAL>();

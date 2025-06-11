@@ -18,8 +18,8 @@ namespace ManageCertificate.Controllers
             this.OfficeInventoryBL = officeInventoryBL;
         }
 
-        [HttpGet("/GetAllOfficeInventory")]
-        public async Task<ActionResult<IEnumerable<OfficeInventory>>> GetAllOfficeInventory()
+        [HttpGet("/GetAllOfficeInventory2")]
+        public async Task<ActionResult<IEnumerable<RefOfficeInventory>>> GetAllOfficeInventory()
         {
             IEnumerable<OfficeInventory> OfficeInventory = await OfficeInventoryBL.GetAllOfficeInventory();
             return Ok(OfficeInventory);

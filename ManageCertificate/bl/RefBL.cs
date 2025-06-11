@@ -24,7 +24,10 @@ namespace BL
             this.mapper = mapper;
             this.refDAL = refDAL;
         }
-
+        public Task<IEnumerable<RefOfficeInventory>> GetAllOfficeInventory()
+        {
+            return refDAL.GetAllOfficeInventory();
+        }
         public Task<IEnumerable<RefStatus>> GetAllStatus()
         {
             return refDAL.GetAllStatus();

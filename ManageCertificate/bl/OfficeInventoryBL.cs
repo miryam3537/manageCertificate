@@ -22,7 +22,7 @@ namespace BL
             _context = contex;
         }
 
-        public  Task<IEnumerable<OfficeInventory>> GetAllOfficeInventory()
+        public  Task<IEnumerable<RefOfficeInventory>> GetAllOfficeInventory()
         {
             return officeInventoryDAL.GetAllOfficeInventory();
         }

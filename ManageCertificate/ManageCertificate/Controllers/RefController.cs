@@ -6,6 +6,7 @@ using Entites;
 using BL.Interfaces;
 using BL;
 using DTO;
+using ManageCertificate.Models;
 namespace manageCertificate;
 
 
@@ -21,7 +22,13 @@ public class RefController : Controller
         this.RefBL = RefBL;
         this.logger = logger;
     }
+    [HttpGet("/GetAllOfficeInventory")]
+    public async Task<ActionResult<IEnumerable<RefOfficeInventory>>> GetAllOfficeInventory()
+    {
+        IEnumerable<RefOfficeInventory> OfficeInventory = await RefBL.GetAllOfficeInventory();
+        return Ok(OfficeInventory);
 
+    }
     [HttpGet("/api/RefStatus")]
     public async Task<ActionResult<IEnumerable<RefStatus>>> GetAllStatus()
     {

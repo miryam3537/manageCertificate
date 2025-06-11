@@ -11,5 +11,6 @@ namespace DAL.Interfaces
         Task<IEnumerable<Certificate>> GetAllCertificate();
         Task<List<RefInventory>> GetAllInventory();
         Task<List<RefCertificateType>> GetAllCertificateType();
+        Task<IEnumerable<RefOfficeInventory>> GetAllOfficeInventory();
     }
 }

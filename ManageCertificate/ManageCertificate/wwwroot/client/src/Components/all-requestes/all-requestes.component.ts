@@ -55,7 +55,7 @@ import { OfficeInventoryService } from '../../Services/office-inventory.service'
   ],
   templateUrl: './all-requestes.component.html',
   styleUrl: './all-requestes.component.css',
-  providers: [RequestService, RefServService, CertificateService,PrintService, ],
+  providers: [RequestService, RefServService, CertificateService,PrintService,OfficeInventoryService ],
 })
 
 export class AllRequestesComponent implements OnInit {

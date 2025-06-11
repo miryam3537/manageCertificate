@@ -15,5 +15,6 @@ namespace BL.Interfaces
         Task<List<RefInventoryDTO>> GetAllInventory();
         Task<IEnumerable<CertificateDTO>> GetAllCertificate();
         Task<List<RefCertificateType>> GetAllCertificateType();
+        Task<IEnumerable<RefOfficeInventory>> GetAllOfficeInventory();
     }
 }

@@ -9,6 +9,6 @@ namespace DAL.Interfaces
 {
     public interface IOfficeInventoryDAL
     {
-         Task<IEnumerable<OfficeInventory>> GetAllOfficeInventory() ;
+         Task<IEnumerable<RefOfficeInventory>> GetAllOfficeInventory() ;
     }
 }

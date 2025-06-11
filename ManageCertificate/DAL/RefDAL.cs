@@ -15,6 +15,10 @@ namespace DAL
         {
             _context = contex;
         }
+        public async Task<IEnumerable<RefOfficeInventory>> GetAllOfficeInventory()
+        {
+            return await _context.OfficeInventories.ToListAsync();
+        }
         public async Task<IEnumerable<RefStatus>> GetAllStatus()
         {
             return await _context.RefStatuses.ToListAsync();

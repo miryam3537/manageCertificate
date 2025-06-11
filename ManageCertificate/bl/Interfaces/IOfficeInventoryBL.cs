@@ -9,6 +9,6 @@ namespace BL.Interfaces
 {
     public interface IOfficeInventoryBL
     {
-        Task<IEnumerable<OfficeInventory>> GetAllOfficeInventory();
+        Task<IEnumerable<RefOfficeInventory>> GetAllOfficeInventory();
     }
 }
