@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 //    {
 //        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
 //    });
-//builder.Services.AddDbContext<YourDbContext>(options =>
+//builder.Services.AddDbContext<DatotDbContext>(options =>
 //    options.UseSqlServer("Server=srv2\\Teachers;Database=DatotDB;Trusted_Connection=True;TrustServerCertificate=True;"));
 
 builder.Services.AddAuthentication(Microsoft.AspNetCore.Server.IISIntegration.IISDefaults.AuthenticationScheme);
@@ -29,8 +29,7 @@ builder.Services.AddScoped<ICouncilDAL, CouncilDAL>();
 builder.Services.AddScoped<ICouncilBL, CouncilBL>();
 builder.Services.AddScoped<IUserDAL, UserDAL>();
 builder.Services.AddScoped<IUserBL, UserBL>();
-builder.Services.AddScoped<IOfficeInventoryDAL, OfficeInventoryDAL>();
-builder.Services.AddScoped<IOfficeInventoryBL, OfficeInventoryBL>();
+
 // Add services to the container.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Host.UseNLog();

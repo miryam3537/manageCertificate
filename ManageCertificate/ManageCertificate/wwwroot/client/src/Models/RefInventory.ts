@@ -7,7 +7,6 @@ export interface RefInventory {
     certificateId?: number;
     year?: number;
     inventory?: number;
-    minimum?: number;
     certificate?: RefCertificateType;
     council?: RefCouncil;
 }

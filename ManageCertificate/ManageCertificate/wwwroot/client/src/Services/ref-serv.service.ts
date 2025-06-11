@@ -6,14 +6,25 @@ import { RefInventory } from '../Models/RefInventory';
 import { Certificate } from '../Models/Certificate';
 import { RefCertificateType } from '../Models/RefCertificateType';
 import { RefCouncil } from '../Models/RefCouncil';
+import { RefOfficeInventory } from '../Models/RefOfficeInventory';
 @Injectable({
   providedIn: 'root'
 })
 export class RefServService {
+  ListOfficeInventory: RefOfficeInventory[] = [];
   ListCertificate: Certificate[] = [];
   BASE_URL_REFSTATUS = "api/RefStatus";
    constructor(private http: HttpClient) { }
- 
+
+ getAllOfficeInventory(): Observable<RefOfficeInventory[]> {
+  console.log("getAllOfficeInventory");
+  return this.http.get<RefOfficeInventory[]>("/GetAllOfficeInventory").pipe(
+    tap(data => console.log('AllOfficeInventory :', data))
+    ,tap(data => {   
+       this.ListOfficeInventory = data; 
+    }
+    )) 
+}
    getAllInventory(): Observable<RefInventory[]> {
     console.log("getAllInventory");
     return this.http.get<RefInventory[]>("/GetAllInventory");

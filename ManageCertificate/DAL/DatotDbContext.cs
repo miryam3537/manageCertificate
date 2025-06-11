@@ -5,204 +5,210 @@ using Entites;
 
 namespace DAL;
 
-public partial class DatotDbContext : DbContext
-{
-    public DatotDbContext()
+    public partial class DatotDbContext : DbContext
     {
-    }
+        public DatotDbContext()
+        {
+        }
 
-    public DatotDbContext(DbContextOptions<DatotDbContext> options)
-        : base(options)
-    {
-    }
+        public DatotDbContext(DbContextOptions<DatotDbContext> options)
+            : base(options)
+        {
+        }
 
-    public virtual DbSet<Certificate> Certificates { get; set; }
+        public virtual DbSet<Certificate> Certificates { get; set; }
 
-    public virtual DbSet<OfficeInventory> OfficeInventories { get; set; }
+        public virtual DbSet<RefCertificateType> RefCertificateTypes { get; set; }
 
-    public virtual DbSet<RefCertificateType> RefCertificateTypes { get; set; }
+        public virtual DbSet<RefCouncil> RefCouncils { get; set; }
 
-    public virtual DbSet<RefCouncil> RefCouncils { get; set; }
+        public virtual DbSet<RefInventory> RefInventories { get; set; }
 
-    public virtual DbSet<RefInventory> RefInventories { get; set; }
+        public virtual DbSet<RefOfficeInventory> RefOfficeInventories { get; set; }
 
-    public virtual DbSet<RefStatus> RefStatuses { get; set; }
+        public virtual DbSet<RefStatus> RefStatuses { get; set; }
 
-    public virtual DbSet<Request> Requests { get; set; }
+        public virtual DbSet<Request> Requests { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=srv2\\Teachers;Database=DatotDB;Trusted_Connection=True;TrustServerCertificate=True;");
+            => optionsBuilder.UseSqlServer("Server=srv2\\Teachers;Database=DatotDB;Trusted_Connection=True;TrustServerCertificate=True;");
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.HasDefaultSchema("MBYDOMAIN\\215557299");
-
-        modelBuilder.Entity<Certificate>(entity =>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            entity.ToTable("Certificate", "dbo");
+            modelBuilder.Entity<Certificate>(entity =>
+            {
+                entity.ToTable("Certificate", "dbo");
 
-            entity.Property(e => e.CertificateId).HasColumnName("certificate_id");
-            entity.Property(e => e.CertificateType).HasColumnName("certificate_type");
-            entity.Property(e => e.Comment)
-                .HasMaxLength(50)
-                .HasColumnName("comment");
-            entity.Property(e => e.RequestAmaunt).HasColumnName("request_amaunt");
-            entity.Property(e => e.RequestId).HasColumnName("request_id");
-            entity.Property(e => e.SupplyAmaunt).HasColumnName("supply_amaunt");
+                entity.Property(e => e.CertificateId).HasColumnName("certificate_id");
+                entity.Property(e => e.CertificateType).HasColumnName("certificate_type");
+                entity.Property(e => e.Comment)
+                    .HasMaxLength(50)
+                    .HasColumnName("comment");
+                entity.Property(e => e.RequestAmaunt).HasColumnName("request_amaunt");
+                entity.Property(e => e.RequestId).HasColumnName("request_id");
+                entity.Property(e => e.SupplyAmaunt).HasColumnName("supply_amaunt");
 
-            entity.HasOne(d => d.CertificateTypeNavigation).WithMany(p => p.Certificates)
-                .HasForeignKey(d => d.CertificateType)
-                .HasConstraintName("FK_Certificate_Type_REF_Certificate_Type");
+                entity.HasOne(d => d.CertificateTypeNavigation).WithMany(p => p.Certificates)
+                    .HasForeignKey(d => d.CertificateType)
+                    .HasConstraintName("FK_Certificate_Type_REF_Certificate_Type");
 
-            entity.HasOne(d => d.Request).WithMany(p => p.Certificates)
-                .HasForeignKey(d => d.RequestId)
-                .HasConstraintName("FK_Certificate_Request");
-        });
+                entity.HasOne(d => d.Request).WithMany(p => p.Certificates)
+                    .HasForeignKey(d => d.RequestId)
+                    .HasConstraintName("FK_Certificate_Request");
+            });
 
-        modelBuilder.Entity<OfficeInventory>(entity =>
-        {
-            entity.ToTable("Office_Inventory", "dbo");
-        });
+            modelBuilder.Entity<RefCertificateType>(entity =>
+            {
+                entity.ToTable("REF_Certificate_Type", "dbo");
 
-        modelBuilder.Entity<RefCertificateType>(entity =>
-        {
-            entity.ToTable("REF_Certificate_Type", "dbo");
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
+                entity.Property(e => e.Minimum).HasColumnName("minimum");
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .HasColumnName("name");
+            });
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
-        });
+            modelBuilder.Entity<RefCouncil>(entity =>
+            {
+                entity.ToTable("REF_Council", "dbo");
 
-        modelBuilder.Entity<RefCouncil>(entity =>
-        {
-            entity.ToTable("REF_Council", "dbo");
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
-        });
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .HasColumnName("name");
+            });
 
-        modelBuilder.Entity<RefInventory>(entity =>
-        {
-            entity.HasKey(e => e.InventoryId);
+            modelBuilder.Entity<RefInventory>(entity =>
+            {
+                entity.HasKey(e => e.InventoryId);
 
-            entity.ToTable("REF_Inventory", "dbo");
+                entity.ToTable("REF_Inventory", "dbo");
 
-            entity.Property(e => e.InventoryId).HasColumnName("inventory_id");
-            entity.Property(e => e.CertificateId).HasColumnName("certificate_id");
-            entity.Property(e => e.CouncilId).HasColumnName("council_id");
-            
-            entity.Property(e => e.Inventory).HasColumnName("inventory");
-   
-            entity.Property(e => e.Year).HasColumnName("year");
+                entity.Property(e => e.InventoryId).HasColumnName("inventory_id");
+                entity.Property(e => e.CertificateId).HasColumnName("certificate_id");
+                entity.Property(e => e.CouncilId).HasColumnName("council_id");
+                entity.Property(e => e.Inventory).HasColumnName("inventory");
+                entity.Property(e => e.Year).HasColumnName("year");
 
-            entity.HasOne(d => d.Certificate).WithMany(p => p.RefInventories)
-                .HasForeignKey(d => d.CertificateId)
-                .HasConstraintName("FK_REF_Inventory_REF_Certificate_Type");
+                entity.HasOne(d => d.Certificate).WithMany(p => p.RefInventories)
+                    .HasForeignKey(d => d.CertificateId)
+                    .HasConstraintName("FK_REF_Inventory_REF_Certificate_Type");
 
-            entity.HasOne(d => d.Council).WithMany(p => p.RefInventories)
-                .HasForeignKey(d => d.CouncilId)
-                .HasConstraintName("FK_REF_Inventory_REF_Council");
-        });
+                entity.HasOne(d => d.Council).WithMany(p => p.RefInventories)
+                    .HasForeignKey(d => d.CouncilId)
+                    .HasConstraintName("FK_REF_Inventory_REF_Council");
+            });
 
-        modelBuilder.Entity<RefStatus>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_ref_satus");
+            modelBuilder.Entity<RefOfficeInventory>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("PK_Office_Inventory");
 
-            entity.ToTable("REF_Status", "dbo");
+                entity.ToTable("REF_Office_Inventory", "dbo");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(20)
-                .IsFixedLength()
-                .HasColumnName("name");
-        });
+                entity.HasOne(d => d.Certificate).WithMany(p => p.RefOfficeInventories)
+                    .HasForeignKey(d => d.CertificateId)
+                    .HasConstraintName("FK_OfficeInventory_CertificateType");
+            });
 
-        modelBuilder.Entity<Request>(entity =>
-        {
-            entity.ToTable("Request", "dbo");
+            modelBuilder.Entity<RefStatus>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("PK_ref_satus");
 
-            entity.Property(e => e.RequestId).HasColumnName("request_id");
-            entity.Property(e => e.Address)
-                .HasMaxLength(20)
-                .IsFixedLength()
-                .HasColumnName("address");
-            entity.Property(e => e.CouncilId).HasColumnName("council_id");
-            entity.Property(e => e.DeliveredTo)
-                .HasMaxLength(20)
-                .IsFixedLength()
-                .HasColumnName("delivered_to");
-            entity.Property(e => e.DeliveryMethod)
-                .HasMaxLength(20)
-                .IsFixedLength()
-                .HasColumnName("delivery_method");
-            entity.Property(e => e.HandlingDate)
-                .HasColumnType("datetime")
-                .HasColumnName("handling_date");
-            entity.Property(e => e.OfficeComment)
-                .HasMaxLength(100)
-                .IsFixedLength()
-                .HasColumnName("office_comment");
-            entity.Property(e => e.OrderDate)
-                .HasColumnType("datetime")
-                .HasColumnName("order_date");
-            entity.Property(e => e.OrdererComment)
-                .HasMaxLength(100)
-                .HasColumnName("orderer_comment");
-            entity.Property(e => e.OrdererEmail)
-                .HasMaxLength(30)
-                .IsFixedLength()
-                .HasColumnName("orderer_email");
-            entity.Property(e => e.OrdererName)
-                .HasMaxLength(20)
-                .IsFixedLength()
-                .HasColumnName("orderer_name");
-            entity.Property(e => e.OrdererPhone)
-                .HasMaxLength(10)
-                .IsFixedLength()
-                .HasColumnName("orderer_phone");
-            entity.Property(e => e.OrdererRole)
-                .HasMaxLength(20)
-                .IsFixedLength()
-                .HasColumnName("orderer_role");
-            entity.Property(e => e.RequestStatus).HasColumnName("request_status");
+                entity.ToTable("REF_Status", "dbo");
 
-            entity.HasOne(d => d.Council).WithMany(p => p.Requests)
-                .HasForeignKey(d => d.CouncilId)
-                .HasConstraintName("FK_Request_REF_Council");
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
+                entity.Property(e => e.Name)
+                    .HasMaxLength(20)
+                    .IsFixedLength()
+                    .HasColumnName("name");
+            });
 
-            entity.HasOne(d => d.RequestStatusNavigation).WithMany(p => p.Requests)
-                .HasForeignKey(d => d.RequestStatus)
-                .HasConstraintName("FK_Request_REF_Status");
-        });
+            modelBuilder.Entity<Request>(entity =>
+            {
+                entity.ToTable("Request", "dbo");
 
-        modelBuilder.Entity<User>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__users__3213E83F9761F033");
+                entity.Property(e => e.RequestId).HasColumnName("request_id");
+                entity.Property(e => e.Address)
+                    .HasMaxLength(20)
+                    .IsFixedLength()
+                    .HasColumnName("address");
+                entity.Property(e => e.CouncilId).HasColumnName("council_id");
+                entity.Property(e => e.DeliveredTo)
+                    .HasMaxLength(20)
+                    .IsFixedLength()
+                    .HasColumnName("delivered_to");
+                entity.Property(e => e.DeliveryMethod)
+                    .HasMaxLength(20)
+                    .IsFixedLength()
+                    .HasColumnName("delivery_method");
+                entity.Property(e => e.HandlingDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("handling_date");
+                entity.Property(e => e.OfficeComment)
+                    .HasMaxLength(100)
+                    .IsFixedLength()
+                    .HasColumnName("office_comment");
+                entity.Property(e => e.OrderDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("order_date");
+                entity.Property(e => e.OrdererComment)
+                    .HasMaxLength(100)
+                    .HasColumnName("orderer_comment");
+                entity.Property(e => e.OrdererEmail)
+                    .HasMaxLength(30)
+                    .IsFixedLength()
+                    .HasColumnName("orderer_email");
+                entity.Property(e => e.OrdererName)
+                    .HasMaxLength(20)
+                    .IsFixedLength()
+                    .HasColumnName("orderer_name");
+                entity.Property(e => e.OrdererPhone)
+                    .HasMaxLength(10)
+                    .IsFixedLength()
+                    .HasColumnName("orderer_phone");
+                entity.Property(e => e.OrdererRole)
+                    .HasMaxLength(20)
+                    .IsFixedLength()
+                    .HasColumnName("orderer_role");
+                entity.Property(e => e.RequestStatus).HasColumnName("request_status");
 
-            entity.HasIndex(e => e.Email, "UQ__users__AB6E61649CE05D89").IsUnique();
+                entity.HasOne(d => d.Council).WithMany(p => p.Requests)
+                    .HasForeignKey(d => d.CouncilId)
+                    .HasConstraintName("FK_Request_REF_Council");
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Email)
-                .HasMaxLength(100)
-                .HasColumnName("email");
-            entity.Property(e => e.Name)
-                .HasMaxLength(100)
-                .HasColumnName("name");
-        });
+                entity.HasOne(d => d.RequestStatusNavigation).WithMany(p => p.Requests)
+                    .HasForeignKey(d => d.RequestStatus)
+                    .HasConstraintName("FK_Request_REF_Status");
+            });
 
-        OnModelCreatingPartial(modelBuilder);
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("PK__users__3213E83F9761F033");
+
+                entity.ToTable("Users", "MBYDOMAIN\\215557299");
+
+                entity.HasIndex(e => e.Email, "UQ__users__AB6E61649CE05D89").IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Email)
+                    .HasMaxLength(100)
+                    .HasColumnName("email");
+                entity.Property(e => e.Name)
+                    .HasMaxLength(100)
+                    .HasColumnName("name");
+            });
+
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-}

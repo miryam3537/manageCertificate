@@ -17,7 +17,7 @@ namespace DAL
         }
         public async Task<IEnumerable<RefOfficeInventory>> GetAllOfficeInventory()
         {
-            return await _context.OfficeInventories.ToListAsync();
+            return await _context.RefOfficeInventories.ToListAsync();
         }
         public async Task<IEnumerable<RefStatus>> GetAllStatus()
         {

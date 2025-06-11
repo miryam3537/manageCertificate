@@ -162,26 +162,27 @@ onPrintAllRequestesTable() {
     this.initialData();
   }
   totalInventoryBalance() {
-    const currentYear = new Date().getFullYear();
+ 
+    // const currentYear = new Date().getFullYear();
   
-    this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
-      const totalSupplyAmount = this.ListAllCertificate
-          .filter(certificate => certificate.certificateType === refCertificateType.id)
-          .reduce((acc, certificate) => acc + (certificate.supplyAmaunt || 0), 0);
-      const totalInventory = this.ListRefInventory
-          .filter(inventory => inventory.certificateId === refCertificateType.id && inventory.year === currentYear)
-          .reduce((acc, inventory) => acc + (inventory.inventory || 0), 0);
-      //const minimumInventory = this.ListRefInventory
-      return {
-        ...refCertificateType, 
-        TOTAL_INVENTORY_BALANCES:(totalInventory-totalSupplyAmount) || 0,
-        //MINIMUM_INVENTORY_BALANCES: refCertificateType.minimum || 0,
-      };
-    });
+    // this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
+    //   const totalSupplyAmount = this.ListAllCertificate
+    //       .filter(certificate => certificate.certificateType === refCertificateType.id)
+    //       .reduce((acc, certificate) => acc + (certificate.supplyAmaunt || 0), 0);
+    //   const totalInventory = this.ListRefInventory
+    //       .filter(inventory => inventory.certificateId === refCertificateType.id && inventory.year === currentYear)
+    //       .reduce((acc, inventory) => acc + (inventory.inventory || 0), 0);
+    //   //const minimumInventory = this.ListRefInventory
+    //   return {
+    //     ...refCertificateType, 
+    //     TOTAL_INVENTORY_BALANCES:(totalInventory-totalSupplyAmount) || 0,
+    //     //MINIMUM_INVENTORY_BALANCES: refCertificateType.minimum || 0,
+    //   };
+    // });
   
-    console.log('Updated Certificate Types with Total Supply Amount:', this.updatedCertificateTypes);
-
-
+    // console.log('Updated Certificate Types with Total Supply Amount:', this.updatedCertificateTypes);
+    this.OfficeInventoryService.getAllOfficeInventory()
+    this.RefServService.getAllOfficeInventory()
   }
   downloadTableAsExcel() {
     // עיצוב הנתונים לפני יצירת קובץ ה-Excel

@@ -1,5 +1,5 @@
 
-import { OfficeInventory } from '../Models/OfficeInventory';
+import { RefOfficeInventory } from '../Models/RefOfficeInventory';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -11,11 +11,11 @@ import { HttpClient } from '@angular/common/http';
 
 export class OfficeInventoryService {
   BASE_URL_OFFICE_INVENTORY = "api/GetAllOfficeInventory";
-  ListOfficeInventory: OfficeInventory[] = [];
+  ListOfficeInventory: RefOfficeInventory[] = [];
   constructor(private http: HttpClient) { }
-  getAllOfficeInventory(): Observable<OfficeInventory[]> {
+  getAllOfficeInventory(): Observable<RefOfficeInventory[]> {
       console.log("getAllOfficeInventory");
-      return this.http.get<OfficeInventory[]>("/GetAllOfficeInventory").pipe(
+      return this.http.get<RefOfficeInventory[]>("/GetAllOfficeInventory").pipe(
         tap(data => console.log('AllOfficeInventory :', data))
         ,tap(data => {   
            this.ListOfficeInventory = data; 
