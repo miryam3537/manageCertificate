@@ -30,6 +30,7 @@ import { CertificateService } from '../../Services/certificate.service';
 import { PrintService } from '../../Services/print.service';
 import * as XLSX from 'xlsx';
 import { OfficeInventoryService } from '../../Services/office-inventory.service';
+import { RefOfficeInventory } from '../../Models/RefOfficeInventory';
 
 @Component({
   selector: 'app-all-requestes',
@@ -72,6 +73,7 @@ export class AllRequestesComponent implements OnInit {
   isReset: boolean = false;
   amount: number = 0; 
   inventory:object[] = [];
+  ListAllOfficeInventory:RefOfficeInventory[]=[]
   @ViewChild(MatSort) sort!: MatSort;
   constructor(
     public RequestService: RequestService,
@@ -94,9 +96,10 @@ export class AllRequestesComponent implements OnInit {
       this.RefServService.getAllRefStatus(this.ListRefStatus),
       this.RefServService.getAllInventory(),
       this.certificateService.getAllCertificate(),
+      this.RefServService.getAllOfficeInventory(),
     ]).pipe(take(1)).subscribe({
       next:
-      ([requests, certificateTypes, refStatuses, inventories, certificates]) => {
+      ([requests, certificateTypes, refStatuses, inventories, certificates,officeInventory]) => {
         this.allRequests = requests;
       this.ListRequestes.data = this.allRequests.filter(request =>
         request.requestStatus === 1 || request.requestStatus === 3
@@ -106,6 +109,7 @@ export class AllRequestesComponent implements OnInit {
         this.ListRefStatus = refStatuses;
         this.ListRefInventory = inventories;
         this.ListAllCertificate = certificates;
+        this.ListAllOfficeInventory = officeInventory;
         console.log('ListRequestes:', this.ListRequestes);
         console.log('ListRefCertificateType:', this.ListRefCertificateType);
         console.log('ListRefStatus:', this.ListRefStatus);
@@ -163,8 +167,7 @@ onPrintAllRequestesTable() {
   }
   totalInventoryBalance() {
  
-    // const currentYear = new Date().getFullYear();
-  
+     const currentYear = new Date().getFullYear();
     // this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
     //   const totalSupplyAmount = this.ListAllCertificate
     //       .filter(certificate => certificate.certificateType === refCertificateType.id)
@@ -179,10 +182,9 @@ onPrintAllRequestesTable() {
     //     //MINIMUM_INVENTORY_BALANCES: refCertificateType.minimum || 0,
     //   };
     // });
-  
     // console.log('Updated Certificate Types with Total Supply Amount:', this.updatedCertificateTypes);
-    this.OfficeInventoryService.getAllOfficeInventory()
-    this.RefServService.getAllOfficeInventory()
+    //  this.OfficeInventoryService.getAllOfficeInventory()
+    //  this.RefServService.getAllOfficeInventory()
   }
   downloadTableAsExcel() {
     // עיצוב הנתונים לפני יצירת קובץ ה-Excel

@@ -45,7 +45,7 @@ export class RequestDetailsComponent {
    officeEmail:string = "38215557299@mby.co.il"//יצטרך שינוי בעתיד...
    loading: boolean = false; // Flag to indicate loading state
    officeComment = new FormControl(''); // Form control for office comment
-deliveredTo =  new FormControl('');;
+  deliveredTo =  new FormControl('');;
 
 constructor(private route: ActivatedRoute,private RequestService:RequestService,private RefServService:RefServService,private EmailService:EmailService){
   // This allows effect to be set in the constructor which is within an injection context
