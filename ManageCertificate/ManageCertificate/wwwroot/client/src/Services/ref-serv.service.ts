@@ -13,6 +13,7 @@ import { RefOfficeInventory } from '../Models/RefOfficeInventory';
 export class RefServService {
   ListOfficeInventory: RefOfficeInventory[] = [];
   ListCertificate: Certificate[] = [];
+
   BASE_URL_REFSTATUS = "api/RefStatus";
    constructor(private http: HttpClient) { }
 
@@ -25,6 +26,29 @@ export class RefServService {
     }
     )) 
 }
+getAllRefCouncil(ListRefCouncil:RefCouncil[]): Observable<RefCouncil[]> {
+  console.log("getAllRefCouncil");
+  if(ListRefCouncil.length<=0) 
+  return this.http.get<RefCouncil[]>("/GetAllRefCouncil").pipe(
+    tap(data => console.log('ListRefCouncil :', data)),
+    tap(data => {   
+      ListRefCouncil = data; 
+      console.log("ListRefCouncil-שירות");
+    }
+    )
+  );
+  else return of(ListRefCouncil);
+}
+// getAllOfficeInventory(ListCOuncil:RefCouncil[]): Observable<RefCouncil[]> {
+//   console.log("getAllOfficeInventory");
+//   return this.http.get<RefCouncil[]>("/GetAllRefCouncil").pipe(
+//     tap(data => console.log('AllOfficeInventory :', data))
+//     ,tap(data => {   
+//       ListCOuncil = data; 
+//     }
+//     )) 
+// }
+
    getAllInventory(): Observable<RefInventory[]> {
     console.log("getAllInventory");
     return this.http.get<RefInventory[]>("/GetAllInventory");
@@ -57,19 +81,6 @@ export class RefServService {
     );   
   }
  
-  getAllRefCouncil(ListRefCouncil:RefCouncil[]): Observable<RefCouncil[]> {
-    console.log("getAllRefCouncil");
-    if(ListRefCouncil.length<=0) 
-    return this.http.get<RefCouncil[]>("/GetAllRefCouncil").pipe(
-      tap(data => console.log('ListRefCouncil :', data)),
-      tap(data => {   
-        ListRefCouncil = data; 
-        console.log("ListRefCouncil-שירות");
-      }
-      )
-    );
-    else return of(ListRefCouncil);
-  }
   getById(concilId: number,CertificateType:number): Observable<RefInventory> {
     return this.http.get<RefInventory>(`/GetInventoryById?concilId=${concilId}&certificateId=${CertificateType}`).pipe(
       catchError((error) => {
