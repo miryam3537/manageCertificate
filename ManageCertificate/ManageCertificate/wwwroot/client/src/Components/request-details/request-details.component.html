@@ -1,4 +1,4 @@
-<a  href="/AllRequestes">חזרה לרשימת הבקשות</a>
+<a  href="">חזרה לרשימת הבקשות</a>
 
 <div class="button-group">
   <button mat-button color="primary" (click)="requestApproval()">אישור בקשה</button>
@@ -29,6 +29,7 @@
   <mat-card-header>
     <mat-card-title>פרטי הבקשה</mat-card-title>
   </mat-card-header>
+  <form [formGroup]="form">
   <mat-card-content>
     <ul class="list-group">
       <li class="list-group-item">
@@ -68,21 +69,25 @@
         <strong>לידי מי נמסר:</strong> 
         <input 
           type="text" 
-          [formControl]="deliveredTo" 
+          formControlName="deliveredTo" 
           class="editable-input" 
-        />
+          [disabled]="isRequestApproved"
+          [ngClass]="{ 'error-border': form.get('deliveredTo')?.invalid && form.get('deliveredTo')?.touched }"
+          />
+          <span *ngIf="form.get('deliveredTo')?.hasError('required') && form.get('deliveredTo')?.touched" class="error-message">
+            שדה זה הינו שדה חובה
+          </span>
       </li>
-      
       <li class="list-group-item">
         <strong>תאריך טיפול:</strong> {{requestDetails()?.handlingDate | date:'dd/MM/yyyy'}}
     
       </li>
       <li class="list-group-item">
         <strong>הערות המשרד להזמנה:</strong> 
-        <textarea class="form-control" [formControl]="officeComment"></textarea>
+        <textarea class="form-control office-comment-textarea" formControlName="officeComment"></textarea>
       </li>
     </ul>
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table-bordered" >
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table-bordered" formArrayName="rows">
 
       <ng-container matColumnDef="certificateTypeNavigation">
         <th mat-header-cell *matHeaderCellDef> סוג התעודה </th>
@@ -102,25 +107,30 @@
    
       <ng-container matColumnDef="supplyAmaunt">
         <th mat-header-cell *matHeaderCellDef> כמות אספקה </th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
           <input 
             type="number" 
-            [(ngModel)]="element.supplyAmaunt" 
-            [ngModel]="element.supplyAmaunt == null? element.requestAmaunt : element.supplyAmaunt" 
+            formControlName="supplyAmaunt"
             class="editable-input" 
+            
           />
         </td>
       </ng-container>
   
-     <ng-container matColumnDef="comment">
-      <th mat-header-cell *matHeaderCellDef> הערות </th>
-      <td mat-cell *matCellDef="let element"> 
-        <textarea class="textarea-table" [(ngModel)]="element.comment"></textarea>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="comment">
+        <th mat-header-cell *matHeaderCellDef> הערות </th>
+        <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+          <textarea class="textarea-table" formControlName="comment"></textarea>
+        </td>
+      </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </mat-card-content>
+</form>
+  <mat-card-actions>
+    <button mat-button color="primary" (click)="save()">שמור</button>
+    <button mat-button color="warn" (click)="print()">הדפסה</button>
+  </mat-card-actions>
 </mat-card>
 

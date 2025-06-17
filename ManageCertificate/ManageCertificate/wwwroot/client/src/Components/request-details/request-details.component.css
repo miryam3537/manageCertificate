@@ -73,11 +73,13 @@ textarea.form-control {
 div.button-group{
   text-align: center;
 }
-/* .example-button-container{
-position: relative;
-right: 45%;
-margin-top: -2%;
+.error-border {
+  border: 1px solid red;
 }
-#print-button-container{
-  
-} */
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}

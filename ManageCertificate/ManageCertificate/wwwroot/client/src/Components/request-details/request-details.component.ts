@@ -19,7 +19,7 @@ import { MatSpinner } from '@angular/material/progress-spinner';
 import { signal, effect } from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -37,6 +37,7 @@ export interface PeriodicElement {
 })
 export class RequestDetailsComponent {
   private _snackBar = inject(MatSnackBar);
+  form: FormGroup;
   requestDetails = signal<Requestes | null>(null);
   inventories!:RefInventory[];
   displayedColumns: string[] = ['certificateTypeNavigation', 'requestAmaunt','Unused balance','supplyAmaunt','comment'];
@@ -44,18 +45,19 @@ export class RequestDetailsComponent {
    requestId! :number ;
    officeEmail:string = "38215557299@mby.co.il"//יצטרך שינוי בעתיד...
    loading: boolean = false; // Flag to indicate loading state
-   officeComment = new FormControl(''); // Form control for office comment
-deliveredTo =  new FormControl('');;
-
-constructor(private route: ActivatedRoute,private RequestService:RequestService,private RefServService:RefServService,private EmailService:EmailService){
+isRequestApproved: boolean = false;
+isDeliveredToInvalid: boolean = false;
+constructor(
+  private route: ActivatedRoute,
+  private RequestService:RequestService,
+  private RefServService:RefServService,
+  private EmailService:EmailService)
+  {
   // This allows effect to be set in the constructor which is within an injection context
-  effect(() => {
-    const details = this.requestDetails();
-    if (details) {
-      this.dataSource.data = details.certificates || [];
-      this.officeComment.setValue(details.officeComment || '');
-      this.deliveredTo.setValue(details.deliveredTo || '');
-    }
+  this.form = new FormGroup({
+    deliveredTo: new FormControl(''), // Delivered To field
+    officeComment: new FormControl(''), // Office Comment field
+    rows: new FormArray([]), // FormArray for table rows
   });
 }
 
@@ -67,39 +69,70 @@ ngOnInit() {
   });
 }
 
-  private fetchRequestDetails(): void {
-    // Fetch the details of the request from the service
-    this.RequestService.getRequestById(this.requestId).subscribe(request=> {
-      console.log(request);
-      this.requestDetails.set(request ?? null);
-    });
-    // this.RequestService.get(this.requestId).subscribe(
-    //   (data: Requestes) => {
-    //     this.requestDetails.set(data); // Set request details
-    //     this.dataSource.data = this.requestDetails()?.certificates || []; // Update dataSource with the certificates data
-    //     this.GetAllInvetory(); // Fetch inventory data
-    //   },
-    //   (error) => {
-    //     console.error('Error fetching request details:', error); // Log any errors
-    //   }
-    // );
+
+private fetchRequestDetails(): void {
+  this.RequestService.getRequestById(this.requestId).subscribe(request => {
+    console.log('Fetched Request:', request);
+
+    this.requestDetails.set(request ?? null);
+
+    // Use the `request` object directly to set `isRequestApproved`
+   this.initialRequest()
+  });
+}
+initialRequest(){
+  this.isRequestApproved = this.requestDetails()?.requestStatus === 2; // Check if the request is approved
+  // Update the form fields
+  this.form.get('deliveredTo')?.setValue(this.requestDetails()?.deliveredTo || '');
+  this.form.get('officeComment')?.setValue(this.requestDetails()?.officeComment || '');
+
+  // Enable/Disable fields based on approval status
+  if (this.isRequestApproved) {
+    this.form.get('deliveredTo')?.disable();
+  } else {
+    this.form.get('deliveredTo')?.enable();
   }
-
-  private GetAllInvetory(): void {
+  const deliveredToControl = this.form.get('deliveredTo');
+if (!this.requestDetails()?.address) {
+  deliveredToControl?.setValidators(Validators.required); // Add required validator
+} else {
+  deliveredToControl?.clearValidators(); // Remove all validators
+}
+deliveredToControl?.updateValueAndValidity(); // Ensure the validation state is updated
+  // Initialize the table rows
+  console.log('this.requestApproval:', this.isRequestApproved
   
-  this.RefServService.getAllInventory().subscribe(
-    (data:RefInventory[])=>{
-     this.inventories = data
-     console.log('Inventory:', this.inventories);
-     
-    },(error) => {
-      console.error('Error fetching inventory:', error); // Log any errors
-    })
+  );
+  
+  this.initializeRows(this.requestDetails()?.certificates || []);
+}
+private initializeRows(certificates: Certificate[]): void {
+  const rows = this.form.get('rows') as FormArray;
+  rows.clear(); // Clear existing rows
+
+  certificates.forEach((certificate) => {
+    rows.push(
+      new FormGroup({
+        supplyAmaunt: new FormControl(
+          { value: certificate.supplyAmaunt ?? certificate.requestAmaunt, disabled: this.isRequestApproved },
+          Validators.required
+        ),
+        comment: new FormControl({ value: certificate.comment, disabled: this.isRequestApproved }),
+      })
+    );
+  });
+
+  // Update the data source for the table
+  this.dataSource.data = certificates;
 }
 
-get requestDetailsValue() {
-  return this.requestDetails() || { officeComment: '', deliveredTo: '' }; // provide default values
+get rows(): FormArray {
+  return this.form.get('rows') as FormArray;
 }
+
+// get requestDetailsValue() {
+//   return this.requestDetails() || { officeComment: '', deliveredTo: '' }; // provide default values
+// }
 calculateUnusedBalance(certificate: Certificate): Observable<number> {
   return new Observable<number>((observer) => {
     const inventory = this.inventories?.find(
@@ -131,7 +164,13 @@ this.upDateRequest(previousStatusId); // עדכון הסטטוס הקודם
   );  
  }
  requestApproval(){
+  if (!this.requestDetails()?.address && ! this.form.get('deliveredTo')) {
+    this.isDeliveredToInvalid = true;
+    return; // Stop the function from proceeding
+  }
+  this.isDeliveredToInvalid = false;// Reset the validation flag if the field is valid
   const statusId = 2; 
+  this.isRequestApproved = true;
   this.changeStatus(statusId);
   //משתנה כמות אספקה יהיה בתחילה כמו כמות ויהיה אפשר לשנות אותו והוא ישתנה במשתנה
   var body:string = "";
@@ -139,6 +178,7 @@ this.upDateRequest(previousStatusId); // עדכון הסטטוס הקודם
       body += `${index + 1}. ${certificate.supplyAmaunt} ${certificate.certificateTypeNavigation?.name}נשלחו ל${this.requestDetails()?.council?.name}.\n`; 
     });
   this.sentEmailToTheOffice(`אושרה בקשה מספר ${this.requestDetails()?.requestId}`,body)
+  
 }
 cancelRequest(): void {
   const statusId = 4; 
@@ -156,13 +196,22 @@ save(){
   this.upDateRequest(null);
 }
 upDateRequest(previousStatusId: number|null) {
+  if (!this.form.valid) {
+    console.log('Form is invalid:', this.form.errors);
+    this.openSnackBar('בבקשה מלא את כל שדות החובה', 'Close');
+    return; // Stop the function if the form is invalid
+  }
   this.loading = true;
  if( this.checkNegitiveInventoryBalance()){
   console.log('requestDetails:', this.requestDetails);
-  this.requestDetails.update(current => ({ ...current, officeComment: this.officeComment.value,deliveredTo:this.deliveredTo.value } as Requestes)); 
+  this.requestDetails.update(current => ({ ...current, 
+    officeComment: this.form.get('officeComment')?.value, // Access officeComment from the FormGroup
+    deliveredTo: this.form.get('deliveredTo')?.value
+    } as Requestes)); 
   this.RequestService.updateRequest( this.requestId,previousStatusId, this.requestDetails()).subscribe({
     next: (data:any) => {
-      this.requestDetails.set(data.data); // Update the request details with the response data
+      this.requestDetails.set(data.data); 
+      this.initialRequest()// Update the request details with the response data
       console.log('Request updated successfully:', data);
       this.loading = false;
     this.openSnackBar("הבקשה עודכנה בהצלחה", "אישור")
@@ -208,39 +257,53 @@ print() {
   if (content && printWindow) {
     // Clone the content to manipulate it without affecting the original DOM
     const clonedContent = content.cloneNode(true) as HTMLElement;
+     // Remove unwanted elements from the cloned content
+    const elementsToRemove = clonedContent.querySelectorAll(".button-group, #print-button-container");
+    elementsToRemove.forEach((element) => element.remove());
+    // Update input fields with their current values
+    const inputs = clonedContent.querySelectorAll("input");
+    inputs.forEach((input) => {
+      const originalInput = content.querySelector(`input[formControlName="${input.getAttribute("formControlName")}"]`) as HTMLInputElement;
+      if (originalInput) {
+        input.setAttribute("value", originalInput.value); // Set the value from the original DOM
+      }
+    });
 
-    //  const inputs = clonedContent.querySelectorAll("input");
-    // inputs.forEach((input) => {
-    //   // Handle inputs bound to formControl
-    //    if (input.hasAttribute("formControlName") && input.getAttribute("formControlName") === "deliveredTo") {
-    //     input.setAttribute("value", this.deliveredTo.value); // Set the value from the form control
-    //   }
-    
-    //   // Handle inputs bound to ngModel
-    //   if (input.hasAttribute("ngModel") && input.getAttribute("ngModel") === "element.supplyAmaunt") {
-    //     const originalInput = content.querySelector(`input[ngModel="element.supplyAmaunt"]`) as HTMLInputElement;
-    //     if (originalInput) {
-    //       input.setAttribute("value", originalInput.value); // Set the value from the original DOM
-    //     }
-    //   }
-    // });
+    // Update the officeComment textarea with its current value
+    const officeCommentTextarea = clonedContent.querySelector('.office-comment-textarea') as HTMLTextAreaElement;
+    if (officeCommentTextarea) {
+      const officeCommentValue = this.form.get('officeComment')?.value || ''; // Access officeComment value from the FormControl
+      officeCommentTextarea.textContent = officeCommentValue; // Set the value from the FormControl
+    }
+console.log(officeCommentTextarea);
 
-    // Update textarea fields with their current values
+    // Update other textarea fields with their current values
     const textareas = clonedContent.querySelectorAll("textarea");
     textareas.forEach((textarea) => {
-      if (textarea.hasAttribute("formControlName") && textarea.getAttribute("formControlName") === "officeComment") {
-        textarea.textContent = this.officeComment.value; // Set the value from the form control
+      const originalTextarea = content.querySelector(`textarea[formControlName="${textarea.getAttribute("formControlName")}"]`) as HTMLTextAreaElement;
+      if (originalTextarea) {
+        textarea.textContent = originalTextarea.value; // Set the value from the original DOM
       }
     });
-    textareas.forEach((textarea) => {
-      // Handle textareas bound to ngModel
-      if (textarea.hasAttribute("ngModel") && textarea.getAttribute("ngModel") === "element.comment") {
-        const originalTextarea = content.querySelector(`textarea[ngModel="element.comment"]`) as HTMLTextAreaElement;
-        if (originalTextarea) {
-          textarea.textContent = originalTextarea.value; // Set the value from the original DOM
-        }
+
+    // Update table inputs and textareas bound to ngModel
+    const tableInputs = clonedContent.querySelectorAll("input.editable-input");
+    tableInputs.forEach((input, index) => {
+      const originalInput = content.querySelectorAll("input.editable-input")[index] as HTMLInputElement;
+      if (originalInput) {
+        input.setAttribute("value", originalInput.value); // Set the value from the original DOM
       }
     });
+
+    const tableTextareas = clonedContent.querySelectorAll("textarea.textarea-table");
+    tableTextareas.forEach((textarea, index) => {
+      const originalTextarea = content.querySelectorAll("textarea.textarea-table")[index] as HTMLTextAreaElement;
+      if (originalTextarea) {
+        textarea.textContent = originalTextarea.value; // Set the value from the original DOM
+      }
+    });
+console.log();
+
     // Write the updated content to the print window
     printWindow.document.open();
     printWindow.document.write(`
