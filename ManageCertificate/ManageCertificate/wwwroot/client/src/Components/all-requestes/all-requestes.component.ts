@@ -115,6 +115,7 @@ export class AllRequestesComponent implements OnInit {
         console.log('ListRefStatus:', this.ListRefStatus);
         console.log('ListRefInventory:', this.ListRefInventory);
         console.log('ListAllCertificate:', this.ListAllCertificate);
+        console.log('ListAllOfficeInventory:', this.ListAllOfficeInventory);
         this.totalInventoryBalance();
         this.isLoading = false;
       },
@@ -168,6 +169,19 @@ onPrintAllRequestesTable() {
   totalInventoryBalance() {
  
      const currentYear = new Date().getFullYear();
+     this.updatedCertificateTypes = this.ListRefCertificateType.map(item =>{
+      const totalInventory = this.ListAllOfficeInventory
+      .filter(certificate =>
+        certificate.year==currentYear && certificate.certificateId==item.id)
+      .reduce((acc, certificate) => acc + (certificate.inventory || 0), 0)
+        return {
+              ...item, 
+              TOTAL_INVENTORY_BALANCES:totalInventory|| 0
+            }; 
+          });
+       
+          console.log('Updated Certificate Types with Total Supply Amount:', this.updatedCertificateTypes);
+        }
     // this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
     //   const totalSupplyAmount = this.ListAllCertificate
     //       .filter(certificate => certificate.certificateType === refCertificateType.id)
@@ -185,7 +199,7 @@ onPrintAllRequestesTable() {
     // console.log('Updated Certificate Types with Total Supply Amount:', this.updatedCertificateTypes);
     //  this.OfficeInventoryService.getAllOfficeInventory()
     //  this.RefServService.getAllOfficeInventory()
-  }
+  
   downloadTableAsExcel() {
     // עיצוב הנתונים לפני יצירת קובץ ה-Excel
     const formattedData = this.ListRequestes.data.map((request) => ({

@@ -22,6 +22,19 @@ public class RefController : Controller
         this.RefBL = RefBL;
         this.logger = logger;
     }
+    [HttpPut("/api/updateInventoryAmount")]
+    public async Task<IActionResult> UpdateInventoryAmount([FromBody] UpdateInventoryDTO inventoryDto)
+    {
+        if (inventoryDto == null)
+            return BadRequest();
+
+        var result = await RefBL.UpdateInventoryAmountAsync(inventoryDto.InventoryId, inventoryDto.Inventory);
+        if (result == null)
+            return NotFound();
+
+        return Ok(result); // מחזיר את האובייקט המעודכן
+    }
+
     [HttpGet("/GetAllOfficeInventory")]
     public async Task<ActionResult<IEnumerable<RefOfficeInventory>>> GetAllOfficeInventory()
     {

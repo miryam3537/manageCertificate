@@ -53,5 +53,19 @@ namespace DAL
         {
             return await _context.RefCertificateTypes.ToListAsync();
         }
+
+        public async Task<bool> UpdateInventoryAmountAsync(int inventoryId, int? inventory)
+        {
+            var existing = await _context.RefInventories
+                .FirstOrDefaultAsync(r => r.InventoryId == inventoryId);
+
+            if (existing == null)
+                return false;
+
+            existing.Inventory = inventory;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

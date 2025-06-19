@@ -2,6 +2,7 @@
   <div *ngIf="isLoading" class="loading-container">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
+
 <div id="inventoryBalance" class="inventory-container">
   <div *ngIf="updatedCertificateTypes && updatedCertificateTypes.length > 0; else noData">
     <div class="inventory-cards">
@@ -15,13 +16,12 @@
             <span 
               class="balance-value" 
               [ngClass]="{
-                'positive-balance': type.TOTAL_INVENTORY_BALANCES > 0,
-                'negative-balance': type.TOTAL_INVENTORY_BALANCES < type.minimumBalance,
+                'positive-balance': type.TOTAL_INVENTORY_BALANCES > 0
               }">
               {{ type.TOTAL_INVENTORY_BALANCES < 0 ? 'חסר הגדרה' : type.TOTAL_INVENTORY_BALANCES }}
             </span>
             <span 
-              *ngIf="type.TOTAL_INVENTORY_BALANCES < 2" 
+              *ngIf="type.TOTAL_INVENTORY_BALANCES <= type.minimum" 
               class="warning-balance">
               &#x26A0; 
             </span>

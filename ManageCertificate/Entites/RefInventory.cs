@@ -14,7 +14,7 @@ public partial class RefInventory
     public int? Year { get; set; }
 
     public int? Inventory { get; set; }
-
+ 
     public virtual RefCertificateType? Certificate { get; set; }
 
     public virtual RefCouncil? Council { get; set; }

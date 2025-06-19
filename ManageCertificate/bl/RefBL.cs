@@ -61,5 +61,11 @@ namespace BL
         {
             return refDAL.GetAllCertificateType();
         }
+
+        public async Task<bool> UpdateInventoryAmountAsync(int inventoryId, int? inventory)
+        {
+            return await refDAL.UpdateInventoryAmountAsync(inventoryId, inventory);
+        }
+
     }
 }

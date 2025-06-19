@@ -10,6 +10,9 @@ namespace BL.Interfaces
 {
     public interface IRefBL
     {
+        Task<bool> UpdateInventoryAmountAsync(int inventoryId, int? inventory);
+
+
         Task<IEnumerable<RefStatus>> GetAllStatus();
         Task<RefInventoryDTO> GetInventoryById(int concilId, int certificateId);
         Task<List<RefInventoryDTO>> GetAllInventory();

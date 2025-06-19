@@ -16,7 +16,18 @@ export class RefServService {
 
   BASE_URL_REFSTATUS = "api/RefStatus";
    constructor(private http: HttpClient) { }
+   updateInventoryAmount(inventoryId: number, inventory: number): Observable<any> {
+    const payload = { inventoryId, inventory }; // יצירת אובייקט JSON פשוט
+    console.log('Sending updateInventoryAmount request:', payload);
 
+    return this.http.put<any>('/api/updateInventoryAmount', payload).pipe(
+      tap((updatedInventory) => console.log('Inventory updated successfully:', updatedInventory)),
+      catchError((error) => {
+        console.error('Error updating inventory:', error);
+        return throwError(() => new Error('Failed to update inventory'));
+      })
+    );
+  }
  getAllOfficeInventory(): Observable<RefOfficeInventory[]> {
   console.log("getAllOfficeInventory");
   return this.http.get<RefOfficeInventory[]>("/GetAllOfficeInventory").pipe(
@@ -48,7 +59,16 @@ getAllRefCouncil(ListRefCouncil:RefCouncil[]): Observable<RefCouncil[]> {
 //     }
 //     )) 
 // }
-
+editInventory(RefInventory: RefInventory): Observable<RefInventory> {
+  console.log("editInventory");
+  return this.http.put<RefInventory>("/EditInventory", RefInventory).pipe(
+    tap(data => console.log('Edited Inventory:', data)),
+    catchError((error) => {
+      console.error('Error:', error);
+      return throwError(() => new Error('Failed to edit inventory'));
+    })
+  );
+}
    getAllInventory(): Observable<RefInventory[]> {
     console.log("getAllInventory");
     return this.http.get<RefInventory[]>("/GetAllInventory");

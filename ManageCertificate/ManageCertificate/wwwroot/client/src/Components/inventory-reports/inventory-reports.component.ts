@@ -26,6 +26,7 @@ import { CertificateService } from '../../Services/certificate.service';
 import { RequestService } from '../../Services/request.service';
 import { firstValueFrom } from 'rxjs';
 import { PrintService } from '../../Services/print.service';
+import { FormsModule } from '@angular/forms';
 
 // import { forkJoin } from 'rxjs';
 // import { map } from 'rxjs/operators';
@@ -37,6 +38,7 @@ import { PrintService } from '../../Services/print.service';
     RouterModule,
     MatIconModule,
     HttpClientModule,
+    FormsModule,
     CommonModule,
     MatIconModule,
     MatDatepickerModule,
@@ -119,7 +121,16 @@ export class InventoryReportsComponent implements OnInit{
       });
     }
 
- 
+    saveInventory(item: any) {
+      this.RefServService.updateInventoryAmount(item.inventoryId, item.inventory).subscribe({
+        next: (response) => {
+          console.log('Inventory updated successfully:', response);
+          // עדכון ההצגה של המלאי לאחר השמירה
+          this.loadData();
+        }
+      });
+      
+  }
 calculateUtilizationPerYear() {
   const utilizationResults$ = this.ListRefInventory.map((inventory) => {
     const matchingCertificates = this.ListAllCertificates.filter(
@@ -177,15 +188,18 @@ calculateUtilizationPerYear() {
     );
   }
 }
+applyFilter() {
+  this.filteredInventory = this.ListRefInventory.filter(item => {
+      const yearMatch = this.selectedYearTable1 === null 
+          ? item.year === this.currentYear 
+          : item.year === this.selectedYearTable1;
 
-    applyFilter() {
-      this.filteredInventory = this.ListRefInventory.filter(item => {
-        const yearMatch = this.selectedYearTable1 === null || item.year === this.selectedYearTable1;
-        const councilMatch = this.selectCouncil === '' || item.council?.name?.toLowerCase().includes(this.selectCouncil.toLowerCase());
-        return yearMatch && councilMatch;
-      });
+      const councilMatch = this.selectCouncil === '' 
+          || item.council?.name?.toLowerCase().includes(this.selectCouncil.toLowerCase());
 
-    }
+      return yearMatch && councilMatch;
+  });
+}
   
     onInputChangeYearTable1(event: Event) {
       this.selectedYearTable1 = (event.target as HTMLInputElement).valueAsNumber || null;

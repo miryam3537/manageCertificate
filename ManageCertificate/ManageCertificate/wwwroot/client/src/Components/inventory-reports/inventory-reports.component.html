@@ -63,9 +63,19 @@
         </ng-container>
 
         <ng-container matColumnDef="inventory">
-          <th mat-header-cell *matHeaderCellDef> אומדן שנתי-  ? </th>
+          <th mat-header-cell *matHeaderCellDef> אומדן שנתי </th>
           <td mat-cell *matCellDef="let item">
-            <!-- {{ item.year == currentYear ? item.inventory : item.inventory + '(אין מלאי לשנה הנוכחית)' }} -->
+            <div *ngIf="item.year === currentYear">
+              <input 
+                type="number" 
+                [(ngModel)]="item.inventory" 
+                placeholder="ערוך מלאי"
+              />
+              <button mat-button (click)="saveInventory(item)">שמור</button>
+            </div>
+            <div *ngIf="item.year !== currentYear">
+              {{ item.inventory }} (אין מלאי לשנה הנוכחית)
+            </div>
           </td>
         </ng-container>
 
