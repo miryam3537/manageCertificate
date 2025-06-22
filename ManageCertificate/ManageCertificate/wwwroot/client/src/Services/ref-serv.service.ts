@@ -16,6 +16,7 @@ export class RefServService {
 
   BASE_URL_REFSTATUS = "api/RefStatus";
    constructor(private http: HttpClient) { }
+
    updateInventoryAmount(inventoryId: number, inventory: number): Observable<any> {
     const payload = { inventoryId, inventory }; // יצירת אובייקט JSON פשוט
     console.log('Sending updateInventoryAmount request:', payload);
@@ -25,6 +26,19 @@ export class RefServService {
       catchError((error) => {
         console.error('Error updating inventory:', error);
         return throwError(() => new Error('Failed to update inventory'));
+      })
+    );
+  }
+  
+  updateMinimum(certificateId: number, minimum: number): Observable<any> {
+    const payload = { certificateId, minimum }; // יצירת אובייקט JSON פשוט
+    console.log('Sending updateminimum request:', payload);
+
+    return this.http.put<any>('/api/updateMinimum', payload).pipe(
+      tap((data) => console.log('Minimum updated successfully:',data)),
+      catchError((error) => {
+        console.error('Error updating Minimum:', error);
+        return throwError(() => new Error('Failed to update minimum'));
       })
     );
   }
@@ -69,6 +83,7 @@ editInventory(RefInventory: RefInventory): Observable<RefInventory> {
     })
   );
 }
+
    getAllInventory(): Observable<RefInventory[]> {
     console.log("getAllInventory");
     return this.http.get<RefInventory[]>("/GetAllInventory");

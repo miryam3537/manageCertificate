@@ -144,6 +144,11 @@
           <td mat-cell *matCellDef="let type"> {{ type.name }} </td>
         </ng-container>
 
+        <ng-container matColumnDef="year">
+          <th mat-header-cell *matHeaderCellDef> שנה </th>
+          <td mat-cell *matCellDef="let type"> {{ type.YEAR }} </td>
+        </ng-container>
+
         <ng-container matColumnDef="inventory">
           <th mat-header-cell *matHeaderCellDef> מלאי עדכני </th>
           <td mat-cell *matCellDef="let type">
@@ -164,11 +169,18 @@
           </td>
         </ng-container>
 
+    
         <ng-container matColumnDef="minimumBalance">
           <th mat-header-cell *matHeaderCellDef> מינימום </th>
-          <td mat-cell *matCellDef="let type">{{ type.MINIMUM_INVENTORY_BALANCES }}</td>
+          <td mat-cell *matCellDef="let type">
+            <input 
+              type="number" 
+              [(ngModel)]="type.minimum" 
+              placeholder="ערוך מינימום"
+            />
+            <button mat-button (click)="saveMinimum(type)">שמור</button>
+          </td>
         </ng-container>
-
         <ng-container matColumnDef="Actions">
           <th mat-header-cell *matHeaderCellDef> שמור </th>
           <td mat-cell *matCellDef="let type">

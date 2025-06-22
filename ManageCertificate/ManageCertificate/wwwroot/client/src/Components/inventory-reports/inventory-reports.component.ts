@@ -72,7 +72,7 @@ export class InventoryReportsComponent implements OnInit{
   selectCouncil: string = ''; 
   selectedCouncilId: number | null = null;
   currentYear = new Date().getFullYear();
-  displayedColumns: string[] = ['name', 'inventoryBalance','inventory','minimumBalance','Actions'];
+  displayedColumns: string[] = ['name','year', 'inventoryBalance','inventory','minimumBalance','Actions'];
   inventoryDisplayedCol: string[] = ['councilName','year','certificate','inventory', 'totalSupplyAmount', 'inventoryBalance','Actions'];
   filteredInventory: RefInventory[] = [];
   finalResults: any[] = []; // משתנה לשמירת התוצאות
@@ -120,7 +120,22 @@ export class InventoryReportsComponent implements OnInit{
         }
       });
     }
-
+    saveMinimum(type: any) {
+//בדיקה אם המינימום הוא מספר חיובי
+      if (type.minimum < 0) {
+        console.error('Minimum balance must be a positive number');
+        return;
+      }
+      this.RefServService.updateMinimum(type.id,type.minimum).subscribe({
+        next: (response) => {
+          console.log('Minimum balance updated successfully:', response);
+        },
+        error: (error) => {
+          console.error('Error updating minimum balance:', error);
+        }
+      });
+      this.loadData();
+    }
     saveInventory(item: any) {
       this.RefServService.updateInventoryAmount(item.inventoryId, item.inventory).subscribe({
         next: (response) => {
@@ -238,12 +253,17 @@ applyFilter() {
       const totalInventory = this.ListRefInventory
           .filter(inventory => inventory.certificateId === refCertificateType.id && inventory.year===year)
           .reduce((acc, inventory) => acc + (inventory.inventory || 0), 0);
+        // מציאת השנה המתאימה לרשומה הנוכחית
+    const matchingInventory = this.ListRefInventory.find(
+      inventory => inventory.certificateId === refCertificateType.id && inventory.year === year
+    );
       //const minimum =refCertificateType.minimum;
       return {
         ...refCertificateType, 
+        YEAR: matchingInventory ? matchingInventory.year : null, // הוספת השנה המתאימה או null אם לא נמצאה
         TOTAL_INVENTORY_BALANCES:(totalInventory-totalSupplyAmount) || -1,
         CURRENT_iNVENTORY:(totalInventory) || 0,
-       // MINIMUM_INVENTORY_BALANCES: minimum || 0,
+        // MINIMUM_INVENTORY_BALANCES: refCertificateType.minimum || 0, 
       };
     });
     console.log(this.updatedCertificateTypes,"@@@@@@@ @@@");

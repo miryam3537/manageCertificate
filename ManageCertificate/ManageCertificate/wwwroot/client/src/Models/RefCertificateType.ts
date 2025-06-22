@@ -3,9 +3,9 @@ import { RefInventory } from "./RefInventory";
 
 export interface RefCertificateType {
     id: number;
-    name: string;
+    name?: string;
     minimum?: number;
-    certificates: Certificate[];
-    refInventories: RefInventory[];
+    certificates?: Certificate[];
+    refInventories?: RefInventory[];
 }
 

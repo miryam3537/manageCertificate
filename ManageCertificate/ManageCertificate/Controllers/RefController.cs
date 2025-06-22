@@ -34,7 +34,18 @@ public class RefController : Controller
 
         return Ok(result); // מחזיר את האובייקט המעודכן
     }
+    [HttpPut("/api/updateMinimum")]
+    public async Task<IActionResult> UpdateMinimum([FromBody] UpdateCTMinimumDTO cTMinimumDTO)
+    {
+        if (cTMinimumDTO == null)
+            return BadRequest();
 
+        var result = await RefBL.UpdateMinimum(cTMinimumDTO.CertificateId, cTMinimumDTO.Minimum);
+        if (result == null)
+            return NotFound();
+
+        return Ok(result); // מחזיר את האובייקט המעודכן
+    }
     [HttpGet("/GetAllOfficeInventory")]
     public async Task<ActionResult<IEnumerable<RefOfficeInventory>>> GetAllOfficeInventory()
     {

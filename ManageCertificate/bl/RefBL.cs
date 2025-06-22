@@ -67,5 +67,9 @@ namespace BL
             return await refDAL.UpdateInventoryAmountAsync(inventoryId, inventory);
         }
 
+        public async Task<bool> UpdateMinimum(int certificateId, int? minimum)
+        {
+            return await refDAL.UpdateMinimum(certificateId, minimum);
+        }
     }
 }

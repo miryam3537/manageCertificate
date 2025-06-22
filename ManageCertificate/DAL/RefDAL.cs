@@ -67,5 +67,17 @@ namespace DAL
             return true;
         }
 
+        public async Task<bool> UpdateMinimum(int certificateId, int? minimum)
+        {
+            var existing = await _context.RefCertificateTypes
+                .FirstOrDefaultAsync(r => r.Id == certificateId);
+
+            if (existing == null)
+                return false;
+
+            existing.Minimum = minimum;
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
