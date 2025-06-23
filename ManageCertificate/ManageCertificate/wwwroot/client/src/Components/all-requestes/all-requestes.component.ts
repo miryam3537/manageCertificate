@@ -179,7 +179,6 @@ onPrintAllRequestesTable() {
               TOTAL_INVENTORY_BALANCES:totalInventory|| 0
             }; 
           });
-       
           console.log('Updated Certificate Types with Total Supply Amount:', this.updatedCertificateTypes);
         }
     // this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {

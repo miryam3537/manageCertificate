@@ -27,6 +27,8 @@ import { RequestService } from '../../Services/request.service';
 import { firstValueFrom } from 'rxjs';
 import { PrintService } from '../../Services/print.service';
 import { FormsModule } from '@angular/forms';
+import { RefOfficeInventory } from '../../Models/RefOfficeInventory';
+import { Requestes } from '../../Models/Requestes';
 
 // import { forkJoin } from 'rxjs';
 // import { map } from 'rxjs/operators';
@@ -59,7 +61,7 @@ import { FormsModule } from '@angular/forms';
   providers: [RefServService,CertificateService, RequestService,PrintService]
 })
 export class InventoryReportsComponent implements OnInit{
-  
+  displayedOfficeInventoryColumns: string[] = ['certificateName', 'inventory', 'minimum', 'year', 'unusedInventoryBalance'];
   ListRefInventory: RefInventory[] = [];
   ListAllCertificates: Certificate[] = [];
   ListRefCertificateType: RefCertificateType[] = [];
@@ -72,19 +74,23 @@ export class InventoryReportsComponent implements OnInit{
   selectCouncil: string = ''; 
   selectedCouncilId: number | null = null;
   currentYear = new Date().getFullYear();
-  displayedColumns: string[] = ['name','year', 'inventoryBalance','inventory','minimumBalance','Actions'];
+    allRequests: Requestes[] = [];
+  displayedColumns: string[] = ['name','year', 'inventoryBalance','inventory','minimumBalance'];
   inventoryDisplayedCol: string[] = ['councilName','year','certificate','inventory', 'totalSupplyAmount', 'inventoryBalance','Actions'];
   filteredInventory: RefInventory[] = [];
+   ListAllOfficeInventory:RefOfficeInventory[]=[]
+   UpdateListAllOfficeInventory: RefOfficeInventory[] = [];
   finalResults: any[] = []; // משתנה לשמירת התוצאות
   constructor(
     public RefServService: RefServService,
     public certificateService: CertificateService,
-    public requestService: RequestService,
+    public RequestService: RequestService,
     public printService: PrintService,
     private router: Router
   ) {}
    ngOnInit() {
       this.loadData();
+    
       //לבדוק למה אי אפשר לקבל מהשירות בצורה כזאת את הרשימה
       //this.ListAllCertificates==this.certificateService.ListCertificate;
     }
@@ -93,23 +99,31 @@ export class InventoryReportsComponent implements OnInit{
       this.isLoading = true;
      
       combineLatest([
+        this.RequestService.getAll(),
         this.RefServService.getAllCertificateType(this.ListRefCertificateType),
         this.RefServService.getAllInventory(),
         this.certificateService.getAllCertificate(),
         this.RefServService.getAllRefCouncil(this.ListRefCouncil),
+        this.RefServService.getAllOfficeInventory(),
         
       ]).pipe(take(1)).subscribe({
-        next: ([certificateTypes, inventories, certificates,refCouncil]) => {
+        next: ([requests,certificateTypes, inventories, certificates,refCouncil,officeInventory]) => {
+          this.allRequests = requests;
           this.ListRefCertificateType = certificateTypes;
           this.ListRefInventory = inventories;
           this.ListAllCertificates = certificates;
           this.ListRefCouncil = refCouncil;
+          this.ListAllOfficeInventory = officeInventory;
           console.log('ListRefCouncil: קומפ', this.ListRefCouncil);
           console.log('ListRefCertificateType:', this.ListRefCertificateType);
           console.log('ListRefInventory:', this.ListRefInventory);
           console.log('ListAllCertificate:', this.ListAllCertificates);
+          console.log('ListAllOfficeInventory:', this.ListAllOfficeInventory);
+          console.log('ListRequestes:', this.allRequests);
+          // this.totalInventoryBalance();
           this.calculateUtilizationPerYear();
-          this.OfficeSupplies(this.currentYear);
+          //is.OfficeSupplies(this.currentYear);
+          this.officeSupplies2(this.currentYear);
           this.isLoading = false;
           this.applyFilter()
           
@@ -120,6 +134,7 @@ export class InventoryReportsComponent implements OnInit{
         }
       });
     }
+
     saveMinimum(type: any) {
 //בדיקה אם המינימום הוא מספר חיובי
       if (type.minimum < 0) {
@@ -129,12 +144,13 @@ export class InventoryReportsComponent implements OnInit{
       this.RefServService.updateMinimum(type.id,type.minimum).subscribe({
         next: (response) => {
           console.log('Minimum balance updated successfully:', response);
+          this.loadData();
         },
         error: (error) => {
           console.error('Error updating minimum balance:', error);
         }
       });
-      this.loadData();
+ 
     }
     saveInventory(item: any) {
       this.RefServService.updateInventoryAmount(item.inventoryId, item.inventory).subscribe({
@@ -154,7 +170,7 @@ calculateUtilizationPerYear() {
 
     // יצירת בקשות אסינכרוניות לבדיקה אם המועצה מתאימה
     const requests = matchingCertificates.map((certificate) =>
-      this.requestService.getCouncilId(certificate.requestId || 76).pipe(
+      this.RequestService.getCouncilId(certificate.requestId || 76).pipe(
         map((councilId) => ({
           certificate,
           isCouncilMatch: councilId === inventory.councilId, 
@@ -232,7 +248,7 @@ applyFilter() {
     }
     onInputChangeYearTable2(event: Event) {
       this.selectedYearTable2 = (event.target as HTMLInputElement).valueAsNumber || null;
-      this.OfficeSupplies(this.selectedYearTable2 || this.currentYear);
+      this.officeSupplies2(this.selectedYearTable2 || this.currentYear);
       
     }
     resetFilters() {
@@ -244,36 +260,63 @@ applyFilter() {
       }, 0);
       this.filteredInventory = [...this.ListRefInventory]; 
     }
-  
-    OfficeSupplies(year:number){
-      this.updatedCertificateTypes = this.ListRefCertificateType.map(refCertificateType => {
-      const totalSupplyAmount = this.ListAllCertificates
-          .filter(certificate => certificate.certificateType === refCertificateType.id)
-          .reduce((acc, certificate) => acc + (certificate.supplyAmaunt || 0), 0);
-      const totalInventory = this.ListRefInventory
-          .filter(inventory => inventory.certificateId === refCertificateType.id && inventory.year===year)
-          .reduce((acc, inventory) => acc + (inventory.inventory || 0), 0);
-        // מציאת השנה המתאימה לרשומה הנוכחית
-    const matchingInventory = this.ListRefInventory.find(
-      inventory => inventory.certificateId === refCertificateType.id && inventory.year === year
-    );
-      //const minimum =refCertificateType.minimum;
-      return {
-        ...refCertificateType, 
-        YEAR: matchingInventory ? matchingInventory.year : null, // הוספת השנה המתאימה או null אם לא נמצאה
-        TOTAL_INVENTORY_BALANCES:(totalInventory-totalSupplyAmount) || -1,
-        CURRENT_iNVENTORY:(totalInventory) || 0,
-        // MINIMUM_INVENTORY_BALANCES: refCertificateType.minimum || 0, 
-      };
-    });
-    console.log(this.updatedCertificateTypes,"@@@@@@@ @@@");
+    officeSupplies2(year: number) {
+      this.UpdateListAllOfficeInventory = this.ListAllOfficeInventory
+        .filter(item => item.year === year) // סינון לפי השנה שנשלחה כפרמטר
+        .map(item => {
+          const matchingType = this.ListRefCertificateType.find(type => type.id === item.certificateId);
+    
+          const totalSupplyAmount = this.ListAllCertificates
+            .filter(certificate => {
+              const matchingRequest = this.allRequests.find(request => {
+                if (!request.handlingDate) {
+                  return false; 
+                }
+    
+                // המרת handlingDate למחרוזת בפורמט ISO 8601
+                const isoDate = (request.handlingDate instanceof Date)
+                  ? request.handlingDate.toISOString() // אם זה אובייקט Date
+                  : String(request.handlingDate).replace(' ', 'T'); // אם זה מחרוזת
+    
+                const handlingYear = new Date(isoDate).getFullYear();
+    
+                return (
+                  request.requestId === certificate.requestId &&
+                  handlingYear === item.year && 
+                  request.requestStatus === 2 
+                );
+              });
+    
+              return certificate.certificateType === item.certificateId && matchingRequest;
+            })
+            .reduce((sum, certificate) => sum + (certificate.supplyAmaunt || 0), 0);
+    
+          return {
+            ...item,
+            certificateName: matchingType?.name || 'לא זוהה',
+            minimum: matchingType?.minimum || 0,
+            unusedInventoryBalance: (item.inventory || 0) - totalSupplyAmount 
+          };
+        });
     }
+
     goBackToRequests(): void {
       this.router.navigate(['']); 
     }
     onPrintTable(tableId: number): void {
-      this.printService.printTable(tableId);
+      this.currentYear = new Date().getFullYear();
+      if (tableId === 1) {
+        const year = this.selectedYearTable1 != null ? String(this.selectedYearTable1) : 'לא סונן';
+        const council = this.selectCouncil || 'לא סונן';
+        this.printService.printTable(1, { year, council });
+      } else {
+        const year = this.selectedYearTable2 != null ? String(this.selectedYearTable2) : String(this.currentYear);
+        this.printService.setInventoryBalanceData(this.UpdateListAllOfficeInventory);
+        this.printService.printTable(2, { year });
+      }
     }
+    
+    
     downloadInventoryTable() {
       const formattedData = this.filteredInventory.map((item) => ({
         'שם מועצה': item.council?.name ?? 'N/A',
@@ -287,13 +330,16 @@ applyFilter() {
       }));
       this.printService.downloadExcel(formattedData, 'InventoryTable', 'Inventory');
     }
-    downloadCertificateTypesTable() {
-      const formattedData = this.updatedCertificateTypes.map((type) => ({
-        'שם': type.name,
-        'מלאי עדכני': type.CURRENT_iNVENTORY < 0 ? 'חסר הגדרה' : type.CURRENT_iNVENTORY,
-        'יתרת מלאי לא מנוצלת': type.TOTAL_INVENTORY_BALANCES < 0 ? 'חסר הגדרה' : type.TOTAL_INVENTORY_BALANCES,
-        'מינימום': type.MINIMUM_INVENTORY_BALANCES,
+    downloadOfficeInventoryTable(UpdateListAllOfficeInventory: any[]) {
+      const formattedData =UpdateListAllOfficeInventory.map((type) => ({
+        'שם תעודה': type.certificateName ?? 'N/A',
+        'יתרת מלאי לא מנוצלת': type.unusedInventoryBalance < 0 ? 'חסר הגדרה' : type.unusedInventoryBalance, 
+        'שנה': type.year ?? 'N/A',
+        'מלאי עדכני': type.inventory < 0 ? 'חסר הגדרה' : type.inventory,
+      
       }));
-      this.printService.downloadExcel(formattedData, 'CertificateTypesTable', 'CertificateTypes');
+      
+      this.printService.downloadExcel(formattedData, 'OfficeInventoryTable', 'OfficeInventory');
     }
-  }    
+    
+  }

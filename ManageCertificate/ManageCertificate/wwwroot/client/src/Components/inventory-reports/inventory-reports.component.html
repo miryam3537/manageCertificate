@@ -125,7 +125,7 @@
       </mat-form-field>
      
     </div>
-    <button mat-raised-button color="primary" class="myBtn" (click)="downloadCertificateTypesTable()">
+    <button mat-raised-button color="primary" class="myBtn" (click)="downloadOfficeInventoryTable(UpdateListAllOfficeInventory)">
       <mat-icon>download</mat-icon>
       הורד טבלת מלאי תעודות
     </button>
@@ -138,24 +138,24 @@
   <!-- Inventory Balance Section -->
   <div id="inventoryBalance" class="inventory-container">
     <div class="table-container" *ngIf="!isLoading; else loading">
-      <table mat-table [dataSource]="updatedCertificateTypes" class="mat-elevation-z8 custom-table">
+      <table mat-table [dataSource]="UpdateListAllOfficeInventory" class="mat-elevation-z8 custom-table">
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef> שם </th>
-          <td mat-cell *matCellDef="let type"> {{ type.name }} </td>
+          <td mat-cell *matCellDef="let type"> {{ type.certificateName }} </td>
         </ng-container>
 
         <ng-container matColumnDef="year">
           <th mat-header-cell *matHeaderCellDef> שנה </th>
-          <td mat-cell *matCellDef="let type"> {{ type.YEAR }} </td>
+          <td mat-cell *matCellDef="let type"> {{ type.year}} </td>
         </ng-container>
 
         <ng-container matColumnDef="inventory">
-          <th mat-header-cell *matHeaderCellDef> מלאי עדכני </th>
+          <th mat-header-cell *matHeaderCellDef> אומדן מלאי עדכני </th>
           <td mat-cell *matCellDef="let type">
             <span>
-              {{ type.CURRENT_iNVENTORY < 0 ? 'חסר הגדרה' : type.CURRENT_iNVENTORY }}
+              {{ type.inventory < 0 ? 'חסר הגדרה' : type.inventory }}
             </span>
-            <span *ngIf="type.CURRENT_iNVENTORY < 0" class="warning-balance">&#x26A0;</span>
+            <span *ngIf="type.inventory < 0" class="warning-balance">&#x26A0;</span>
           </td>
         </ng-container>
 
@@ -163,37 +163,30 @@
           <th mat-header-cell *matHeaderCellDef> יתרת מלאי לא מנוצלת </th>
           <td mat-cell *matCellDef="let type">
             <span>
-              {{ type.TOTAL_INVENTORY_BALANCES < 0 ? 'חסר הגדרה' : type.TOTAL_INVENTORY_BALANCES }}
+              {{type.unusedInventoryBalance < 0 ? 'חסר הגדרה' : type.unusedInventoryBalance }}
             </span>
-            <span *ngIf="type.TOTAL_INVENTORY_BALANCES < 0" class="warning-balance">&#x26A0;</span>
+         
           </td>
         </ng-container>
 
     
         <ng-container matColumnDef="minimumBalance">
           <th mat-header-cell *matHeaderCellDef> מינימום </th>
-          <td mat-cell *matCellDef="let type">
+          <td mat-cell *matCellDef="let type"> 
             <input 
-              type="number" 
-              [(ngModel)]="type.minimum" 
-              placeholder="ערוך מינימום"
-            />
-            <button mat-button (click)="saveMinimum(type)">שמור</button>
-          </td>
+            type="number" 
+            [(ngModel)]="type.minimum" 
+            placeholder="ערוך מינימום"
+          />
+          <button mat-button (click)="saveMinimum(type)">  <mat-icon>save</mat-icon></button> </td>
         </ng-container>
-        <ng-container matColumnDef="Actions">
-          <th mat-header-cell *matHeaderCellDef> שמור </th>
-          <td mat-cell *matCellDef="let type">
-            <div class="actions">
-              <mat-icon>save</mat-icon>
-            </div>
-          </td>
-        </ng-container>
+        
+
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-      <p *ngIf="updatedCertificateTypes.length === 0" class="no-data-message">
+      <p *ngIf="UpdateListAllOfficeInventory.length === 0" class="no-data-message">
         אין נתונים להצגה.
       </p>
     </div>
@@ -205,4 +198,3 @@
       </div>
     </ng-template>
   </div>
-</div>
