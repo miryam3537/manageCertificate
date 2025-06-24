@@ -1,4 +1,5 @@
-﻿using DTO;
+﻿using DAL.Interfaces;
+using DTO;
 using Entites;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace BL.Interfaces
 {
     public interface IRefBL
     {
+        Task<RefOfficeInventory> AddOfficeInventoryAsync(AddRefOfficeInventoryDTO dto);
+
         Task<bool> UpdateInventoryAmountAsync(int inventoryId, int? inventory);
         Task<bool> UpdateMinimum(int certificateId, int? minimum);
 

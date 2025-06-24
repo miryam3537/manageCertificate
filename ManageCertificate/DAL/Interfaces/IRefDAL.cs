@@ -1,4 +1,5 @@
-﻿using Entites;
+﻿using DTO;
+using Entites;
 using System.Threading.Tasks;
 
 
@@ -6,6 +7,10 @@ namespace DAL.Interfaces
 {
     public interface IRefDAL
     {
+
+        Task<RefOfficeInventory> AddOfficeInventoryAsync(AddRefOfficeInventoryDTO dto);
+
+
         Task<bool> UpdateInventoryAmountAsync(int inventoryId, int? inventory);
         Task<bool> UpdateMinimum(int certificateId, int? minimum);
         Task<IEnumerable<RefStatus>> GetAllStatus();

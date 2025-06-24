@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Entites;
 
-public partial class RefOfficeInventory
+public  class RefOfficeInventory
 {
     public int Id { get; set; }
 

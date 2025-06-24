@@ -24,6 +24,11 @@ namespace BL
             this.mapper = mapper;
             this.refDAL = refDAL;
         }
+        public async Task<RefOfficeInventory> AddOfficeInventoryAsync(AddRefOfficeInventoryDTO dto)
+        {
+            return await refDAL.AddOfficeInventoryAsync(dto);
+        }
+
         public Task<IEnumerable<RefOfficeInventory>> GetAllOfficeInventory()
         {
             return refDAL.GetAllOfficeInventory();

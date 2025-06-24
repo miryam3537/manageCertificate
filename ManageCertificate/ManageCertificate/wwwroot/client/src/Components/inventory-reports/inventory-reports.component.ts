@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { RefServService } from '../../Services/ref-serv.service';
 import { RefInventory } from '../../Models/RefInventory';
 import { Certificate } from '../../Models/Certificate';
@@ -29,6 +29,8 @@ import { PrintService } from '../../Services/print.service';
 import { FormsModule } from '@angular/forms';
 import { RefOfficeInventory } from '../../Models/RefOfficeInventory';
 import { Requestes } from '../../Models/Requestes';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AddInventoryDialogComponent } from '../add-inventory-dialog/add-inventory-dialog.component';
 
 // import { forkJoin } from 'rxjs';
 // import { map } from 'rxjs/operators';
@@ -55,7 +57,13 @@ import { Requestes } from '../../Models/Requestes';
     MatSelectModule,
     MatSortModule,
     MatGridList,
-    MatCardModule],
+    MatCardModule,
+    FormsModule,
+    CommonModule,
+    FormsModule,
+    MatDialogModule,
+ 
+  ],
   templateUrl: './inventory-reports.component.html',
   styleUrl: './inventory-reports.component.css',
   providers: [RefServService,CertificateService, RequestService,PrintService]
@@ -86,7 +94,8 @@ export class InventoryReportsComponent implements OnInit{
     public certificateService: CertificateService,
     public RequestService: RequestService,
     public printService: PrintService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog,
   ) {}
    ngOnInit() {
       this.loadData();
@@ -134,7 +143,32 @@ export class InventoryReportsComponent implements OnInit{
         }
       });
     }
+   
+  onAddInventory(): void {
+    const dialogRef = this.dialog.open(AddInventoryDialogComponent, {
+      width: '400px',
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // שליחה לשירות לשמירת הנתונים
+        this.RefServService.addToOfficeInventory(result).subscribe({
+          next: (response) => {
+            console.log('Inventory added successfully:', response);
+
+            // הוספת הנתונים החדשים למערך המקומי
+            this.UpdateListAllOfficeInventory.push(response);
+
+            // רענון הטבלה
+            this.UpdateListAllOfficeInventory = [...this.UpdateListAllOfficeInventory];
+          },
+          error: (error) => {
+            console.error('Error adding inventory:', error);
+          },
+        });
+      }
+    });
+  }
     saveMinimum(type: any) {
 //בדיקה אם המינימום הוא מספר חיובי
       if (type.minimum < 0) {

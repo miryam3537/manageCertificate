@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entites;
 using DAL.Interfaces;
+using DTO;
 namespace DAL
 {
     public class RefDAL : IRefDAL
@@ -15,6 +16,31 @@ namespace DAL
         {
             _context = contex;
         }
+        public async Task<bool> OfficeInventoryExistsAsync(int year, int certificateId)
+        {
+            return await _context.RefOfficeInventories
+                .AnyAsync(x => x.Year == year && x.CertificateId == certificateId);
+        }
+
+        public async Task<RefOfficeInventory?> AddOfficeInventoryAsync(AddRefOfficeInventoryDTO dto)
+        {
+           
+            bool exists = await OfficeInventoryExistsAsync(dto.Year.Value, dto.CertificateId.Value);
+            if (exists)
+                return null; 
+
+            var entity = new RefOfficeInventory
+            {
+                Inventory = dto.Inventory,
+                Year = dto.Year,
+                CertificateId = dto.CertificateId
+            };
+            _context.RefOfficeInventories.Add(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
+
         public async Task<IEnumerable<RefOfficeInventory>> GetAllOfficeInventory()
         {
             return await _context.RefOfficeInventories.ToListAsync();

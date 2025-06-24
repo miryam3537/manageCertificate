@@ -135,6 +135,10 @@
     הדפסה
   </button>
   </div>
+  <button mat-raised-button color="primary"class="myBtn"  (click)="onAddInventory()">
+    <mat-icon>plus</mat-icon>
+  הוספת מלאי
+  </button>
   <!-- Inventory Balance Section -->
   <div id="inventoryBalance" class="inventory-container">
     <div class="table-container" *ngIf="!isLoading; else loading">

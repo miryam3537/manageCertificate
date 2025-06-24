@@ -6,6 +6,7 @@ using Entites;
 using BL.Interfaces;
 using BL;
 using DTO;
+using DAL.Interfaces;
 
 namespace manageCertificate;
 
@@ -22,6 +23,18 @@ public class RefController : Controller
         this.RefBL = RefBL;
         this.logger = logger;
     }
+    [HttpPost("AddOfficeInventory")]
+    public async Task<ActionResult<RefOfficeInventory>> AddOfficeInventory([FromBody] AddRefOfficeInventoryDTO dto)
+    {
+        if (dto == null)
+            return BadRequest();
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var result = await RefBL.AddOfficeInventoryAsync(dto);
+        return CreatedAtAction(nameof(AddOfficeInventory), new { id = result.Id }, result);
+    }
+
     [HttpPut("/api/updateInventoryAmount")]
     public async Task<IActionResult> UpdateInventoryAmount([FromBody] UpdateInventoryDTO inventoryDto)
     {

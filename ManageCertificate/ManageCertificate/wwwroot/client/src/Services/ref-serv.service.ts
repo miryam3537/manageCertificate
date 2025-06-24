@@ -51,6 +51,16 @@ export class RefServService {
     }
     )) 
 }
+addToOfficeInventory(RefOfficeInventory: RefOfficeInventory): Observable<RefOfficeInventory> {
+  console.log("addToOfficeInventory");
+  return this.http.post<RefOfficeInventory>("/api/Ref/AddOfficeInventory", RefOfficeInventory).pipe(
+    tap(data => console.log('Added Office Inventory:', data)),
+    catchError((error) => {
+      console.error('Error:', error);
+      return throwError(() => new Error('Failed to add office inventory'));
+    })
+  );
+}
 getAllRefCouncil(ListRefCouncil:RefCouncil[]): Observable<RefCouncil[]> {
   console.log("getAllRefCouncil");
   if(ListRefCouncil.length<=0) 
