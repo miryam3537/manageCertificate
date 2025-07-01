@@ -147,6 +147,9 @@ export class InventoryReportsComponent implements OnInit{
   onAddInventory(): void {
     const dialogRef = this.dialog.open(AddInventoryDialogComponent, {
       width: '400px',
+      data: {
+        certificateTypes: this.ListRefCertificateType // העברת רשימת סוגי התעודה לדיאלוג
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
