@@ -4,7 +4,7 @@ import { RefInventory } from '../../Models/RefInventory';
 import { Certificate } from '../../Models/Certificate';
 import { RefCertificateType } from '../../Models/RefCertificateType';
 import { catchError, combineLatest, forkJoin, map, Observable, of, take } from 'rxjs';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import {  MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
@@ -31,6 +31,7 @@ import { RefOfficeInventory } from '../../Models/RefOfficeInventory';
 import { Requestes } from '../../Models/Requestes';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddInventoryDialogComponent } from '../add-inventory-dialog/add-inventory-dialog.component';
+import { errorContext } from 'rxjs/internal/util/errorContext';
 
 // import { forkJoin } from 'rxjs';
 // import { map } from 'rxjs/operators';
@@ -158,12 +159,11 @@ export class InventoryReportsComponent implements OnInit{
         this.RefServService.addToOfficeInventory(result).subscribe({
           next: (response) => {
             console.log('Inventory added successfully:', response);
-
+            console.log('@@@@@@@@@@@@@@',errorContext);
+            
             // הוספת הנתונים החדשים למערך המקומי
             this.UpdateListAllOfficeInventory.push(response);
-
-            // רענון הטבלה
-            this.UpdateListAllOfficeInventory = [...this.UpdateListAllOfficeInventory];
+            this.applyFilter();
           },
           error: (error) => {
             console.error('Error adding inventory:', error);

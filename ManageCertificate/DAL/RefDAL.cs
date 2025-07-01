@@ -27,7 +27,7 @@ namespace DAL
            
             bool exists = await OfficeInventoryExistsAsync(dto.Year.Value, dto.CertificateId.Value);
             if (exists)
-                return null; 
+                throw new InvalidOperationException("כבר קיימים נתונים עבור שנה זו וסוג תעודה זה במערכת.");
 
             var entity = new RefOfficeInventory
             {

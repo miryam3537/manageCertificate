@@ -27,12 +27,26 @@ public class RefController : Controller
     public async Task<ActionResult<RefOfficeInventory>> AddOfficeInventory([FromBody] AddRefOfficeInventoryDTO dto)
     {
         if (dto == null)
-            return BadRequest();
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+            return BadRequest(new { message = "הנתונים שנשלחו ריקים" });
 
-        var result = await RefBL.AddOfficeInventoryAsync(dto);
-        return CreatedAtAction(nameof(AddOfficeInventory), new { id = result.Id }, result);
+        if (!ModelState.IsValid)
+            return BadRequest(new { message = "הנתונים שנשלחו אינם תקינים", errors = ModelState });
+
+        try
+        {
+            var result = await RefBL.AddOfficeInventoryAsync(dto);
+            return CreatedAtAction(nameof(AddOfficeInventory), new { id = result.Id }, result);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // טיפול בשגיאה מותאמת אישית
+            return Conflict(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            // טיפול בשגיאה כללית
+            return StatusCode(500, new { message = "שגיאה בשרת", details = ex.Message });
+        }
     }
 
     [HttpPut("/api/updateInventoryAmount")]
