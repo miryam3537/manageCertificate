@@ -6,32 +6,32 @@
   <mat-icon>arrow_forward</mat-icon>
 </button>
 <h3 class="inventory-title">מאזן מלאי למועצה</h3>
-<div class="filters-wrapper" id="filtersWrapper1">
+ <!-- טופס סינון -->
+ <form [formGroup]="filterForm" class="filters-wrapper" id="filtersWrapper1">
   <div class="filters-container">
+    <!-- סינון לפי שנה -->
     <mat-form-field appearance="fill" class="filter-item">
       <mat-label>סינון לפי שנה</mat-label>
-      <input
-        matInput
-        type="number"
-        placeholder="הכנס שנה"
-        [value]="isReset ? '' : selectedYearTable1"
-        (input)="onInputChangeYearTable1($event)"
-      />
+      <input matInput type="number" formControlName="year" placeholder="הכנס שנה" />
     </mat-form-field>
 
+    <!-- סינון לפי לשכה -->
     <mat-form-field appearance="fill" class="filter-item">
       <mat-label>סינון לפי לשכה</mat-label>
-      <input
-        matInput
-        type="text"
-        placeholder="הכנס לשכה"
-        [value]="isReset ? '' : selectCouncil"
-        (input)="onInputChangeCouncil($event)"
-      />
+      <input matInput type="text" formControlName="councilName" placeholder="הכנס לשכה" />
     </mat-form-field>
 
-</div>
-
+    <!-- סינון לפי תעודה -->
+    <mat-form-field appearance="fill" class="filter-item">
+      <mat-label>סינון לפי תעודה</mat-label>
+      <mat-select formControlName="certificateName">
+        <mat-option *ngFor="let certificate of ListRefCertificateType" [value]="certificate.id">
+          {{ certificate.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>
 <button mat-raised-button color="primary" class="myBtn" (click)="downloadInventoryTable()">
   <mat-icon>download</mat-icon>
   הורד טבלת מלאי למועצה

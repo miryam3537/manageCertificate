@@ -8,7 +8,7 @@ import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import {  MatNativeDateModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatSortModule } from '@angular/material/sort';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -26,7 +26,7 @@ import { CertificateService } from '../../Services/certificate.service';
 import { RequestService } from '../../Services/request.service';
 import { firstValueFrom } from 'rxjs';
 import { PrintService } from '../../Services/print.service';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RefOfficeInventory } from '../../Models/RefOfficeInventory';
 import { Requestes } from '../../Models/Requestes';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -63,6 +63,7 @@ import { errorContext } from 'rxjs/internal/util/errorContext';
     CommonModule,
     FormsModule,
     MatDialogModule,
+    ReactiveFormsModule
  
   ],
   templateUrl: './inventory-reports.component.html',
@@ -70,6 +71,7 @@ import { errorContext } from 'rxjs/internal/util/errorContext';
   providers: [RefServService,CertificateService, RequestService,PrintService]
 })
 export class InventoryReportsComponent implements OnInit{
+  filterForm: FormGroup;
   displayedOfficeInventoryColumns: string[] = ['certificateName', 'inventory', 'minimum', 'year', 'unusedInventoryBalance'];
   ListRefInventory: RefInventory[] = [];
   ListAllCertificates: Certificate[] = [];
@@ -80,6 +82,7 @@ export class InventoryReportsComponent implements OnInit{
   isReset: boolean = false;
   selectedYearTable2: number | null = null;
   selectedYearTable1: number | null = null;
+  selectedCertificate: number | null = null; 
   selectCouncil: string = ''; 
   selectedCouncilId: number | null = null;
   currentYear = new Date().getFullYear();
@@ -97,9 +100,20 @@ export class InventoryReportsComponent implements OnInit{
     public printService: PrintService,
     private router: Router,
     public dialog: MatDialog,
-  ) {}
+    private fb: FormBuilder
+  ) {
+    // אתחול filterForm בקונסטרקטור
+    this.filterForm = this.fb.group({
+      year: [''], // שדה שנה
+      councilName: [''], // שדה שם מועצה
+      certificateName: [''], // שדה שם תעודה
+    });
+  }
    ngOnInit() {
       this.loadData();
+      this.filterForm.valueChanges.subscribe(() => {
+        this.applyFilter(); // הפעלת הסינון בכל שינוי בטופס
+      });
     
       //לבדוק למה אי אפשר לקבל מהשירות בצורה כזאת את הרשימה
       //this.ListAllCertificates==this.certificateService.ListCertificate;
@@ -258,15 +272,15 @@ calculateUtilizationPerYear() {
   }
 }
 applyFilter() {
+  const filters = this.filterForm.value; // קבלת הערכים ישירות מהטופס
+  console.log('Filters applied:', filters);
+
   this.filteredInventory = this.ListRefInventory.filter(item => {
-      const yearMatch = this.selectedYearTable1 === null 
-          ? item.year === this.currentYear 
-          : item.year === this.selectedYearTable1;
+    const yearMatch = !filters.year || item.year === +filters.year;
+    const councilMatch = !filters.councilName || item.council?.name?.toLowerCase().includes(filters.councilName.toLowerCase());
+    const certificateMatch = !filters.certificateName || item.certificateId === +filters.certificateName;
 
-      const councilMatch = this.selectCouncil === '' 
-          || item.council?.name?.toLowerCase().includes(this.selectCouncil.toLowerCase());
-
-      return yearMatch && councilMatch;
+    return yearMatch && councilMatch && certificateMatch;
   });
 }
   
@@ -274,7 +288,10 @@ applyFilter() {
       this.selectedYearTable1 = (event.target as HTMLInputElement).valueAsNumber || null;
       this.applyFilter();
     }
-  
+  onSelectChangeCertificate(event: MatSelectChange) {
+     this.selectedCertificate = event.value; // עדכון הערך שנבחר
+     this.applyFilter(); // קריאה לפונקציה כדי לעדכן את התצוגה
+  }
     onInputChangeCouncil(event: Event) {
       const target = event.target as HTMLInputElement | null;
       if (target && target.value !== undefined) {
@@ -290,9 +307,9 @@ applyFilter() {
       
     }
     resetFilters() {
-      this.selectedYearTable2 = null;
+      this.selectedYearTable1 = null;
       this.selectCouncil = '';
-      this.isReset = true;
+      this.selectedCertificate = null; 
       setTimeout(() => {
         this.isReset = false;
       }, 0);
@@ -376,8 +393,6 @@ applyFilter() {
         'מלאי עדכני': type.inventory < 0 ? 'חסר הגדרה' : type.inventory,
       
       }));
-      
       this.printService.downloadExcel(formattedData, 'OfficeInventoryTable', 'OfficeInventory');
     }
-    
   }
