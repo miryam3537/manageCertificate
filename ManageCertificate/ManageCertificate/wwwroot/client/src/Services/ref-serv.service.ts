@@ -57,7 +57,9 @@ addToOfficeInventory(RefOfficeInventory: RefOfficeInventory): Observable<RefOffi
     tap(data => console.log('Added Office Inventory:', data)),
     catchError((error) => {
       console.error('Error:', error);
-      return throwError(() => new Error('Failed to add office inventory'));
+      const serverErrorMessage = error.error?.message || 'שגיאה כללית מהשרת';
+      alert(`אירעה שגיאה: ${serverErrorMessage}`);
+      return throwError(() => new Error(serverErrorMessage));
     })
   );
 }

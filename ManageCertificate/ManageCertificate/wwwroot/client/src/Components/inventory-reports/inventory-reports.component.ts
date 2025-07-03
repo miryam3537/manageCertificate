@@ -164,9 +164,10 @@ export class InventoryReportsComponent implements OnInit{
             // הוספת הנתונים החדשים למערך המקומי
             this.UpdateListAllOfficeInventory.push(response);
             this.applyFilter();
+            this.ngOnInit()
           },
           error: (error) => {
-            console.error('Error adding inventory:', error);
+                     console.error('Error adding inventory:', error);
           },
         });
       }
