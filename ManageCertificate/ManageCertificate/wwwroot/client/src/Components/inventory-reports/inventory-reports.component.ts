@@ -90,7 +90,7 @@ export class InventoryReportsComponent implements OnInit{
   currentYear = new Date().getFullYear();
     allRequests: Requestes[] = [];
   displayedColumns: string[] = ['name','year', 'inventoryBalance','inventory','minimumBalance'];
-  inventoryDisplayedCol: string[] = ['councilName','year','certificate','inventory', 'totalSupplyAmount', 'inventoryBalance','Actions'];
+  inventoryDisplayedCol: string[] = ['councilName','year','certificate', 'totalSupplyAmount', 'inventoryBalance','inventory'];
   filteredInventory: RefInventory[] = [];
    ListAllOfficeInventory:RefOfficeInventory[]=[]
    UpdateListAllOfficeInventory: RefOfficeInventory[] = [];

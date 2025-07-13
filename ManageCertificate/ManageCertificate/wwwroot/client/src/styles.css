@@ -1,5 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-background: linear-gradient(135deg, #f4f5f5, #f1f1f1); 
+/* בקובץ styles.css או scss גלובלי */
+body, html {
+    font-family: 'Heebo', sans-serif;
+  }
+  
+  /* משפיע על כל רכיב *מלבד* אייקונים */
+  *:not(.mat-icon):not(mat-icon) {
+    font-family: 'Heebo', sans-serif !important;
+  }
+  
+  /* כדי לוודא שהאייקונים לא נהרסים */
+  .mat-icon, mat-icon {
+    font-family: 'Material Icons' !important;
+  }
+  

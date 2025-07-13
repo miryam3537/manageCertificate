@@ -40,7 +40,8 @@ export class RefServService {
         ? request.handlingDate.toISOString() // אם זה אובייקט Date
         : String(request.handlingDate).replace(' ', 'T'); // אם זה מחרוזת
 
-      const handlingYear = new Date(isoDate).getFullYear();
+        const handlingYear = new Date(isoDate).getFullYear();
+        console.log(handlingYear);
   
         const matchesYear = handlingYear === year;
         const matchesStatus = request.requestStatus === 2;
