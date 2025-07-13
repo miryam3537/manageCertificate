@@ -37,14 +37,8 @@ export class PrintService {
         const actionsColumn = tableContainer.querySelector('ng-container[matColumnDef="Actions"]') as HTMLElement;
         const headerRow = tableContainer.querySelector('tr[mat-header-row]') as HTMLElement;
         const dataRows = tableContainer.querySelectorAll('tr[mat-row]');
-      
-        // שמירת עמודת ה-Actions
-        const actionsColumnClone = actionsColumn?.cloneNode(true);
-      
-        // הסרת עמודת ה-Actions
-        if (actionsColumn) {
-          actionsColumn.remove();
-        }
+     
+    
         if (headerRow) {
           const headerCells = headerRow.querySelectorAll('th');
           headerCells.forEach((cell) => {
@@ -119,10 +113,7 @@ export class PrintService {
           WindowPrt.close();
         }
       
-        // שחזור עמודת ה-Actions
-        if (actionsColumnClone) {
-          tableContainer.appendChild(actionsColumnClone);
-        }
+        
       }
       buildInventoryBalanceTableHTML(): string {
         let html = `<table>
@@ -188,7 +179,7 @@ export class PrintService {
                   }
                 </style>
               </head>
-              <body>
+              <body>:
                 <div class="filters-summary">
                   <p>סינון לפי שנה: ${filters.year}</p>
                   ${filters.council ? `<p>סינון לפי לשכה: ${filters.council}</p>` : ''}

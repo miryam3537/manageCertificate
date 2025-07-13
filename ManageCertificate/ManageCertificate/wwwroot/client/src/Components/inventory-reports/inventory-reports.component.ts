@@ -32,6 +32,7 @@ import { Requestes } from '../../Models/Requestes';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddInventoryDialogComponent } from '../add-inventory-dialog/add-inventory-dialog.component';
 import { errorContext } from 'rxjs/internal/util/errorContext';
+import {  MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 // import { forkJoin } from 'rxjs';
 // import { map } from 'rxjs/operators';
@@ -63,7 +64,9 @@ import { errorContext } from 'rxjs/internal/util/errorContext';
     CommonModule,
     FormsModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    
+    MatSnackBarModule
  
   ],
   templateUrl: './inventory-reports.component.html',
@@ -102,7 +105,8 @@ export class InventoryReportsComponent implements OnInit{
     public printService: PrintService,
     private router: Router,
     public dialog: MatDialog,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
   ) {
     // אתחול filterForm בקונסטרקטור
     this.filterForm = this.fb.group({
@@ -201,6 +205,12 @@ this.ListRefInventory = [...inventories]; // העתק ולא הפניה ישיר
       this.RefServService.updateMinimum(type.id,type.minimum).subscribe({
         next: (response) => {
           console.log('Minimum balance updated successfully:', response);
+          this.snackBar.open('הפעולה בוצעה בהצלחה', 'סגור', {
+            duration: 3000,
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom',
+          });
+          
           this.loadData();
         },
         error: (error) => {
@@ -213,7 +223,11 @@ this.ListRefInventory = [...inventories]; // העתק ולא הפניה ישיר
       this.RefServService.updateInventoryAmount(item.inventoryId, item.inventory).subscribe({
         next: (response) => {
           console.log('Inventory updated successfully:', response);
-          // עדכון ההצגה של המלאי לאחר השמירה
+          this.snackBar.open('הפעולה בוצעה בהצלחה', 'סגור', {
+            duration: 3000,
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom',
+          });
           this.loadData();
         }
       });

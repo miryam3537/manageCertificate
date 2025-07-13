@@ -7,6 +7,7 @@ import { Certificate } from '../Models/Certificate';
 import { RefCertificateType } from '../Models/RefCertificateType';
 import { RefCouncil } from '../Models/RefCouncil';
 import { RefOfficeInventory } from '../Models/RefOfficeInventory';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,7 +16,9 @@ export class RefServService {
   ListCertificate: Certificate[] = [];
 
   BASE_URL_REFSTATUS = "api/RefStatus";
-   constructor(private http: HttpClient) { }
+   constructor(private http: HttpClient,
+    private snackBar: MatSnackBar,
+   ) { }
 
    getTotalSupplyAmountForCertificate(
     certificates: Certificate[],
@@ -98,7 +101,11 @@ addToOfficeInventory(RefOfficeInventory: RefOfficeInventory): Observable<RefOffi
     catchError((error) => {
       console.error('Error:', error);
       const serverErrorMessage = error.error?.message || 'שגיאה כללית מהשרת';
-      alert(`אירעה שגיאה: ${serverErrorMessage}`);
+      this.snackBar.open(`אירעה שגיאה: ${serverErrorMessage}`, 'סגור', {
+          duration: 4000,
+          panelClass: ['snackbar-error'],
+      });
+      
       return throwError(() => new Error(serverErrorMessage));
     })
   );
