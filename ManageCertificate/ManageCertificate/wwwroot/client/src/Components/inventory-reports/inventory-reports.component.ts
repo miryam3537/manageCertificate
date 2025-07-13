@@ -74,6 +74,8 @@ export class InventoryReportsComponent implements OnInit{
   filterForm: FormGroup;
   displayedOfficeInventoryColumns: string[] = ['certificateName', 'inventory', 'minimum', 'year', 'unusedInventoryBalance'];
   ListRefInventory: RefInventory[] = [];
+  ListRefInventoryOriginal: RefInventory[] = [];
+
   ListAllCertificates: Certificate[] = [];
   ListRefCertificateType: RefCertificateType[] = [];
   ListRefCouncil: RefCouncil[] = [];
@@ -110,13 +112,14 @@ export class InventoryReportsComponent implements OnInit{
     });
   }
    ngOnInit() {
-      this.loadData();
-      this.filterForm.valueChanges.subscribe(() => {
-        this.applyFilter(); // הפעלת הסינון בכל שינוי בטופס
-      });
-    
-      //לבדוק למה אי אפשר לקבל מהשירות בצורה כזאת את הרשימה
-      //this.ListAllCertificates==this.certificateService.ListCertificate;
+    this.loadData();
+    this.filterForm.valueChanges.subscribe((val) => {
+      const year = +val.year;
+      if (year) {
+        this.calculateUtilizationPerYear(year); // שורת מפתח!!!
+      }
+      this.applyFilter();
+    });
     }
 
     loadData() {
@@ -134,7 +137,9 @@ export class InventoryReportsComponent implements OnInit{
         next: ([requests,certificateTypes, inventories, certificates,refCouncil,officeInventory]) => {
           this.allRequests = requests;
           this.ListRefCertificateType = certificateTypes;
-          this.ListRefInventory = inventories;
+          this.ListRefInventoryOriginal = inventories;
+this.ListRefInventory = [...inventories]; // העתק ולא הפניה ישירה
+
           this.ListAllCertificates = certificates;
           this.ListRefCouncil = refCouncil;
           this.ListAllOfficeInventory = officeInventory;
@@ -145,7 +150,7 @@ export class InventoryReportsComponent implements OnInit{
           console.log('ListAllOfficeInventory:', this.ListAllOfficeInventory);
           console.log('ListRequestes:', this.allRequests);
           // this.totalInventoryBalance();
-          this.calculateUtilizationPerYear();
+          this.calculateUtilizationPerYear(this.currentYear);
           //is.OfficeSupplies(this.currentYear);
           this.officeSupplies2(this.currentYear);
           this.isLoading = false;
@@ -212,104 +217,104 @@ export class InventoryReportsComponent implements OnInit{
           this.loadData();
         }
       });
-      
+  
   }
-calculateUtilizationPerYear() {
-  const utilizationResults$ = this.ListRefInventory.map((inventory) => {
-    const matchingCertificates = this.ListAllCertificates.filter(
-      (certificate) => certificate.certificateType === inventory.certificateId
-    );
-
-    // יצירת בקשות אסינכרוניות לבדיקה אם המועצה מתאימה
-    const requests = matchingCertificates.map((certificate) =>
-      this.RequestService.getCouncilId(certificate.requestId || 76).pipe(
-        map((councilId) => ({
-          certificate,
-          isCouncilMatch: councilId === inventory.councilId, 
-        })),
-        catchError(() => of({ certificate, isCouncilMatch: false })) 
-      )
-    );
-
-
-    if (requests.length === 0) {
-      return of({ inventory, totalSupplyAmount: 0 });
-    }
-
-    // שילוב התוצאות עבור כל inventory
-    return forkJoin(requests).pipe(
-      map((results) => ({
-        inventory,
-        totalSupplyAmount: results
-          .filter((result) => result.isCouncilMatch) 
-          .reduce(
-            (sum, result) => sum + (result.certificate.supplyAmaunt || 0),
-            0
-          ), 
-      }))
-    );
-  });
-
-  // אם יש תוצאות לחישוב
-  if (utilizationResults$.length > 0) {
-    forkJoin(utilizationResults$).subscribe(
-      (finalResults) => {
-        // שילוב התוצאות עם רשימת ה-inventory להצגה בטבלה
-        this.ListRefInventory = this.ListRefInventory.map((inventory) => {
-          const result = finalResults.find((r) => r.inventory === inventory);
-          return {
-            ...inventory,
-            totalSupplyAmount: result ? result.totalSupplyAmount : 0, 
-          };
-        });
-
-        this.applyFilter();
-      },
-      (error) => {
-        console.error('Error processing results:', error);
-      }
-    );
+  calculateUtilizationPerYear(year: number) {
+    const updated = this.ListRefInventoryOriginal
+      .filter(item => item.year === year)
+      .map((item) => {
+        const total = this.RefServService.getTotalSupplyAmountForCertificate(
+          this.ListAllCertificates,
+          this.allRequests,
+          item.certificateId ?? 0,
+          year,
+          item.councilId
+        );
+  
+        return {
+          ...item,
+          totalSupplyAmount: total
+        };
+      });
+  
+    this.ListRefInventory = updated;
+    this.applyFilter();
   }
-}
+  
+  
+//  calculateUtilizationPerYear(selectedYear: number = this.currentYear) {
+//   const observablesArray = this.ListRefInventory.map((inventory) => {
+//     // שלב 1: סינון התעודות לפי סוג תעודה ובקשה קיימת
+//     const matchingCertificates = this.ListAllCertificates.filter(
+//       (certificate) =>
+//         certificate.certificateType === inventory.certificateId &&
+//         certificate.requestId != null
+//     );
+
+//     if (matchingCertificates.length === 0) {
+//       return of({ inventoryId: inventory.inventoryId, total: 0 });
+//     }
+
+//     // שלב 2: עבור כל תעודה – מוצאים את הבקשה התואמת מהמערך allRequests
+//     const results = matchingCertificates.map((certificate) => {
+//       const request = this.allRequests.find((r) => r.requestId === certificate.requestId);
+//       if (!request || !request.handlingDate) {
+//         return { certificate, isMatch: false };
+//       }
+
+//       const handlingYear = new Date(request.handlingDate).getFullYear();
+//       const isMatch =
+//         request.councilId === inventory.councilId &&
+//         handlingYear === selectedYear &&
+//         request.requestStatus === 2;
+
+//       return { certificate, isMatch };
+//     });
+
+//     // שלב 3: חישוב סך ה-supplyAmount רק עבור תעודות מתאימות
+//     const total = results
+//       .filter((r) => r.isMatch)
+//       .reduce((sum, r) => sum + (r.certificate.supplyAmaunt || 0), 0);
+
+//     return of({ inventoryId: inventory.inventoryId, total });
+//   });
+
+//   // שלב 4: מריצים את כל האובזרוובלים במקביל
+//   forkJoin(observablesArray).subscribe({
+//     next: (results) => {
+//       const resultMap = new Map(results.map((r) => [r.inventoryId, r.total]));
+//       this.ListRefInventory = this.ListRefInventory.map((item) => ({
+//         ...item,
+//         totalSupplyAmount: resultMap.get(item.inventoryId) || 0,
+//       }));
+//       this.applyFilter();
+//     },
+//     error: (err) => {
+//       console.error('שגיאה בזמן חישוב הניצול:', err);
+//     },
+//   });
+// }
+
+  
+  
 applyFilter() {
-  const filters = this.filterForm.value; // קבלת הערכים ישירות מהטופס
-  console.log('Filters applied:', filters);
+  const { year, councilName, certificateName } = this.filterForm.value;
 
   this.filteredInventory = this.ListRefInventory.filter(item => {
-    const yearMatch = !filters.year || item.year === +filters.year;
-    const councilMatch = !filters.councilName || item.council?.name?.toLowerCase().includes(filters.councilName.toLowerCase());
-    const certificateMatch = !filters.certificateName || item.certificateId === +filters.certificateName;
-
-    return yearMatch && councilMatch && certificateMatch;
+    const matchYear = !year || item.year === +year;
+    const matchCouncil = !councilName || item.council?.name?.toLowerCase().includes(councilName.toLowerCase());
+    const matchCertificate = !certificateName || item.certificateId === +certificateName;
+    return matchYear && matchCouncil && matchCertificate;
   });
 }
-  
-    onInputChangeYearTable1(event: Event) {
-      this.selectedYearTable1 = (event.target as HTMLInputElement).valueAsNumber || null;
-      this.applyFilter();
-    }
-  onSelectChangeCertificate(event: MatSelectChange) {
-     this.selectedCertificate = event.value; // עדכון הערך שנבחר
-     this.applyFilter(); // קריאה לפונקציה כדי לעדכן את התצוגה
-  }
-    onInputChangeCouncil(event: Event) {
-      const target = event.target as HTMLInputElement | null;
-      if (target && target.value !== undefined) {
-        this.selectCouncil = target.value || '';
-        this.applyFilter();
-      } else {
-        console.error('Event target is not an HTMLInputElement or value is undefined');
-      }
-    }
+
     onInputChangeYearTable2(event: Event) {
       this.selectedYearTable2 = (event.target as HTMLInputElement).valueAsNumber || null;
       this.officeSupplies2(this.selectedYearTable2 || this.currentYear);
       
     }
     resetFilters() {
-      this.selectedYearTable1 = null;
-      this.selectCouncil = '';
-      this.selectedCertificate = null; 
+      this.filterForm.reset();
       setTimeout(() => {
         this.isReset = false;
       }, 0);
@@ -317,43 +322,27 @@ applyFilter() {
     }
     officeSupplies2(year: number) {
       this.UpdateListAllOfficeInventory = this.ListAllOfficeInventory
-        .filter(item => item.year === year) // סינון לפי השנה שנשלחה כפרמטר
+        .filter(item => item.year === year)
         .map(item => {
           const matchingType = this.ListRefCertificateType.find(type => type.id === item.certificateId);
     
-          const totalSupplyAmount = this.ListAllCertificates
-            .filter(certificate => {
-              const matchingRequest = this.allRequests.find(request => {
-                if (!request.handlingDate) {
-                  return false; 
-                }
-    
-                // המרת handlingDate למחרוזת בפורמט ISO 8601
-                const isoDate = (request.handlingDate instanceof Date)
-                  ? request.handlingDate.toISOString() // אם זה אובייקט Date
-                  : String(request.handlingDate).replace(' ', 'T'); // אם זה מחרוזת
-    
-                const handlingYear = new Date(isoDate).getFullYear();
-    
-                return (
-                  request.requestId === certificate.requestId &&
-                  handlingYear === item.year && 
-                  request.requestStatus === 2 
-                );
-              });
-    
-              return certificate.certificateType === item.certificateId && matchingRequest;
-            })
-            .reduce((sum, certificate) => sum + (certificate.supplyAmaunt || 0), 0);
+          const totalSupplyAmount = this.RefServService.getTotalSupplyAmountForCertificate(
+            this.ListAllCertificates,
+            this.allRequests,
+            item.certificateId,
+            item.year
+          );
     
           return {
             ...item,
             certificateName: matchingType?.name || 'לא זוהה',
             minimum: matchingType?.minimum || 0,
-            unusedInventoryBalance: (item.inventory || 0) - totalSupplyAmount 
+            unusedInventoryBalance: (item.inventory || 0) - totalSupplyAmount,
+            totalSupplyAmount // חדש – שיהיה זמין גם להצגה בטבלה
           };
         });
     }
+    
 
     goBackToRequests(): void {
       this.router.navigate(['']); 

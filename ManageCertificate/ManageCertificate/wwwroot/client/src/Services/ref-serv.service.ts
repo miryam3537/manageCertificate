@@ -17,6 +17,45 @@ export class RefServService {
   BASE_URL_REFSTATUS = "api/RefStatus";
    constructor(private http: HttpClient) { }
 
+   getTotalSupplyAmountForCertificate(
+    certificates: Certificate[],
+    requests: any[],
+    certificateTypeId: number,
+    year: number,
+    councilId?: number
+  ): number {
+    return certificates
+      .filter((certificate) => {
+        if (certificate.certificateType !== certificateTypeId || !certificate.requestId) {
+          return false;
+        }
+  
+        const request = requests.find((r) => r.requestId === certificate.requestId);
+        if (!request || !request.handlingDate) {
+          return false;
+        }
+  
+        // המרת תאריך לטיפול
+        const isoDate = (request.handlingDate instanceof Date)
+        ? request.handlingDate.toISOString() // אם זה אובייקט Date
+        : String(request.handlingDate).replace(' ', 'T'); // אם זה מחרוזת
+
+      const handlingYear = new Date(isoDate).getFullYear();
+  
+        const matchesYear = handlingYear === year;
+        const matchesStatus = request.requestStatus === 2;
+        const matchesCouncil = councilId == null || request.councilId === councilId;
+        console.log(`Certificate ID:🚀 ${certificate.certificateId}, Year: ${handlingYear}, Status: ${request.requestStatus}, Council: ${request.councilId}`);
+        return matchesYear && matchesStatus && matchesCouncil;
+      
+        
+      })
+      .reduce((sum, certificate) => sum + (certificate.supplyAmaunt || 0), 0);
+    
+      
+  }
+  
+
    updateInventoryAmount(inventoryId: number, inventory: number): Observable<any> {
     const payload = { inventoryId, inventory }; // יצירת אובייקט JSON פשוט
     console.log('Sending updateInventoryAmount request:', payload);

@@ -1,206 +1,197 @@
-
 <div class="page-container">
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
-<!-- Filters Section -->
-<button mat-icon-button color="primary" id="myprimary" (click)="goBackToRequests()">
-  <mat-icon>arrow_forward</mat-icon>
-</button>
-<h3 class="inventory-title">מאזן מלאי למועצה</h3>
- <!-- טופס סינון -->
- <form [formGroup]="filterForm" class="filters-wrapper" id="filtersWrapper1">
-  <div class="filters-container">
-    <!-- סינון לפי שנה -->
-    <mat-form-field appearance="fill" class="filter-item">
-      <mat-label>סינון לפי שנה</mat-label>
-      <input matInput type="number" formControlName="year" placeholder="הכנס שנה" />
-    </mat-form-field>
 
-    <!-- סינון לפי לשכה -->
-    <mat-form-field appearance="fill" class="filter-item">
-      <mat-label>סינון לפי לשכה</mat-label>
-      <input matInput type="text" formControlName="councilName" placeholder="הכנס לשכה" />
-    </mat-form-field>
+  <!-- חזור -->
+  <button mat-icon-button color="primary" id="myprimary" (click)="goBackToRequests()">
+    <mat-icon>arrow_forward</mat-icon>
+  </button>
+  <h3 class="inventory-title">מאזן מלאי למועצה</h3>
 
-    <!-- סינון לפי תעודה -->
-    <mat-form-field appearance="fill" class="filter-item">
-      <mat-label>סינון לפי תעודה</mat-label>
-      <mat-select formControlName="certificateName">
-        <mat-option *ngFor="let certificate of ListRefCertificateType" [value]="certificate.id">
-          {{ certificate.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-</form>
-<button mat-raised-button color="primary" class="myBtn" (click)="downloadInventoryTable()">
-  <mat-icon>download</mat-icon>
-  הורד טבלת מלאי למועצה
-</button>
-<button mat-raised-button color="primary" class="myBtn" (click)="onPrintTable(1)">
-  <mat-icon>print</mat-icon>
-  הדפסה
-</button>
-    <button mat-raised-button color="primary" class="myBtn" (click)="resetFilters()">איפוס סינון</button>
-
-</div>
-
-  <!-- Inventory List Section -->
-  <div id="inventoryList" class="inventory-container">
-    <div class="table-container">
-      <table mat-table [dataSource]="filteredInventory" class="mat-elevation-z8 custom-table">
-        <ng-container matColumnDef="councilName">
-          <th mat-header-cell *matHeaderCellDef> שם מועצה </th>
-          <td mat-cell *matCellDef="let item"> {{ item.council.name }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="year">
-          <th mat-header-cell *matHeaderCellDef> שנה </th>
-          <td mat-cell *matCellDef="let item"> {{ item.year || 'N/A' }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="certificate">
-          <th mat-header-cell *matHeaderCellDef> שם תעודה </th>
-          <td mat-cell *matCellDef="let item"> {{ item.certificate?.name || 'N/A' }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="inventory">
-          <th mat-header-cell *matHeaderCellDef> אומדן שנתי </th>
-          <td mat-cell *matCellDef="let item">
-            <div *ngIf="item.year === currentYear">
-              <input 
-                type="number" 
-                [(ngModel)]="item.inventory" 
-                placeholder="ערוך מלאי"
-              />
-              <button mat-button (click)="saveInventory(item)">שמור</button>
-            </div>
-            <div *ngIf="item.year !== currentYear">
-              {{ item.inventory }} (אין מלאי לשנה הנוכחית)
-            </div>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="totalSupplyAmount">
-          <th mat-header-cell *matHeaderCellDef> ניצול שנתי </th>
-          <td mat-cell *matCellDef="let item"> {{ item.totalSupplyAmount || 0 }} </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="inventoryBalance">
-          <th mat-header-cell *matHeaderCellDef> יתרה לא מנוצלת </th>
-          <td mat-cell *matCellDef="let item">
-            {{ (item.inventory.inventory || 0) - (item.totalSupplyAmount || 0) }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Actions">
-          <th mat-header-cell *matHeaderCellDef> שמור </th>
-          <td mat-cell *matCellDef="let item">
-            <mat-icon>save</mat-icon>
-          </td>
-          
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="inventoryDisplayedCol"></tr>
-        <tr mat-row *matRowDef="let row; columns: inventoryDisplayedCol;"></tr>
-      </table>
-
-      <p *ngIf="ListRefInventory.length === 0" class="no-data-message">
-        אין נתונים להצגה.
-      </p>
-    </div>
-  </div>
-
-
-  <h3 class="inventory-title">מאזן מלאי תעודות שנתי למשרד</h3>
-  <form [formGroup]="filterForm" class="filters-wrapper" id="filtersWrapper2">
+  <!-- טופס סינון -->
+  <form [formGroup]="filterForm" class="filters-wrapper">
     <div class="filters-container">
+  
+      <!-- סינון לפי שנה -->
       <mat-form-field appearance="fill" class="filter-item">
         <mat-label>סינון לפי שנה</mat-label>
-        <input
-          matInput
-          type="number"
-          placeholder="2025"
-          [value]="isReset ? '' : selectedYearTable2"
-          (input)="onInputChangeYearTable2($event)"
-        />
+        <input matInput type="number" formControlName="year" placeholder="הכנס שנה" />
       </mat-form-field>
-     
+  
+      <!-- סינון לפי מועצה -->
+      <mat-form-field appearance="fill" class="filter-item">
+        <mat-label>סינון לפי לשכה</mat-label>
+        <input matInput type="text" formControlName="councilName" placeholder="הכנס לשכה" />
+      </mat-form-field>
+  
+      <!-- סינון לפי תעודה -->
+      <mat-form-field appearance="fill" class="filter-item">
+        <mat-label>סינון לפי תעודה</mat-label>
+        <mat-select formControlName="certificateName">
+          <mat-option *ngFor="let certificate of ListRefCertificateType" [value]="certificate.id">
+            {{ certificate.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+    </div>
+  </form>
   
 
+  <button mat-raised-button color="primary" class="myBtn" (click)="downloadInventoryTable()">
+    <mat-icon>download</mat-icon> הורד טבלת מלאי למועצה
+  </button>
+
+  <button mat-raised-button color="primary" class="myBtn" (click)="onPrintTable(1)">
+    <mat-icon>print</mat-icon> הדפסה
+  </button>
+
+  <button mat-raised-button color="primary" class="myBtn" (click)="resetFilters()">איפוס סינון</button>
+</div>
+
+<!-- טבלת מלאי למועצה -->
+<div id="inventoryList" class="inventory-container">
+  <div class="table-container">
+    <table mat-table [dataSource]="filteredInventory" class="mat-elevation-z8 custom-table">
+      <ng-container matColumnDef="councilName">
+        <th mat-header-cell *matHeaderCellDef> שם מועצה </th>
+        <td mat-cell *matCellDef="let item"> {{ item?.council?.name || 'N/A' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="year">
+        <th mat-header-cell *matHeaderCellDef> שנה </th>
+        <td mat-cell *matCellDef="let item"> {{ item?.year || 'N/A' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="certificate">
+        <th mat-header-cell *matHeaderCellDef> שם תעודה </th>
+        <td mat-cell *matCellDef="let item"> {{ item?.certificate?.name || 'N/A' }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="inventory">
+        <th mat-header-cell *matHeaderCellDef> אומדן שנתי </th>
+        <td mat-cell *matCellDef="let item">
+          <div *ngIf="item?.year === currentYear">
+            <input type="number" [(ngModel)]="item.inventory" placeholder="ערוך מלאי" />
+            <button mat-button (click)="saveInventory(item)">שמור</button>
+          </div>
+          <div *ngIf="item?.year !== currentYear">
+            {{ item?.inventory ?? 'N/A' }} (אין מלאי לשנה הנוכחית)
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalSupplyAmount">
+        <th mat-header-cell *matHeaderCellDef> ניצול שנתי </th>
+        <td mat-cell *matCellDef="let item"> {{ item?.totalSupplyAmount ?? 0 }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="inventoryBalance">
+        <th mat-header-cell *matHeaderCellDef> יתרה לא מנוצלת </th>
+        <td mat-cell *matCellDef="let item">
+          {{ (item?.inventory ?? 0) - (item?.totalSupplyAmount ?? 0) }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Actions">
+        <th mat-header-cell *matHeaderCellDef> שמור </th>
+        <td mat-cell *matCellDef="let item">
+          <mat-icon>save</mat-icon>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="inventoryDisplayedCol"></tr>
+      <tr mat-row *matRowDef="let row; columns: inventoryDisplayedCol;"></tr>
+    </table>
+
+    <p *ngIf="ListRefInventory.length === 0" class="no-data-message">
+      אין נתונים להצגה.
+    </p>
+  </div>
+</div>
+
+<!-- טבלת מלאי למשרד -->
+<h3 class="inventory-title">מאזן מלאי תעודות שנתי למשרד</h3>
+
+<div  class="filters-wrapper" id="filtersWrapper2">
+  <div class="filters-container">
+    <mat-form-field appearance="fill" class="filter-item">
+      <mat-label>סינון לפי שנה</mat-label>
+      <input
+        matInput
+        type="number"
+        placeholder="2025"
+        [value]="isReset ? '' : selectedYearTable2"
+        (input)="onInputChangeYearTable2($event)"
+      />
+    </mat-form-field>
+
     <button mat-raised-button color="primary" class="myBtn" (click)="downloadOfficeInventoryTable(UpdateListAllOfficeInventory)">
-      <mat-icon>download</mat-icon>
-      הורד טבלת מלאי תעודות
+      <mat-icon>download</mat-icon> הורד טבלת מלאי תעודות
     </button>
- 
-  <button mat-raised-button color="primary"class="myBtn"  (click)="onPrintTable(2)">
-    <mat-icon>print</mat-icon>
-    הדפסה
-  </button>
+
+    <button mat-raised-button color="primary" class="myBtn" (click)="onPrintTable(2)">
+      <mat-icon>print</mat-icon> הדפסה
+    </button>
   </div>
-  <button mat-raised-button color="primary"class="myBtn"  (click)="onAddInventory()">
-    <mat-icon>plus</mat-icon>
-  הוספת מלאי
+
+  <button mat-raised-button color="primary" class="myBtn" (click)="onAddInventory()">
+    <mat-icon>plus</mat-icon> הוספת מלאי
   </button>
-  <!-- Inventory Balance Section -->
-  <div id="inventoryBalance" class="inventory-container">
-    <div class="table-container" *ngIf="!isLoading; else loading">
-      <table mat-table [dataSource]="UpdateListAllOfficeInventory" class="mat-elevation-z8 custom-table">
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> שם </th>
-          <td mat-cell *matCellDef="let type"> {{ type.certificateName }} </td>
-        </ng-container>
+</div>
 
-        <ng-container matColumnDef="year">
-          <th mat-header-cell *matHeaderCellDef> שנה </th>
-          <td mat-cell *matCellDef="let type"> {{ type.year}} </td>
-        </ng-container>
+<div id="inventoryBalance" class="inventory-container">
+  <div class="table-container" *ngIf="!isLoading; else loading">
+    <table mat-table [dataSource]="UpdateListAllOfficeInventory" class="mat-elevation-z8 custom-table">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> שם </th>
+        <td mat-cell *matCellDef="let type"> {{ type?.certificateName || 'N/A' }} </td>
+      </ng-container>
 
-        <ng-container matColumnDef="inventory">
-          <th mat-header-cell *matHeaderCellDef> אומדן מלאי עדכני </th>
-          <td mat-cell *matCellDef="let type">
-            <span>
-              {{ type.inventory < 0 ? 'חסר הגדרה' : type.inventory }}
-            </span>
-            <span *ngIf="type.inventory < 0" class="warning-balance">&#x26A0;</span>
-          </td>
-        </ng-container>
+      <ng-container matColumnDef="year">
+        <th mat-header-cell *matHeaderCellDef> שנה </th>
+        <td mat-cell *matCellDef="let type"> {{ type?.year || 'N/A' }} </td>
+      </ng-container>
 
-        <ng-container matColumnDef="inventoryBalance">
-          <th mat-header-cell *matHeaderCellDef> יתרת מלאי לא מנוצלת </th>
-          <td mat-cell *matCellDef="let type">
-            <span>
-              {{type.unusedInventoryBalance < 0 ? 'חסר הגדרה' : type.unusedInventoryBalance }}
-            </span>
-         
-          </td>
-        </ng-container>
+      <ng-container matColumnDef="inventory">
+        <th mat-header-cell *matHeaderCellDef> אומדן מלאי עדכני </th>
+        <td mat-cell *matCellDef="let type">
+          <span>
+            {{ type?.inventory >= 0 ? type.inventory : 'חסר הגדרה' }}
+          </span>
+          <span *ngIf="type?.inventory < 0" class="warning-balance">&#x26A0;</span>
+        </td>
+      </ng-container>
 
-    
-        <ng-container matColumnDef="minimumBalance">
-          <th mat-header-cell *matHeaderCellDef> מינימום </th>
-          <td mat-cell *matCellDef="let type"> 
-            <input 
-            type="number" 
-            [(ngModel)]="type.minimum" 
-            placeholder="ערוך מינימום"
-          />
-          <button mat-button (click)="saveMinimum(type)">  <mat-icon>save</mat-icon></button> </td>
-        </ng-container>
-        
+      <ng-container matColumnDef="inventoryBalance">
+        <th mat-header-cell *matHeaderCellDef> יתרת מלאי לא מנוצלת </th>
+        <td mat-cell *matCellDef="let type">
+          <span>
+            {{ type?.unusedInventoryBalance >= 0 ? type.unusedInventoryBalance : 'חסר הגדרה' }}
+          </span>
+        </td>
+      </ng-container>
 
+      <ng-container matColumnDef="minimumBalance">
+        <th mat-header-cell *matHeaderCellDef> מינימום </th>
+        <td mat-cell *matCellDef="let type">
+          <input type="number" [(ngModel)]="type.minimum" placeholder="{{ type?.minimum ?? '' }}" />
+          <button mat-button (click)="saveMinimum(type)"> <mat-icon>save</mat-icon> </button>
+        </td>
+      </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-      <p *ngIf="UpdateListAllOfficeInventory.length === 0" class="no-data-message">
-        אין נתונים להצגה.
-      </p>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <p *ngIf="UpdateListAllOfficeInventory.length === 0" class="no-data-message">
+      אין נתונים להצגה.
+    </p>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>טוען נתונים...</p>
     </div>
-
-    <ng-template #loading>
-      <div class="loading-container">
-        <mat-spinner></mat-spinner>
-        <p>טוען נתונים...</p>
-      </div>
-    </ng-template>
-  </div>
+  </ng-template>
+</div>
