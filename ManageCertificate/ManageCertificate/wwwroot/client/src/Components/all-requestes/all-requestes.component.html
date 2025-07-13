@@ -34,7 +34,7 @@
     <p class="no-data-message">No data available to display.</p>
   </ng-template>
 </div>
-<div class="filters-wrapper">
+
 
   <div class="filters-wrapper">
     <div class="reset-button-container">
@@ -49,57 +49,53 @@
     </div>        
     
      
-    
+    <form [formGroup]="filterForm" class="filters-wrapper" id="filtersWrapper">
     <div class="filters-container">
       <!-- Filter by Status -->
       <mat-form-field appearance="fill" class="filter-item">
         <mat-label>סינון לפי סטטוס בקשה</mat-label>
-        <mat-select [value]="isReset ? '' : RequestService.selectedStatus" (selectionChange)="onSelectChange($event)">
-         
+        <mat-select formControlName="selectedStatus">
           <mat-option *ngFor="let status of ListRefStatus" [value]="status.id">
             {{ status.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-
-      <!-- Filter by Council -->
+      
       <mat-form-field appearance="fill" class="filter-item">
         <mat-label>סינון לפי לשכת נישואין</mat-label>
         <input
           matInput
           type="text"
+          formControlName="selectedCouncilId"
           placeholder="הכנס לשכה"
-          [value]="isReset ? '' : RequestService.selectedCouncilId"
-          (input)="onInputChangeCouncil($event)"
-        />
+      />
       </mat-form-field>
-
-      <!-- Filter by Request Number -->
+      
       <mat-form-field appearance="fill" class="filter-item">
         <mat-label>סינון לפי מספר בקשה</mat-label>
         <input
           matInput
           type="text"
+          formControlName="selectedRequestId"
           placeholder="הכנס מספר בקשה"
-          [value]="isReset ? '' : RequestService.selectedRequestId"
-          (input)="onInputChangeNumReq($event)"
-        />
+      />
       </mat-form-field>
-
-      <!-- Filter by Date -->
+      
       <mat-form-field appearance="fill" class="filter-item">
         <mat-label>סינון לפי תאריך הזמנה</mat-label>
         <input
           matInput
           [matDatepicker]="picker"
-          [value]="isReset ? '' : RequestService.selectedDate"
-          (dateChange)="onDateChange($event)"
-        />
+          formControlName="selectedDate"
+      />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
+      
     </div>
+  </form>
   </div>
+  
 
     <!-- טבלת הבקשות -->
     <div class="table-container">

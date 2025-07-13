@@ -109,10 +109,10 @@
       </p>
     </div>
   </div>
+
+
   <h3 class="inventory-title">מאזן מלאי תעודות שנתי למשרד</h3>
-  <div class="filters-wrapper" id="filtersWrapper2">
-    
-      
+  <form [formGroup]="filterForm" class="filters-wrapper" id="filtersWrapper2">
     <div class="filters-container">
       <mat-form-field appearance="fill" class="filter-item">
         <mat-label>סינון לפי שנה</mat-label>
@@ -125,7 +125,8 @@
         />
       </mat-form-field>
      
-    </div>
+  
+
     <button mat-raised-button color="primary" class="myBtn" (click)="downloadOfficeInventoryTable(UpdateListAllOfficeInventory)">
       <mat-icon>download</mat-icon>
       הורד טבלת מלאי תעודות

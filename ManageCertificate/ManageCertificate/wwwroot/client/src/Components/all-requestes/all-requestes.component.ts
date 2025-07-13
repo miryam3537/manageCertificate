@@ -31,14 +31,16 @@ import { PrintService } from '../../Services/print.service';
 import * as XLSX from 'xlsx';
 import { OfficeInventoryService } from '../../Services/office-inventory.service';
 import { RefOfficeInventory } from '../../Models/RefOfficeInventory';
-
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-all-requestes',
   imports: [
     RouterModule,
     MatIconModule,
     HttpClientModule,
+    ReactiveFormsModule,
     CommonModule,
+    FormsModule,
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -75,16 +77,30 @@ export class AllRequestesComponent implements OnInit {
   inventory:object[] = [];
   ListAllOfficeInventory:RefOfficeInventory[]=[]
   @ViewChild(MatSort) sort!: MatSort;
+  filterForm: FormGroup;
   constructor(
     public RequestService: RequestService,
     private RefServService: RefServService,
     public certificateService: CertificateService,
     public PrintService: PrintService,
-    public OfficeInventoryService:OfficeInventoryService
-  ) {}
+    public OfficeInventoryService:OfficeInventoryService,
+    private fb: FormBuilder
+  ) {
+    this.filterForm = this.fb.group({
+      selectedStatus: [''],
+      selectedCouncilId: [''],
+      selectedRequestId: [''],
+      selectedDate: [null],
+    });
+    
+    
+  }
 
   ngOnInit() {
     this.initialData();
+    this.filterForm.valueChanges.subscribe(() => {
+      this.applyFilters(); // הפעלת הסינון בכל שינוי בטופס
+    });
   }
   
   initialData() {
@@ -128,32 +144,16 @@ export class AllRequestesComponent implements OnInit {
 onPrintAllRequestesTable() {
   this.PrintService.printAllRequestesTable();
 }
-  applyFilters() {
-    this.RequestService.getAll().subscribe((res: Requestes[]) => {
-      this.allRequests = res;
-      this.ListRequestes.data = this.RequestService.filterRequests(this.allRequests);
-    });
-  }
-  onSelectChange(event: MatSelectChange) {
-    this.RequestService.selectedStatus = event.value;
-    this.applyFilters();
-  }
+applyFilters() {
+  const filters = this.filterForm.value;
+  this.RequestService.selectedStatus = filters.selectedStatus;
+  this.RequestService.selectedCouncilId = filters.selectedCouncilId;
+  this.RequestService.selectedRequestId = filters.selectedRequestId ? parseInt(filters.selectedRequestId, 10) : null;
+  this.RequestService.selectedDate = filters.selectedDate;
 
-  onInputChangeCouncil(event: Event) {
-    this.RequestService.selectedCouncilId = (event.target as HTMLInputElement).value;
-    this.applyFilters();
-  }
+  this.ListRequestes.data = this.RequestService.filterRequests(this.allRequests);
+}
 
-  onInputChangeNumReq(event: Event) {
-    const input = (event.target as HTMLInputElement).value;
-    this.RequestService.selectedRequestId = input ? parseInt(input, 10) : null;
-    this.applyFilters();
-  }
-
-  onDateChange(event: MatDatepickerInputEvent<Date>) {
-    this.RequestService.selectedDate = event.value;
-    this.applyFilters();
-  }
 
   resetFilters() {
     this.RequestService.selectedStatus = null;

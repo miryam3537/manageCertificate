@@ -104,9 +104,9 @@ export class InventoryReportsComponent implements OnInit{
   ) {
     // אתחול filterForm בקונסטרקטור
     this.filterForm = this.fb.group({
-      year: [''], // שדה שנה
-      councilName: [''], // שדה שם מועצה
-      certificateName: [''], // שדה שם תעודה
+      year: [''], 
+      councilName: [''], 
+      certificateName: [''], 
     });
   }
    ngOnInit() {
