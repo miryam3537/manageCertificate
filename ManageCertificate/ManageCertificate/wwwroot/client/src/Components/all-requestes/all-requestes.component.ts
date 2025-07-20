@@ -32,10 +32,12 @@ import * as XLSX from 'xlsx';
 import { OfficeInventoryService } from '../../Services/office-inventory.service';
 import { RefOfficeInventory } from '../../Models/RefOfficeInventory';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FilePlus, FileBadge, FileSymlink } from "lucide-react";
 @Component({
   selector: 'app-all-requestes',
   imports: [
     RouterModule,
+    
     MatIconModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -65,6 +67,8 @@ export class AllRequestesComponent implements OnInit {
   displayedColumns: string[] = ['requestId', 'orderDate', 'deliveryMethod', 'officeComment', 'requestStatus', 'councilId', 'Actions'];
   ListRefStatus: RefStatus[] = [];
   ListRefInventory: RefInventory[] = [];
+
+  UpdateListAllOfficeInventory: RefOfficeInventory[] = [];
   ListAllCertificate: Certificate[] = [];
   ListRequestes = new MatTableDataSource<Requestes>([]);
   ListRefAllStatus: RefStatus[] = [];
@@ -75,6 +79,7 @@ export class AllRequestesComponent implements OnInit {
   isReset: boolean = false;
   amount: number = 0; 
   inventory:object[] = [];
+  currentYear = new Date().getFullYear();
   ListAllOfficeInventory:RefOfficeInventory[]=[]
   @ViewChild(MatSort) sort!: MatSort;
   filterForm: FormGroup;
@@ -125,14 +130,15 @@ export class AllRequestesComponent implements OnInit {
         this.ListRefStatus = refStatuses;
         this.ListRefInventory = inventories;
         this.ListAllCertificate = certificates;
-        this.ListAllOfficeInventory = officeInventory;
+        this.ListAllOfficeInventory = this.RefServService.ListOfficeInventory
         console.log('ListRequestes:', this.ListRequestes);
         console.log('ListRefCertificateType:', this.ListRefCertificateType);
         console.log('ListRefStatus:', this.ListRefStatus);
         console.log('ListRefInventory:', this.ListRefInventory);
         console.log('ListAllCertificate:', this.ListAllCertificate);
         console.log('ListAllOfficeInventory:', this.ListAllOfficeInventory);
-        this.totalInventoryBalance();
+       // this.totalInventoryBalance();
+        this.officeSupplies2(this.currentYear);
         this.isLoading = false;
       },
       error:(error) => {
@@ -166,21 +172,31 @@ applyFilters() {
     }, 0);
     this.initialData();
   }
-  totalInventoryBalance() {
+  officeSupplies2(year: number) {
+    this.UpdateListAllOfficeInventory = this.RefServService.generateOfficeInventoryWithSupply(
+      this.ListAllOfficeInventory,
+      this.ListRefCertificateType,
+      this.ListAllCertificate,
+      this.allRequests,
+      year,
+      undefined
+    );
+  }
+  // totalInventoryBalance() {
  
-     const currentYear = new Date().getFullYear();
-     this.updatedCertificateTypes = this.ListRefCertificateType.map(item =>{
-      const totalInventory = this.ListAllOfficeInventory
-      .filter(certificate =>
-        certificate.year==currentYear && certificate.certificateId==item.id)
-      .reduce((acc, certificate) => acc + (certificate.inventory || 0), 0)
-        return {
-              ...item, 
-              TOTAL_INVENTORY_BALANCES:totalInventory|| 0
-            }; 
-          });
-          console.log('Updated Certificate Types with Total Supply Amount:', this.updatedCertificateTypes);
-        }
+  //    const currentYear = new Date().getFullYear();
+  //    this.updatedCertificateTypes = this.ListRefCertificateType.map(item =>{
+  //     const totalInventory = this.ListAllOfficeInventory
+  //     .filter(certificate =>
+  //       certificate.year==currentYear && certificate.certificateId==item.id)
+  //     .reduce((acc, certificate) => acc + (certificate.inventory || 0), 0)
+  //       return {
+  //             ...item, 
+  //             TOTAL_INVENTORY_BALANCES:totalInventory|| 0
+  //           }; 
+  //         });
+  //         console.log('Updated Certificate Types with Total Supply Amount:', this.updatedCertificateTypes);
+  //       }
     
   downloadTableAsExcel() {
     // עיצוב הנתונים לפני יצירת קובץ ה-Excel

@@ -91,12 +91,12 @@ export class InventoryReportsComponent implements OnInit{
   selectCouncil: string = ''; 
   selectedCouncilId: number | null = null;
   currentYear = new Date().getFullYear();
-    allRequests: Requestes[] = [];
+  allRequests: Requestes[] = [];
   displayedColumns: string[] = ['name','year','inventory', 'inventoryBalance','minimumBalance'];
   inventoryDisplayedCol: string[] = ['councilName','year','certificate', 'totalSupplyAmount', 'inventoryBalance','inventory'];
   filteredInventory: RefInventory[] = [];
-   ListAllOfficeInventory:RefOfficeInventory[]=[]
-   UpdateListAllOfficeInventory: RefOfficeInventory[] = [];
+  ListAllOfficeInventory:RefOfficeInventory[]=[]
+  UpdateListAllOfficeInventory: RefOfficeInventory[] = [];
   finalResults: any[] = []; // משתנה לשמירת התוצאות
   constructor(
     public RefServService: RefServService,
@@ -138,15 +138,16 @@ export class InventoryReportsComponent implements OnInit{
         this.RefServService.getAllOfficeInventory(),
         
       ]).pipe(take(1)).subscribe({
-        next: ([requests,certificateTypes, inventories, certificates,refCouncil,officeInventory]) => {
+        next: ([requests,certificateTypes, inventories, certificates,refCouncil]) => {
           this.allRequests = requests;
           this.ListRefCertificateType = certificateTypes;
           this.ListRefInventoryOriginal = inventories;
-this.ListRefInventory = [...inventories]; // העתק ולא הפניה ישירה
+          this.ListRefInventory = [...inventories]; // העתק ולא הפניה ישירה
 
           this.ListAllCertificates = certificates;
           this.ListRefCouncil = refCouncil;
-          this.ListAllOfficeInventory = officeInventory;
+          // this.ListAllOfficeInventory = officeInventory;
+          this.ListAllOfficeInventory = this.RefServService.ListOfficeInventory
           console.log('ListRefCouncil: קומפ', this.ListRefCouncil);
           console.log('ListRefCertificateType:', this.ListRefCertificateType);
           console.log('ListRefInventory:', this.ListRefInventory);
@@ -367,28 +368,16 @@ applyFilter() {
       this.filteredInventory = [...this.ListRefInventory]; 
     }
     officeSupplies2(year: number) {
-      this.UpdateListAllOfficeInventory = this.ListAllOfficeInventory
-        .filter(item => item.year === year)
-        .map(item => {
-          const matchingType = this.ListRefCertificateType.find(type => type.id === item.certificateId);
-    
-          const totalSupplyAmount = this.RefServService.getTotalSupplyAmountForCertificate(
-            this.ListAllCertificates,
-            this.allRequests,
-            item.certificateId,
-            item.year
-          );
-    
-          return {
-            ...item,
-            certificateName: matchingType?.name || 'לא זוהה',
-            minimum: matchingType?.minimum || 0,
-            unusedInventoryBalance: (item.inventory || 0) - totalSupplyAmount,
-            editedMinimum: matchingType?.minimum || 0, // 👈 שדה זמני לעריכה
-            totalSupplyAmount // חדש – שיהיה זמין גם להצגה בטבלה
-          };
-        });
+      this.UpdateListAllOfficeInventory = this.RefServService.generateOfficeInventoryWithSupply(
+        this.ListAllOfficeInventory,
+        this.ListRefCertificateType,
+        this.ListAllCertificates,
+        this.allRequests,
+        year,
+        this.selectedCouncilId ?? undefined
+      );
     }
+    
 
 
     goBackToRequests(): void {

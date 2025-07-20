@@ -19,7 +19,38 @@ export class RefServService {
    constructor(private http: HttpClient,
     private snackBar: MatSnackBar,
    ) { }
-
+   generateOfficeInventoryWithSupply(
+    officeInventory: RefOfficeInventory[],
+    certificateTypes: RefCertificateType[],
+    certificates: Certificate[],
+    requests: any[],
+    year: number,
+    councilId?: number
+  ): RefOfficeInventory[] {
+    return officeInventory
+      .filter(item => item.year === year)
+      .map(item => {
+        const matchingType = certificateTypes.find(type => type.id === item.certificateId);
+  
+        const totalSupplyAmount = this.getTotalSupplyAmountForCertificate(
+          certificates,
+          requests,
+          item.certificateId,
+          year,
+          councilId
+        );
+  
+        return {
+          ...item,
+          certificateName: matchingType?.name || 'לא זוהה',
+          minimum: matchingType?.minimum || 0,
+          editedMinimum: matchingType?.minimum || 0,
+          totalSupplyAmount,
+          unusedInventoryBalance: (item.inventory || 0) - totalSupplyAmount
+        };
+      });
+  }
+  
    getTotalSupplyAmountForCertificate(
     certificates: Certificate[],
     requests: any[],

@@ -152,3 +152,128 @@ tr:hover {
   margin-bottom: 40px;
 }
 
+.cards-wrapper {
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 20px;
+  background-color: #f5f8ff; /* רקע כללי */
+  border-radius: 12px;
+}
+
+.inventory-card {
+  background: white;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
+  border-radius: 12px;
+  width: 200px;
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.3s ease;
+}
+
+.inventory-card:hover {
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.2);
+}
+
+.inventory-card .icon {
+  font-size: 36px;
+  color: #f25c35; /* צבע האייקון */
+  margin-bottom: 12px;
+}
+
+.inventory-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #1a1a2e;
+}
+
+.inventory-card .number {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+
+.inventory-card .label {
+  font-size: 14px;
+  color: #6b7280;
+}
+.cards-wrapper {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.inventory-card {
+  background: #f4f8ff;
+  border-radius: 20px;
+  padding: 1.5rem;
+  text-align: center;
+  width: 220px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: 0.3s ease;
+}
+
+.inventory-card:hover {
+  transform: translateY(-4px);
+}
+
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.icon-container {
+  border-radius: 50%;
+  padding: 0.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0,0,0,0.05);
+}
+
+.icon-container mat-icon {
+  font-size: 32px;
+}
+
+/* צבעים לפי סוג */
+.orange .icon-container {
+  background-color: #ffe5db;
+  color: #f35e28;
+}
+
+.purple .icon-container {
+  background-color: #ebe5ff;
+  color: #815ff6;
+}
+
+.blue .icon-container {
+  background-color: #d9f1ff;
+  color: #3db8ea;
+}
+
+.content .number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1a1a2f;
+  margin-bottom: 0.25rem;
+}
+
+.content h3 {
+  font-size: 16px;
+  color: #3d3d5c;
+  margin: 0;
+}
+
+.label {
+  font-size: 14px;
+  color: #7b8aa1;
+  margin-top: 0.25rem;
+}

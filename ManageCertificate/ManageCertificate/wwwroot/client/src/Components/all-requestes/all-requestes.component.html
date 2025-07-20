@@ -1,39 +1,32 @@
 <body>
-  <div *ngIf="isLoading" class="loading-container">
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</div>
-
-<div id="inventoryBalance" class="inventory-container">
-  <div *ngIf="updatedCertificateTypes && updatedCertificateTypes.length > 0; else noData">
-    <div class="inventory-cards">
-      <mat-card *ngFor="let type of updatedCertificateTypes" class="inventory-card mat-elevation-z2">
-        <mat-card-header class="card-header">
-          <mat-card-title class="card-title">{{ type.name }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p class="inventory-balance">
-            <span>יתרות מלאי:</span>
-            <span 
-              class="balance-value" 
-              [ngClass]="{
-                'positive-balance': type.TOTAL_INVENTORY_BALANCES > 0
-              }">
-              {{ type.TOTAL_INVENTORY_BALANCES < 0 ? 'חסר הגדרה' : type.TOTAL_INVENTORY_BALANCES }}
-            </span>
-            <span 
-              *ngIf="type.TOTAL_INVENTORY_BALANCES <= type.minimum" 
-              class="warning-balance">
-              &#x26A0; 
-            </span>
-          </p>
-        </mat-card-content>
-      </mat-card>
+<div class="cards-container" *ngIf="!isLoading; else loading">
+  <div *ngIf="UpdateListAllOfficeInventory.length > 0; else noData" class="cards-wrapper">
+    <div *ngFor="let type of UpdateListAllOfficeInventory" class="inventory-card">
+      <div class="icon">
+        <!-- כאן אפשר להוסיף אייקון רלוונטי בהתאם ל-type -->
+        <mat-icon>verified_user</mat-icon> <!-- דוגמה לאייקון -->
+      </div>
+      <div class="content">
+        <h3>{{ type?.certificateName || 'N/A' }}</h3>
+        <p class="number">{{ type.unusedInventoryBalance | number }}</p>
+        <p class="label">יתרת מלאי לא מנוצלת</p>
+      </div>
     </div>
   </div>
-  <ng-template #noData>
-    <p class="no-data-message">No data available to display.</p>
-  </ng-template>
 </div>
+
+  
+  <ng-template #noData>
+    <p>אין נתונים להצגה.</p>
+  </ng-template>
+  
+  <ng-template #loading>
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>טוען נתונים...</p>
+    </div>
+  </ng-template>
+  
 
 
   <div class="filters-wrapper">
