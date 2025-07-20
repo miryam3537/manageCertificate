@@ -169,7 +169,21 @@
       <ng-container matColumnDef="minimumBalance">
         <th mat-header-cell *matHeaderCellDef> מינימום </th>
         <td mat-cell *matCellDef="let type">
-          <input type="number" [(ngModel)]="type.minimum" placeholder="{{ type?.minimum ?? '' }}" />
+          <input 
+          type="number"
+          [(ngModel)]="type.editedMinimum"
+          [max]="type.inventory"
+          class="min-input"
+          [ngClass]="{ 'edited': type.editedMinimum !== type.minimum }"
+        />
+        
+                <!-- כפתור איפוס -->
+        <button *ngIf="type.editedMinimum !== type.minimum"
+        mat-icon-button
+        color="warn"
+        (click)="resetMinimum(type)">
+        <mat-icon>undo</mat-icon>
+        </button>
           <button mat-button (click)="saveMinimum(type)"> <mat-icon>save</mat-icon> </button>
         </td>
       </ng-container>

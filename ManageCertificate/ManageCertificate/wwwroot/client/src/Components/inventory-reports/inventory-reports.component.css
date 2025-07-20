@@ -79,3 +79,6 @@
 mat-form-field {
   width: 100%;
 }
+.edited {
+  background-color: #fff3cd; /* רקע צהוב קל */
+}

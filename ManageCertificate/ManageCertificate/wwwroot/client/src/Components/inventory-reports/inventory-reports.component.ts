@@ -92,7 +92,7 @@ export class InventoryReportsComponent implements OnInit{
   selectedCouncilId: number | null = null;
   currentYear = new Date().getFullYear();
     allRequests: Requestes[] = [];
-  displayedColumns: string[] = ['name','year', 'inventoryBalance','inventory','minimumBalance'];
+  displayedColumns: string[] = ['name','year','inventory', 'inventoryBalance','minimumBalance'];
   inventoryDisplayedCol: string[] = ['councilName','year','certificate', 'totalSupplyAmount', 'inventoryBalance','inventory'];
   filteredInventory: RefInventory[] = [];
    ListAllOfficeInventory:RefOfficeInventory[]=[]
@@ -196,29 +196,61 @@ this.ListRefInventory = [...inventories]; // העתק ולא הפניה ישיר
       }
     });
   }
-    saveMinimum(type: any) {
-//בדיקה אם המינימום הוא מספר חיובי
-      if (type.minimum < 0) {
-        console.error('Minimum balance must be a positive number');
-        return;
-      }
-      this.RefServService.updateMinimum(type.id,type.minimum).subscribe({
-        next: (response) => {
-          console.log('Minimum balance updated successfully:', response);
-          this.snackBar.open('הפעולה בוצעה בהצלחה', 'סגור', {
-            duration: 3000,
-            horizontalPosition: 'end',
-            verticalPosition: 'bottom',
-          });
-          
-          this.loadData();
-        },
-        error: (error) => {
-          console.error('Error updating minimum balance:', error);
-        }
+  resetMinimum(type: any) {
+    type.editedMinimum = type.minimum;
+  }
+  validateMinimum(type: any) {
+    const maxValue = type.inventory; // הערך המקסימלי
+    if (type.minimum > maxValue) {
+      type.minimum = maxValue; // הגבלת הערך למקסימום
+      this.snackBar.open(`המינימום לא יכול להיות יותר מ-${maxValue}`, 'סגור', {
+        duration: 3000,
+        horizontalPosition: 'end',
+        verticalPosition: 'bottom',
       });
- 
     }
+  }
+
+  saveMinimum(type: any) {
+    const value = type.editedMinimum;
+  
+    if (value < 0) {
+      this.snackBar.open('המינימום חייב להיות חיובי', 'סגור', {
+        duration: 3000,
+        horizontalPosition: 'end',
+        verticalPosition: 'bottom',
+      });
+      return;
+    }
+  
+    if (value > type.inventory) {
+      this.snackBar.open('המינימום לא יכול להיות יותר מהמלאי', 'סגור', {
+        duration: 3000,
+        horizontalPosition: 'end',
+        verticalPosition: 'bottom',
+      });
+      return;
+    }
+  
+    this.RefServService.updateMinimum(type.id, value).subscribe({
+      next: (response) => {
+        type.minimum = value;
+        type.editedMinimum = value; // עדכון גם של ההעתק המקומי
+        this.snackBar.open('המינימום נשמר בהצלחה', 'סגור', {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+        });
+      },
+      error: (error) => {
+        this.snackBar.open('שגיאה בשמירת מינימום', 'סגור', {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+        });
+      }
+    });
+  }
     saveInventory(item: any) {
       this.RefServService.updateInventoryAmount(item.inventoryId, item.inventory).subscribe({
         next: (response) => {
@@ -352,11 +384,12 @@ applyFilter() {
             certificateName: matchingType?.name || 'לא זוהה',
             minimum: matchingType?.minimum || 0,
             unusedInventoryBalance: (item.inventory || 0) - totalSupplyAmount,
+            editedMinimum: matchingType?.minimum || 0, // 👈 שדה זמני לעריכה
             totalSupplyAmount // חדש – שיהיה זמין גם להצגה בטבלה
           };
         });
     }
-    
+
 
     goBackToRequests(): void {
       this.router.navigate(['']); 
