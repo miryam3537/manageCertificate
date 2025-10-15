@@ -55,8 +55,10 @@ ManageCertificate/
 ## 🖼️ תצוגה חזותית
 
 🔗 עיצוב Figma
-צפו בעיצוב המקורי (רק צפייה): [Figma Link](https://www.figma.com/proto/p17DRJzpwOYmLfSha2xZ0N/%D7%A4%D7%A8%D7%A7%D7%98%D7%99%D7%A7%D7%95%D7%9D?node-id=725-1279&t=AJV7PXWiG8oOix3H-1&scaling=scale-down-width&content-scaling=fixed&page-id=426%3A1287&starting-point-node-id=438%3A25
-### 🎬 סרטון / GIF
+
+
+[צפו בעיצוב המקורי (רק צפייה)](https://www.figma.com/proto/p17DRJzpwOYmLfSha2xZ0N/%D7%A4%D7%A8%D7%A7%D7%98%D7%99%D7%A7%D7%95%D7%9D?node-id=725-1279&t=AJV7PXWiG8oOix3H-1&scaling=scale-down-width&content-scaling=fixed&page-id=426%3A1287&starting-point-node-id=438%3A25)
+🎬 סרטון / GIF
 > GIF קצר שמראה שימוש בסיסי במערכת:
 
 ---
